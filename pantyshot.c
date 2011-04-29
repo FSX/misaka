@@ -17,18 +17,16 @@ pantyshot_render(PyObject *self, PyObject *args)
     struct mkd_renderer renderer;
     const char *input_text;
     const char *output_text;
-    char test_str;
 
     if (!PyArg_ParseTuple(args, "s", &input_text))
         return NULL;
 
     /* Input buffer */
-    ib = bufnew(128);
+    ib = bufnew(1);
     bufputs(ib, input_text);
 
     /* Output buffer */
-    ob = bufnew(128);
-    bufgrow(ob, strlen(input_text) * 1.2f);
+    ob = bufnew(1);
 
     /* Parse Markdown */
     ups_xhtml_renderer(&renderer, 0);

@@ -1,8 +1,18 @@
+# -*- coding: utf8 -*-
+
 import pantyshot
 
 print pantyshot
 print pantyshot.render
 
-print 'Output:'
+text = 'This **is** *a* `test`.'
 
-print '%r' % pantyshot.render('Testing **this** extenstion.')
+print
+
+for i in range(20):
+    result = pantyshot.render(text)
+    print '%r' % result
+    print result
+    print '-'*80
+    print
+    result = ''
