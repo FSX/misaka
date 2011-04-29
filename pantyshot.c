@@ -33,6 +33,7 @@ pantyshot_render(PyObject *self, PyObject *args)
     ups_markdown(ob, ib, &renderer, 0xFF);
     ups_free_renderer(&renderer);
 
+    bufnullterm(ob);
     output_text = strdup(ob->data);
 
     /* Cleanup */

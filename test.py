@@ -5,7 +5,7 @@ import pantyshot
 print pantyshot
 print pantyshot.render
 
-text = 'This **is** *a* `test`.'
+text = 'This **is** *a* `test`. [Test](http://example.com).'
 
 print
 
