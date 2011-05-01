@@ -3,6 +3,8 @@ Pantyshot
 
 A Python extension for [Upskirt][1].
 
+ [1]: https://github.com/FSX/pantyshot
+
 
 Installation
 ------------
@@ -53,5 +55,3 @@ Render flags:
     XHTML_SKIP_IMAGES
     XHTML_EXPAND_TABS
 
-
- [1]: Python extension for Upskirt.
