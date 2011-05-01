@@ -49,38 +49,6 @@ put_scaped_char(struct buf *ob, char c)
 	}
 }
 
-static void
-uri_escape(struct buf *ob, const char *src, size_t size)
-{
-	size_t i;
-
-	for (i = 0; i < size; ++i) {
-		char c = src[i];
-
-		if (c == '%' && i + 2 < size && isxdigit(src[i + 1]) && isxdigit(src[i + 2])) {
-			bufput(ob, src + i, 3);
-			i += 2;
-			continue;
-		}
-
-		switch (c) {
-			case ';': case '/':
-			case '?': case ':':
-			case '@': case '=':
-			case '#': case '&':
-			case '.': case '+':
-			case '-':
-				bufputc(ob, c);
-				continue;
-		}
-
-		if (!isalnum(c))
-			bufprintf(ob, "%%%02x", (int)c);
-		else
-			bufputc(ob, c);
-	}
-}
-
 /* attr_escape • copy the buffer entity-escaping '<', '>', '&' and '"' */
 static void
 attr_escape(struct buf *ob, const char *src, size_t size)
@@ -154,7 +122,7 @@ rndr_autolink(struct buf *ob, struct buf *link, enum mkd_autolink type, void *op
 	BUFPUTSL(ob, "<a href=\"");
 	if (type == MKDA_EMAIL)
 		BUFPUTSL(ob, "mailto:");
-	uri_escape(ob, link->data, link->size);
+	bufput(ob, link->data, link->size);
 	BUFPUTSL(ob, "\">");
 
 	/*
@@ -179,14 +147,24 @@ rndr_blockcode(struct buf *ob, struct buf *text, struct buf *lang, void *opaque)
 	if (ob->size) bufputc(ob, '\n');
 
 	if (lang && lang->size) {
-		size_t i = 0;
+		size_t i, cls;
 		BUFPUTSL(ob, "<pre><code class=\"");
 
-		for (i = 0; i < lang->size; ++i) {
-			if (lang->data[i] == '.' && (i == 0 || isspace(lang->data[i - 1])))
-				continue;
+		for (i = 0, cls = 0; i < lang->size; ++i, ++cls) {
+			while (i < lang->size && isspace(lang->data[i]))
+				i++;
 
-			bufputc(ob, lang->data[i]);
+			if (i < lang->size) {
+				size_t org = i;
+				while (i < lang->size && !isspace(lang->data[i]))
+					i++;
+
+				if (lang->data[org] == '.')
+					org++;
+
+				if (cls) bufputc(ob, ' ');
+				attr_escape(ob, lang->data + org, i - org);
+			}
 		}
 
 		BUFPUTSL(ob, "\">");
@@ -226,14 +204,13 @@ rndr_blockcode_github(struct buf *ob, struct buf *text, struct buf *lang, void *
 		size_t i = 0;
 		BUFPUTSL(ob, "<pre lang=\"");
 
-		for (; i < lang->size; ++i)
-			if (isspace(lang->data[i]))
-				break;
+		while (i < lang->size && !isspace(lang->data[i]))
+			i++;
 
 		if (lang->data[0] == '.')
-			bufput(ob, lang->data + 1, i - 1);
+			attr_escape(ob, lang->data + 1, i - 1);
 		else
-			bufput(ob, lang->data, i);
+			attr_escape(ob, lang->data, i);
 
 		BUFPUTSL(ob, "\"><code>");
 	} else
@@ -323,7 +300,7 @@ rndr_link(struct buf *ob, struct buf *link, struct buf *title, struct buf *conte
 		return 0;
 
 	BUFPUTSL(ob, "<a href=\"");
-	if (link && link->size) uri_escape(ob, link->data, link->size);
+	if (link && link->size) bufput(ob, link->data, link->size);
 	if (title && title->size) {
 		BUFPUTSL(ob, "\" title=\"");
 		attr_escape(ob, title->data, title->size); }
