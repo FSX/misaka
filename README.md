@@ -23,7 +23,7 @@ With extensions and render flags.
 
     import pantyshot as p
 
-    pantyshot.markdown(
+    p.markdown(
         'Hello, world!',
         p.EXT_AUTOLINK | p.EXT_TABLES,
         p.XHTML_EXPAND_TABS | p.XHTML_SMARTYPANTS
@@ -66,4 +66,3 @@ Render flags:
     XHTML_SAFELINK
     XHTML_SKIP_IMAGES
     XHTML_EXPAND_TABS
-

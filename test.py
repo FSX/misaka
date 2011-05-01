@@ -19,7 +19,7 @@ So? http://example.com/ "It" <b>Test</b> works?
 
 <div>Stripped **or** "not"?</div> Test
 
-Test test test
+Test <b>test</b> test
 
 '''
 
