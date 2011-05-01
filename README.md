@@ -29,6 +29,18 @@ With extensions and render flags.
         p.XHTML_EXPAND_TABS | p.XHTML_SMARTYPANTS
     )
 
+In combination with `functools.partial`.
+
+    import functools
+    import pantyshot as p
+
+    markdown = functools.partial(
+        p.markdown,
+        extensions=p.EXT_AUTOLINK | p.EXT_TABLES,
+        render_flags=p.XHTML_EXPAND_TABS | p.XHTML_SMARTYPANTS
+    )
+    markdown('Awesome!')
+
 
 Extensions & render flags
 -------------------------
