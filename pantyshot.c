@@ -7,11 +7,11 @@
 
 /* The module doc string */
 PyDoc_STRVAR(pantyshot__doc__, "Pantyshot is a Python binding for Upskirt!");
-PyDoc_STRVAR(pantyshot_render__doc__, "Render Markdown text into HTML.");
+PyDoc_STRVAR(pantyshot_markdown__doc__, "Render Markdown text into HTML.");
 
 
 static PyObject *
-pantyshot_render(PyObject *self, PyObject *args)
+pantyshot_markdown(PyObject *self, PyObject *args)
 {
     struct buf *ib, *ob;
     struct mkd_renderer renderer;
@@ -45,7 +45,7 @@ pantyshot_render(PyObject *self, PyObject *args)
 
 
 static PyMethodDef PantyshotMethods[] = {
-    {"render",  pantyshot_render, METH_VARARGS, pantyshot_render__doc__},
+    {"render",  pantyshot_markdown, METH_VARARGS, pantyshot_markdown__doc__},
     {NULL, NULL, 0, NULL} /* Sentinel */
 };
 
