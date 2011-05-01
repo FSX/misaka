@@ -10,7 +10,7 @@ text = 'This **is** *a* `test`. [Test](http://example.com).'
 print
 
 for i in range(20):
-    result = pantyshot.markdown(text)
+    result = pantyshot.render(text)
     print '%r' % result
     print result
     print '-'*80
