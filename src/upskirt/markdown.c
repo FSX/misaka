@@ -50,12 +50,44 @@ struct render;
 typedef size_t
 (*char_trigger)(struct buf *ob, struct render *rndr, char *data, size_t offset, size_t size);
 
+static size_t char_emphasis(struct buf *ob, struct render *rndr, char *data, size_t offset, size_t size);
+static size_t char_linebreak(struct buf *ob, struct render *rndr, char *data, size_t offset, size_t size);
+static size_t char_codespan(struct buf *ob, struct render *rndr, char *data, size_t offset, size_t size);
+static size_t char_escape(struct buf *ob, struct render *rndr, char *data, size_t offset, size_t size);
+static size_t char_entity(struct buf *ob, struct render *rndr, char *data, size_t offset, size_t size);
+static size_t char_langle_tag(struct buf *ob, struct render *rndr, char *data, size_t offset, size_t size);
+static size_t char_autolink(struct buf *ob, struct render *rndr, char *data, size_t offset, size_t size);
+static size_t char_link(struct buf *ob, struct render *rndr, char *data, size_t offset, size_t size);
+
+enum markdown_char_t {
+	MD_CHAR_NONE = 0,
+	MD_CHAR_EMPHASIS,
+	MD_CHAR_CODESPAN,
+	MD_CHAR_LINEBREAK,
+	MD_CHAR_LINK,
+	MD_CHAR_LANGLE,
+	MD_CHAR_ESCAPE,
+	MD_CHAR_ENTITITY,
+	MD_CHAR_AUTOLINK,
+};
+
+static char_trigger markdown_char_ptrs[] = {
+	NULL,
+	&char_emphasis,
+	&char_codespan,
+	&char_linebreak,
+	&char_link,
+	&char_langle_tag,
+	&char_escape,
+	&char_entity,
+	&char_autolink,
+};
 
 /* render • structure containing one particular render */
 struct render {
 	struct mkd_renderer	make;
 	struct array refs;
-	char_trigger active_char[256];
+	char active_char[256];
 	struct parray work_bufs[2];
 	unsigned int ext_flags;
 	size_t max_nesting;
@@ -305,7 +337,7 @@ static void
 parse_inline(struct buf *ob, struct render *rndr, char *data, size_t size)
 {
 	size_t i = 0, end = 0;
-	char_trigger action = 0;
+	char action = 0;
 	struct buf work = { 0, 0, 0, 0, 0 };
 
 	if (rndr->work_bufs[BUFFER_SPAN].size +
@@ -330,7 +362,7 @@ parse_inline(struct buf *ob, struct render *rndr, char *data, size_t size)
 		i = end;
 
 		/* calling the trigger */
-		end = action(ob, rndr, data + i, i, size - i);
+		end = markdown_char_ptrs[(int)action](ob, rndr, data + i, i, size - i);
 		if (!end) /* no action from the callback */
 			end = i + 1;
 		else { 
@@ -1068,6 +1100,26 @@ is_codefence(char *data, size_t size, struct buf *syntax)
 	return i + 1;
 }
 
+/* is_atxheader • returns whether the line is a hash-prefixed header */
+static int
+is_atxheader(struct render *rndr, char *data, size_t size)
+{
+	if (data[0] != '#')
+		return 0;
+
+	if (rndr->ext_flags & MKDEXT_SPACE_HEADERS) {
+		size_t level = 0;
+
+		while (level < size && level < 6 && data[level] == '#')
+			level++;
+
+		if (level < size && data[level] != ' ' && data[level] != '\t')
+			return 0;
+	}
+
+	return 1;
+}
+
 /* is_headerline • returns whether the line is a setext-style hdr underline */
 static int
 is_headerline(char *data, size_t size)
@@ -1216,7 +1268,7 @@ parse_paragraph(struct buf *ob, struct render *rndr, char *data, size_t size)
 			}
 		}
 
-		if (data[i] == '#' || is_hrule(data + i, size - i)) {
+		if (is_atxheader(rndr, data + i, size - i) || is_hrule(data + i, size - i)) {
 			end = i;
 			break;
 		}
@@ -1500,16 +1552,12 @@ parse_list(struct buf *ob, struct render *rndr, char *data, size_t size, int fla
 	return i;
 }
 
-
 /* parse_atxheader • parsing of atx-style headers */
 static size_t
 parse_atxheader(struct buf *ob, struct render *rndr, char *data, size_t size)
 {
 	size_t level = 0;
 	size_t i, end, skip;
-
-	if (!size || data[0] != '#')
-		return 0;
 
 	while (level < size && level < 6 && data[level] == '#')
 		level++;
@@ -1755,18 +1803,32 @@ parse_table_header(struct buf *ob, struct render *rndr, char *data, size_t size,
 		under_end++;
 
 	for (col = 0; col < *columns && i < under_end; ++col) {
+		size_t dashes = 0;
+
+		while (i < under_end && (data[i] == ' ' || data[i] == '\t'))
+			i++;
+
 		if (data[i] == ':') {
 			i++; (*column_data)[col] |= MKD_TABLE_ALIGN_L;
+			dashes++;
 		}
 
-		while (i < under_end && data[i] == '-')
-			i++;
+		while (i < under_end && data[i] == '-') {
+			i++; dashes++;
+		}
 
 		if (i < under_end && data[i] == ':') {
 			i++; (*column_data)[col] |= MKD_TABLE_ALIGN_R;
+			dashes++;
 		}
 
+		while (i < under_end && (data[i] == ' ' || data[i] == '\t'))
+			i++;
+
 		if (i < under_end && data[i] != '|')
+			break;
+
+		if (dashes < 3)
 			break;
 
 		i++;
@@ -1841,7 +1903,7 @@ parse_block(struct buf *ob, struct render *rndr, char *data, size_t size)
 		txt_data = data + beg;
 		end = size - beg;
 
-		if (data[beg] == '#')
+		if (is_atxheader(rndr, txt_data, end))
 			beg += parse_atxheader(ob, rndr, txt_data, end);
 
 		else if (data[beg] == '<' && rndr->make.blockhtml &&
@@ -2052,34 +2114,34 @@ ups_markdown(struct buf *ob, struct buf *ib, const struct mkd_renderer *rndrer, 
 		rndr.active_char[i] = 0;
 
 	if (rndr.make.emphasis || rndr.make.double_emphasis || rndr.make.triple_emphasis) {
-		rndr.active_char['*'] = char_emphasis;
-		rndr.active_char['_'] = char_emphasis;
+		rndr.active_char['*'] = MD_CHAR_EMPHASIS;
+		rndr.active_char['_'] = MD_CHAR_EMPHASIS;
 		if (extensions & MKDEXT_STRIKETHROUGH)
-			rndr.active_char['~'] = char_emphasis;
+			rndr.active_char['~'] = MD_CHAR_EMPHASIS;
 	}
 
 	if (rndr.make.codespan)
-		rndr.active_char['`'] = char_codespan;
+		rndr.active_char['`'] = MD_CHAR_CODESPAN;
 
 	if (rndr.make.linebreak)
-		rndr.active_char['\n'] = char_linebreak;
+		rndr.active_char['\n'] = MD_CHAR_LINEBREAK;
 
 	if (rndr.make.image || rndr.make.link)
-		rndr.active_char['['] = char_link;
+		rndr.active_char['['] = MD_CHAR_LINK;
 
-	rndr.active_char['<'] = char_langle_tag;
-	rndr.active_char['\\'] = char_escape;
-	rndr.active_char['&'] = char_entity;
+	rndr.active_char['<'] = MD_CHAR_LANGLE;
+	rndr.active_char['\\'] = MD_CHAR_ESCAPE;
+	rndr.active_char['&'] = MD_CHAR_ENTITITY;
 
 	if (extensions & MKDEXT_AUTOLINK) {
-		rndr.active_char['h'] = char_autolink; // http, https
-		rndr.active_char['H'] = char_autolink;
+		rndr.active_char['h'] = MD_CHAR_AUTOLINK; // http, https
+		rndr.active_char['H'] = MD_CHAR_AUTOLINK;
 
-		rndr.active_char['f'] = char_autolink; // ftp
-		rndr.active_char['F'] = char_autolink;
+		rndr.active_char['f'] = MD_CHAR_AUTOLINK; // ftp
+		rndr.active_char['F'] = MD_CHAR_AUTOLINK;
 
-		rndr.active_char['m'] = char_autolink; // mailto
-		rndr.active_char['M'] = char_autolink;
+		rndr.active_char['m'] = MD_CHAR_AUTOLINK; // mailto
+		rndr.active_char['M'] = MD_CHAR_AUTOLINK;
 	}
 
 	/* Extension data */

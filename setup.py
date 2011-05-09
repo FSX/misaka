@@ -2,7 +2,7 @@ from distutils.core import setup, Extension
 
 setup(
     name='pantyshot',
-    version='0.1.1',
+    version='0.2.0',
     description='Python extension for Upskirt.',
     author='Frank Smit',
     author_email='frank@61924.nl',
@@ -12,6 +12,7 @@ setup(
         'src/upskirt/array.c',
         'src/upskirt/buffer.c',
         'src/upskirt/markdown.c',
-        'src/upskirt/xhtml.c'
+        'src/upskirt/html.c',
+        'src/upskirt/html_smartypants.c'
     ])]
 )

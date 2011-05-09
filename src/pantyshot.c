@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "upskirt/markdown.h"
-#include "upskirt/xhtml.h"
+#include "upskirt/html.h"
 
 
 /* The module doc strings */
@@ -33,9 +33,9 @@ pantyshot_markdown(PyObject *self, PyObject *args, PyObject *kwargs)
     ob = bufnew(ib->size * 1.2);
 
     /* Parse Markdown */
-    ups_xhtml_renderer(&renderer, render_flags);
+    upshtml_renderer(&renderer, render_flags);
     ups_markdown(ob, ib, &renderer, extensions);
-    ups_free_renderer(&renderer);
+    upshtml_free_renderer(&renderer);
 
     /* Append a null terminator to the output buffer and make a Python string */
     bufnullterm(ob);
@@ -67,7 +67,7 @@ initpantyshot(void)
         return;
 
     /* Version */
-    PyModule_AddStringConstant(module, "__version__", "0.1.1");
+    PyModule_AddStringConstant(module, "__version__", "0.2.0");
 
     /* Markdown extensions */
     PyModule_AddIntConstant(module, "EXT_NO_INTRA_EMPHASIS", MKDEXT_NO_INTRA_EMPHASIS);
@@ -76,16 +76,17 @@ initpantyshot(void)
     PyModule_AddIntConstant(module, "EXT_AUTOLINK", MKDEXT_AUTOLINK);
     PyModule_AddIntConstant(module, "EXT_STRIKETHROUGH", MKDEXT_STRIKETHROUGH);
     PyModule_AddIntConstant(module, "EXT_LAX_HTML_BLOCKS", MKDEXT_LAX_HTML_BLOCKS);
+    PyModule_AddIntConstant(module, "EXT_SPACE_HEADERS", MKDEXT_SPACE_HEADERS);
 
     /* XHTML Render flags */
-    PyModule_AddIntConstant(module, "XHTML_SKIP_HTML", XHTML_SKIP_HTML);
-    PyModule_AddIntConstant(module, "XHTML_SKIP_STYLE", XHTML_SKIP_STYLE);
-    PyModule_AddIntConstant(module, "XHTML_SKIP_IMAGES", XHTML_SKIP_IMAGES);
-    PyModule_AddIntConstant(module, "XHTML_SKIP_LINKS", XHTML_SKIP_LINKS);
-    PyModule_AddIntConstant(module, "XHTML_SMARTYPANTS", XHTML_SMARTYPANTS);
-    PyModule_AddIntConstant(module, "XHTML_EXPAND_TABS", XHTML_EXPAND_TABS);
-    PyModule_AddIntConstant(module, "XHTML_SAFELINK", XHTML_SAFELINK);
-    PyModule_AddIntConstant(module, "XHTML_TOC", XHTML_TOC);
-    PyModule_AddIntConstant(module, "XHTML_HARD_WRAP", XHTML_HARD_WRAP);
-    PyModule_AddIntConstant(module, "XHTML_GITHUB_BLOCKCODE", XHTML_GITHUB_BLOCKCODE);
+    PyModule_AddIntConstant(module, "HTML_SKIP_HTML", HTML_SKIP_HTML);
+    PyModule_AddIntConstant(module, "HTML_SKIP_STYLE", HTML_SKIP_STYLE);
+    PyModule_AddIntConstant(module, "HTML_SKIP_IMAGES", HTML_SKIP_IMAGES);
+    PyModule_AddIntConstant(module, "HTML_SKIP_LINKS", HTML_SKIP_LINKS);
+    PyModule_AddIntConstant(module, "HTML_EXPAND_TABS", HTML_EXPAND_TABS);
+    PyModule_AddIntConstant(module, "HTML_SAFELINK", HTML_SAFELINK);
+    PyModule_AddIntConstant(module, "HTML_TOC", HTML_TOC);
+    PyModule_AddIntConstant(module, "HTML_HARD_WRAP", HTML_HARD_WRAP);
+    PyModule_AddIntConstant(module, "HTML_GITHUB_BLOCKCODE", HTML_GITHUB_BLOCKCODE);
+    PyModule_AddIntConstant(module, "HTML_USE_XHTML", HTML_USE_XHTML);
 }

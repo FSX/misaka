@@ -8,7 +8,7 @@ text = '''
 
 Tables?
 
-Does ~this~ work?
+Does ~~this~~ work?
 
 So? http://example.com/ "It" <b>Test</b> works?
 
@@ -26,6 +26,6 @@ Test <b>test</b> test
 result = p.markdown(
     text,
     p.EXT_TABLES | p.EXT_STRIKETHROUGH | p.EXT_LAX_HTML_BLOCKS,
-    p.XHTML_SKIP_HTML | p.XHTML_SMARTYPANTS | p.XHTML_EXPAND_TABS | p.XHTML_SKIP_LINKS
+    p.HTML_SKIP_HTML | p.HTML_EXPAND_TABS | p.HTML_SKIP_LINKS
 )
 print result
