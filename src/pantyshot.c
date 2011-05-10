@@ -5,6 +5,10 @@
 #include "upskirt/html.h"
 
 
+/* An extra flag to enabled Smartypants */
+unsigned int HTML_SMARTYPANTS = (1 << 12);
+
+
 /* The module doc strings */
 PyDoc_STRVAR(pantyshot_module__doc__, "Pantyshot is a Python binding for Upskirt!");
 PyDoc_STRVAR(pantyshot_markdown__doc__, "Render Markdown text into HTML.");
@@ -35,6 +39,15 @@ pantyshot_render(const char *text, unsigned int extensions,
 
     ups_markdown(ob, ib, &renderer, extensions);
     upshtml_free_renderer(&renderer);
+
+    /* Smartypants actions */
+    if (render_flags & HTML_SMARTYPANTS)
+    {
+        struct buf *sb = bufnew(1);
+        upshtml_smartypants(sb, ob);
+        ob = bufdup(sb, sb->size); /* Duplicate Smartypants buffer to output buffer */
+        bufrelease(sb); /* Cleanup Smartypants buffer */
+    }
 
     /* Append a null terminator to the output buffer and make a Python string */
     bufnullterm(ob);
@@ -116,4 +129,5 @@ initpantyshot(void)
     PyModule_AddIntConstant(module, "HTML_HARD_WRAP", HTML_HARD_WRAP);
     PyModule_AddIntConstant(module, "HTML_GITHUB_BLOCKCODE", HTML_GITHUB_BLOCKCODE);
     PyModule_AddIntConstant(module, "HTML_USE_XHTML", HTML_USE_XHTML);
+    PyModule_AddIntConstant(module, "HTML_SMARTYPANTS", HTML_SMARTYPANTS);
 }

@@ -8,7 +8,10 @@ text = '''
 
 # Markdown extensions
 
-Here are some demonstrations of Markdown extensions.
+Here are some demonstrations of Markdown "extensions".
+
+
+Test Smartypants: <3/4ths> -- Test test
 
 
 ## MKDEXT_NO_INTRA_EMPHASIS
@@ -61,7 +64,7 @@ Nullam tincidunt dui ~vitae~ nulla ~~tristique~~ ultricies.
 result = p.html(
     text,
     p.EXT_TABLES | p.EXT_STRIKETHROUGH | p.EXT_LAX_HTML_BLOCKS,
-    p.HTML_SKIP_HTML | p.HTML_EXPAND_TABS | p.HTML_SKIP_LINKS | p.HTML_TOC
+    p.HTML_SKIP_HTML | p.HTML_EXPAND_TABS | p.HTML_SKIP_LINKS | p.HTML_TOC | p.HTML_SMARTYPANTS
 )
-result = p.toc(text)
+#result = p.toc(text)
 print result
