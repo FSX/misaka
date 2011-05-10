@@ -6,24 +6,18 @@
 
 
 /* The module doc strings */
-PyDoc_STRVAR(pantyshot__doc__, "Pantyshot is a Python binding for Upskirt!");
+PyDoc_STRVAR(pantyshot_module__doc__, "Pantyshot is a Python binding for Upskirt!");
 PyDoc_STRVAR(pantyshot_markdown__doc__, "Render Markdown text into HTML.");
+PyDoc_STRVAR(pantyshot_html__doc__, "Render Markdown text into HTML.");
+PyDoc_STRVAR(pantyshot_toc__doc__, "Generate a table of contents.");
 
 
 static PyObject *
-pantyshot_markdown(PyObject *self, PyObject *args, PyObject *kwargs)
+pantyshot_render(const char *text, unsigned int extensions,
+                 unsigned int render_flags, char toc_only)
 {
     struct buf *ib, *ob;
     struct mkd_renderer renderer;
-    static char *kwlist[] = {"text", "extensions", "render_flags"};
-    const char *text;
-    unsigned int extensions = 0, render_flags = 0;
-    PyObject *html;
-
-    /* Parse arguments */
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|ii", kwlist,
-        &text, &extensions, &render_flags))
-        return NULL;
 
     /* Input buffer */
     ib = bufnew(1);
@@ -33,13 +27,18 @@ pantyshot_markdown(PyObject *self, PyObject *args, PyObject *kwargs)
     ob = bufnew(ib->size * 1.2);
 
     /* Parse Markdown */
-    upshtml_renderer(&renderer, render_flags);
+    if (toc_only != -1) {
+        upshtml_toc_renderer(&renderer);
+    } else{
+        upshtml_renderer(&renderer, render_flags);
+    }
+
     ups_markdown(ob, ib, &renderer, extensions);
     upshtml_free_renderer(&renderer);
 
     /* Append a null terminator to the output buffer and make a Python string */
     bufnullterm(ob);
-    html = Py_BuildValue("s", ob->data);
+    PyObject *html = Py_BuildValue("s", ob->data);
 
     /* Cleanup */
     bufrelease(ib);
@@ -49,9 +48,38 @@ pantyshot_markdown(PyObject *self, PyObject *args, PyObject *kwargs)
 }
 
 
+static PyObject *
+pantyshot_html(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+    static char *kwlist[] = {"text", "extensions", "render_flags"};
+    unsigned int extensions = 0, render_flags = 0;
+    const char *text;
+
+    /* Parse arguments */
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|ii", kwlist,
+        &text, &extensions, &render_flags))
+        return NULL;
+
+    return pantyshot_render(text, extensions, render_flags, -1);
+}
+
+
+static PyObject *
+pantyshot_toc(PyObject *self, PyObject *args)
+{
+    const char *text;
+
+    /* Parse arguments */
+    if (!PyArg_ParseTuple(args, "s", &text))
+        return NULL;
+
+    return pantyshot_render(text, 0, 0, 1);
+}
+
+
 static PyMethodDef PantyshotMethods[] = {
-    {"markdown",  (PyCFunction) pantyshot_markdown, METH_VARARGS | METH_KEYWORDS,
-        pantyshot_markdown__doc__},
+    {"html", (PyCFunction) pantyshot_html, METH_VARARGS | METH_KEYWORDS, pantyshot_html__doc__},
+    {"toc", (PyCFunction) pantyshot_toc, METH_VARARGS,pantyshot_toc__doc__},
     {NULL, NULL, 0, NULL} /* Sentinel */
 };
 
@@ -59,10 +87,9 @@ static PyMethodDef PantyshotMethods[] = {
 PyMODINIT_FUNC
 initpantyshot(void)
 {
-    PyObject *module;
-
     /* The module */
-    module = Py_InitModule3("pantyshot", PantyshotMethods, pantyshot__doc__);
+    PyObject *module = Py_InitModule3("pantyshot", PantyshotMethods,
+        pantyshot_module__doc__);
     if (module == NULL)
         return;
 

@@ -17,13 +17,13 @@ Usage
 
     import pantyshot
 
-    pantyshot.markdown('Hello, world!')
+    pantyshot.html('Hello, world!')
 
 With extensions and render flags.
 
     import pantyshot as p
 
-    p.markdown(
+    p.html(
         'Hello, world!',
         p.EXT_AUTOLINK | p.EXT_TABLES,
         p.HTML_EXPAND_TABS
@@ -35,11 +35,25 @@ In combination with `functools.partial`.
     import pantyshot as p
 
     markdown = functools.partial(
-        p.markdown,
+        p.html,
         extensions=p.EXT_AUTOLINK | p.EXT_TABLES,
         render_flags=p.HTML_EXPAND_TABS
     )
     markdown('Awesome!')
+
+Or generate a table of contents.
+
+    pantyshot.toc('''
+
+    # Header one
+
+    Some text here.
+
+    ## Header two
+
+    Some more text
+
+    ''')
 
 
 Extensions & render flags
