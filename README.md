@@ -44,7 +44,6 @@ In combination with `functools.partial`.
 Or generate a table of contents.
 
     pantyshot.toc('''
-
     # Header one
 
     Some text here.
@@ -52,7 +51,6 @@ Or generate a table of contents.
     ## Header two
 
     Some more text
-
     ''')
 
 
@@ -72,7 +70,6 @@ Extensions:
 Render flags:
 
     HTML_GITHUB_BLOCKCODE
-    HTML_SMARTYPANTS
     HTML_SKIP_HTML
     HTML_SKIP_STYLE
     HTML_HARD_WRAP
