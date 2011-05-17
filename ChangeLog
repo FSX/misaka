@@ -2,14 +2,14 @@ News/Changelog
 ==============
 
 
-0.2.0 (2011-05-??)
+0.2.0 (2011-05-17)
 ------------------
 
 * Added Smartypants render flag.
-* Added a ``toc`` function that outputs a table of contents.
-* Renamed ``markdown`` function to ``html``.
+* Added a `toc` function that outputs a table of contents.
+* Renamed `markdown` function to `html`.
 * Updated Upskirt files;
-  See commits from 2011-05-02 to 2011-05-16:
+  See commits from 2011-05-02 to 2011-05-17:
   https://github.com/tanoku/upskirt/commits/master/
 
 
