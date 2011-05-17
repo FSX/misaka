@@ -1,7 +1,7 @@
 Pantyshot
 =========
 
-A Python extension for [Upskirt][1].
+A Python binding for [Upskirt][1].
 
  [1]: https://github.com/tanoku/upskirt
 
