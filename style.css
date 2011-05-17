@@ -1,0 +1,183 @@
+/* --- html5doctor.com Reset Stylesheet v1.4.1, 2010-03-01
+   --- Author: Richard Clark - http://richclarkdesign.com
+--------------------------------------------------------------------*/
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent }
+
+body {
+  line-height: 1em }
+
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary {
+  display: block }
+
+nav ul { list-style: none }
+
+blockquote, q { quotes: none }
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none }
+
+a {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent }
+ins {
+  background-color: #ff9;
+  color: #000;
+  text-decoration: none }
+mark {
+  background-color: #ff9;
+  color: #000;
+  font-style: italic;
+  font-weight: bold }
+del { text-decoration: line-through }
+
+abbr[title], dfn[title] {
+  border-bottom: 1px dotted #000;
+  cursor: help }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0 }
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cccccc;
+  margin: 1em 0;
+  padding: 0 }
+
+input, select { vertical-align: middle }
+
+p, ul { margin: 1.5em 0 }
+img { margin: 0;padding: 0;max-width: 740px }
+
+
+/* --- Content styling
+--------------------------------------------------------------------*/
+
+html, body { height: 100% }
+body {
+  color: #444;
+  font-size: 1em;
+  font-family: 'DejaVu Sans', 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+  line-height: 1.6em }
+
+h1 { font-family: 'Sorts Mill Goudy', Georgia, 'DejaVu Serif', 'Bitstream Vera Serif', serif }
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal }
+
+h1 { margin: 0.5em 0;font-size: 4.5em }
+h2 {
+   margin: 0.75em 0;
+   font-size: 1.5em;
+   line-height: 1.2em;
+   padding-top: 1em;
+   border-top: 4px solid #E0E0E0 }
+h3 {
+  margin: 2em 0 1em;
+  font-size: 1.1em;
+  line-height: 1em }
+h4 {
+  margin: 1.25em 0;
+  font-size: 1.4em;
+  line-height: 1.25 }
+h5 { margin: 1.5em 0;font-size: 1.2em; }
+h6 { font-size: 1.2em }
+
+a:link, a:visited { color: #333  }
+a:hover, a:active { color: #c00  }
+a img { border: 4px solid #ddd }
+a:hover img { border-color: #C4D7FF }
+
+ul, ol {
+  margin: 0 0.5em 1.5em;
+  padding-left: 2.5em }
+li ul, li ol {
+  margin: 0;
+  padding-left: 1.5em }
+
+table, th, td {
+  border-color: #bbb;
+  border-style: solid }
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-width: 0 0 1px 1px }
+th, td {
+  padding: 0.3em 1em;
+  border-width: 1px;
+  border-left-color: #f1f1f1;
+  text-align: left }
+th {
+  background: #eee;
+  border-bottom-color: #ddd;
+  font-weight: bold }
+td {
+  border-bottom-color: #efefef;
+  font-weight: normal }
+
+code {
+  padding: 1px 3px;
+  background: #eee;
+  color: #555 }
+pre {
+  margin: 1.5em 0 1.5em;
+  padding: 0.5em 0 0.5em 1.5em;
+  color: #222 }
+pre, code {
+  font-family: Inconsolata, 'DejaVu Sans Mono', Consolas, 'Lucida Console', monospace }
+pre code {
+  display: block;
+  padding: 0 0 0.2em;
+  overflow-x: auto;
+  white-space: pre;
+  background: inherit;
+  color: inherit }
+
+#wrapper {
+  margin: 0 auto;
+  width: 65% }
+
+#header, #content { margin: 0 25% }
+#content { padding-bottom: 1.5em }
+
+#sidebar {
+  float: left;
+  width: 21%;
+  font-size: .9em;
+  text-align: right;
+  line-height: 2em; }
+
+#sidebar ul {
+  margin: 0;
+  padding: 0 }
+
+#sidebar a { text-decoration: none }
+
+#sidebar li ul li ul {
+  padding-right: 1.8em }

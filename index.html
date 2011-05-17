@@ -1,77 +1,206 @@
 <!DOCTYPE html>
-<html>
+<html dir="ltr" lang="en">
 <head>
-  <meta charset='utf-8'>
+    <meta charset="utf-8" />
+    <title>Pantyshot, a Python binding for Upskirt!</title>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
-  <title>FSX/pantyshot @ GitHub</title>
-
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #dd10b5;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #000000;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #22ef4a; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #22ef4a; }
-    h3 { text-align: center; color: #22ef4a; }
-    a { color: #22ef4a; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" href="favicon.ico">
 </head>
-
 <body>
-  <a href="http://github.com/FSX/pantyshot"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
 
-  <div id="container">
+<div id="wrapper">
+    <header id="header">
+        <h1>Pantyshot</h1>
+        <p>A Python binding for <a href="https://github.com/tanoku/upskirt">Upskirt</a>.</p>
+    </header>
 
-    <div class="download">
-      <a href="http://github.com/FSX/pantyshot/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/FSX/pantyshot/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
+    <nav id="sidebar">
+        <ul>
+<li><ul>
+<li><a href="#toc_0">Installation</a></li>
+<li><a href="#toc_1">Usage</a></li>
+<li><a href="#toc_2">API</a></li>
+<li><ul>
+<li><a href="#toc_3">pantyshot.html</a></li>
+<li><a href="#toc_4">pantyshot.toc</a></li>
+<li><a href="#toc_5">Extensions</a></li>
+<li><a href="#toc_6">Render Flags</a></li>
+</ul></li>
+<li><a href="#toc_7">Changelog</a></li>
+<li><ul>
+<li><a href="#toc_8">0.2.0 (2011-05-??)</a></li>
+<li><a href="#toc_9">0.1.1 (2011-05-01)</a></li>
+<li><a href="#toc_10">0.1.0 (2011-05-01)</a></li>
+</ul></li>
+<li><a href="#toc_11">License</a></li>
+</ul></li>
+</ul>
 
-    <h1><a href="http://github.com/FSX/pantyshot">pantyshot</a>
-      <span class="small">by <a href="http://github.com/FSX">FSX</a></span></h1>
+    </nav>
 
-    <div class="description">
-      An  attempt to make a Python extension for Upskirt.
-    </div>
+    <section id="content">
+        <h2 id="toc_0">Installation</h2>
 
-    <h2>Authors</h2>
-<p>Frank (frank@61924.nl)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>Frank Smit (frank@61924.nl)<br/>      </p>
+<p>Download Pantyshot from <a href="https://github.com/FSX/pantyshot">Github</a> and run the following command. Keep in mind
+that Pantyshot has only been tested with Python 2.7.</p>
 
+<pre><code>python setup.py install
+</code></pre>
 
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/FSX/pantyshot/zipball/master">zip</a> or
-      <a href="http://github.com/FSX/pantyshot/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/FSX/pantyshot</pre>
-    </p>
+<p>And you're done.</p>
 
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/FSX/pantyshot">FSX/pantyshot</a>
-    </div>
+<h2 id="toc_1">Usage</h2>
 
-  </div>
+<p>Example:</p>
 
-  
+<pre><code>import pantyshot
+
+pantyshot.html('Hello, world!')
+</code></pre>
+
+<p>With extensions and render flags:</p>
+
+<pre><code>import pantyshot as p
+
+p.html(
+    'Hello, world!',
+    p.EXT_AUTOLINK | p.EXT_TABLES,
+    p.HTML_EXPAND_TABS
+)
+</code></pre>
+
+<p>In combination with functools.partial:</p>
+
+<pre><code>import functools
+import pantyshot as p
+
+markdown = functools.partial(
+    p.html,
+    extensions=p.EXT_AUTOLINK | p.EXT_TABLES,
+    render_flags=p.HTML_EXPAND_TABS
+)
+markdown('Awesome!')
+</code></pre>
+
+<p>Or generate a table of contents:</p>
+
+<pre><code>pantyshot.toc('''
+# Header one
+
+Some text here.
+
+## Header two
+
+Some more text
+''')
+</code></pre>
+
+<h2 id="toc_2">API</h2>
+
+<p>All of the following functions and constants are from the <code>pantyshot</code> module.</p>
+
+<h3 id="toc_3">pantyshot.html</h3>
+
+<p>The <code>html</code> function converts the Markdown text to HTML. It accepts the following arguments.</p>
+
+<ul>
+<li><code>text</code>: The Markdown source text.</li>
+<li><code>extensions</code>: One or more extension constants (optional).</li>
+<li><code>render_flags</code>: One or more render flag constants (optional).</li>
+</ul>
+
+<h3 id="toc_4">pantyshot.toc</h3>
+
+<p>The <code>toc</code> function generates a table of contents and accepts the following argument.</p>
+
+<ul>
+<li><code>text</code>: The Markdown source text.</li>
+</ul>
+
+<h3 id="toc_5">Extensions</h3>
+
+<p>The functionality of the following constants is explained at <em>Markdown Extensions</em>.</p>
+
+<pre><code>EXT_AUTOLINK
+EXT_LAX_HTML_BLOCKS
+EXT_TABLES
+EXT_NO_INTRA_EMPHASIS
+EXT_STRIKETHROUGH
+EXT_FENCED_CODE
+EXT_SPACE_HEADERS
+</code></pre>
+
+<h3 id="toc_6">Render Flags</h3>
+
+<p>The functionality of the following constants is explained at <em>Render Flags</em>.</p>
+
+<pre><code>HTML_GITHUB_BLOCKCODE
+HTML_SKIP_HTML
+HTML_SKIP_STYLE
+HTML_HARD_WRAP
+HTML_TOC
+HTML_SKIP_LINKS
+HTML_SAFELINK
+HTML_SKIP_IMAGES
+HTML_EXPAND_TABS
+HTML_USE_XHTML
+HTML_SMARTYPANTS
+</code></pre>
+
+<h2 id="toc_7">Changelog</h2>
+
+<h3 id="toc_8">0.2.0 (2011-05-??)</h3>
+
+<ul>
+<li>Added Smartypants render flag.</li>
+<li>Added a <code>toc</code> function that outputs a table of contents.</li>
+<li>Renamed <code>markdown</code> function to <code>html</code>.</li>
+<li>Updated Upskirt files;
+See commits from 2011-05-02 to 2011-05-16:
+<a href="https://github.com/tanoku/upskirt/commits/master/">https://github.com/tanoku/upskirt/commits/master/</a></li>
+</ul>
+
+<h3 id="toc_9">0.1.1 (2011-05-01)</h3>
+
+<ul>
+<li>Updated Upskirt files; a HTML escaping bug in the XHTML renderer was fixed.</li>
+</ul>
+
+<h3 id="toc_10">0.1.0 (2011-05-01)</h3>
+
+<ul>
+<li>Initial release.</li>
+</ul>
+
+<h2 id="toc_11">License</h2>
+
+<pre><code>Copyright (C) 2011 by Frank Smit &lt;frank@61924.nl&gt;
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+</code></pre>
+
+    </section>
+</div>
+
 </body>
 </html>
