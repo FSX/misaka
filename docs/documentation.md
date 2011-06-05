@@ -108,13 +108,17 @@ The functionality of the following constants is explained at *Render Flags*.
 
 ## Changelog
 
+### 0.2.1 (2011-06-05)
+
+* Updated Upskirt files; See commits from 2011-05-18 to 2011-06-02:
+  https://github.com/tanoku/upskirt/commits/master/
+
 ### 0.2.0 (2011-05-17)
 
  * Added Smartypants render flag.
  * Added a `toc` function that outputs a table of contents.
  * Renamed `markdown` function to `html`.
- * Updated Upskirt files;
-   See commits from 2011-05-02 to 2011-05-17:
+ * Updated Upskirt files; See commits from 2011-05-02 to 2011-05-17:
    https://github.com/tanoku/upskirt/commits/master/
 
 
@@ -126,8 +130,6 @@ The functionality of the following constants is explained at *Render Flags*.
 ### 0.1.0 (2011-05-01)
 
  * Initial release.
-
-
 
 
 ## License

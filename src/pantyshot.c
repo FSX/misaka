@@ -107,7 +107,7 @@ initpantyshot(void)
         return;
 
     /* Version */
-    PyModule_AddStringConstant(module, "__version__", "0.2.0");
+    PyModule_AddStringConstant(module, "__version__", "0.2.1");
 
     /* Markdown extensions */
     PyModule_AddIntConstant(module, "EXT_NO_INTRA_EMPHASIS", MKDEXT_NO_INTRA_EMPHASIS);
