@@ -21,6 +21,7 @@ text = '''
 
 Here are some demonstrations of Markdown "extensions".
 
+An url: http://example.com
 
 Test Smartypants: <3/4ths> -- Test test
 
@@ -74,8 +75,8 @@ Nullam tincidunt dui ~vitae~ nulla ~~tristique~~ ultricies.
 
 result = p.html(
     text,
-    p.EXT_TABLES | p.EXT_STRIKETHROUGH | p.EXT_LAX_HTML_BLOCKS,
-    p.HTML_SKIP_HTML | p.HTML_EXPAND_TABS | p.HTML_SKIP_LINKS | p.HTML_TOC | p.HTML_SMARTYPANTS
+    p.EXT_TABLES | p.EXT_STRIKETHROUGH | p.EXT_LAX_HTML_BLOCKS | p.EXT_AUTOLINK,
+    p.HTML_EXPAND_TABS | p.HTML_TOC | p.HTML_SMARTYPANTS
 )
 #result = p.toc(text)
 print(result)

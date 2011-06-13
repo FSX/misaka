@@ -13,6 +13,8 @@ setup(
         'src/upskirt/buffer.c',
         'src/upskirt/markdown.c',
         'src/upskirt/html.c',
-        'src/upskirt/html_smartypants.c'
+        'src/upskirt/html_smartypants.c',
+        'src/upskirt/autolink.c',
+        'src/upskirt/html_autolink.c'
     ])]
 )
