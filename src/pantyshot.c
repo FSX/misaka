@@ -23,7 +23,6 @@ unsigned int HTML_SMARTYPANTS = (1 << 12);
 
 /* The module doc strings */
 PyDoc_STRVAR(pantyshot_module__doc__, "Pantyshot is a Python binding for Upskirt!");
-PyDoc_STRVAR(pantyshot_markdown__doc__, "Render Markdown text into HTML.");
 PyDoc_STRVAR(pantyshot_html__doc__, "Render Markdown text into HTML.");
 PyDoc_STRVAR(pantyshot_toc__doc__, "Generate a table of contents.");
 
