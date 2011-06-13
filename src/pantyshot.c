@@ -1,8 +1,20 @@
 #include <Python.h>
-#include <string.h>
 
 #include "upskirt/markdown.h"
 #include "upskirt/html.h"
+
+
+struct module_state {
+    PyObject *error;
+};
+
+
+#if PY_MAJOR_VERSION >= 3
+    #define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
+#else
+    #define GETSTATE(m) (&_state)
+    static struct module_state _state;
+#endif
 
 
 /* An extra flag to enabled Smartypants */
@@ -33,7 +45,7 @@ pantyshot_render(const char *text, unsigned int extensions,
     /* Parse Markdown */
     if (toc_only != -1) {
         upshtml_toc_renderer(&renderer);
-    } else{
+    } else {
         upshtml_renderer(&renderer, render_flags);
     }
 
@@ -70,8 +82,9 @@ pantyshot_html(PyObject *self, PyObject *args, PyObject *kwargs)
 
     /* Parse arguments */
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|ii", kwlist,
-        &text, &extensions, &render_flags))
+        &text, &extensions, &render_flags)) {
         return NULL;
+    }
 
     return pantyshot_render(text, extensions, render_flags, -1);
 }
@@ -83,28 +96,76 @@ pantyshot_toc(PyObject *self, PyObject *args)
     const char *text;
 
     /* Parse arguments */
-    if (!PyArg_ParseTuple(args, "s", &text))
+    if (!PyArg_ParseTuple(args, "s", &text)) {
         return NULL;
+    }
 
     return pantyshot_render(text, 0, 0, 1);
 }
 
 
-static PyMethodDef PantyshotMethods[] = {
+static PyMethodDef pantyshot_methods[] = {
     {"html", (PyCFunction) pantyshot_html, METH_VARARGS | METH_KEYWORDS, pantyshot_html__doc__},
     {"toc", (PyCFunction) pantyshot_toc, METH_VARARGS,pantyshot_toc__doc__},
     {NULL, NULL, 0, NULL} /* Sentinel */
 };
 
 
-PyMODINIT_FUNC
-initpantyshot(void)
+#if PY_MAJOR_VERSION >= 3
+    static int
+    pantyshot_traverse(PyObject *m, visitproc visit, void *arg)
+    {
+        Py_VISIT(GETSTATE(m)->error);
+        return 0;
+    }
+
+    static int
+    pantyshot_clear(PyObject *m)
+    {
+        Py_CLEAR(GETSTATE(m)->error);
+        return 0;
+    }
+
+    static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,
+        "pantyshot",
+        pantyshot_module__doc__,
+        sizeof(struct module_state),
+        pantyshot_methods,
+        NULL,
+        pantyshot_traverse,
+        pantyshot_clear,
+        NULL
+    };
+
+    #define INITERROR return NULL
+
+    PyObject *
+    PyInit_pantyshot(void)
+#else
+    #define INITERROR return
+
+    PyMODINIT_FUNC
+    initpantyshot(void)
+#endif
 {
-    /* The module */
-    PyObject *module = Py_InitModule3("pantyshot", PantyshotMethods,
-        pantyshot_module__doc__);
-    if (module == NULL)
-        return;
+    #if PY_MAJOR_VERSION >= 3
+        PyObject *module = PyModule_Create(&moduledef);
+    #else
+        PyObject *module = Py_InitModule3("pantyshot", pantyshot_methods,
+            pantyshot_module__doc__);
+    #endif
+
+    if (module == NULL) {
+        INITERROR;
+    }
+    struct module_state *st = GETSTATE(module);
+
+    st->error = PyErr_NewException("pantyshot.Error", NULL, NULL);
+    if (st->error == NULL) {
+        Py_DECREF(module);
+        INITERROR;
+    }
 
     /* Version */
     PyModule_AddStringConstant(module, "__version__", "0.2.1");
@@ -130,4 +191,8 @@ initpantyshot(void)
     PyModule_AddIntConstant(module, "HTML_GITHUB_BLOCKCODE", HTML_GITHUB_BLOCKCODE);
     PyModule_AddIntConstant(module, "HTML_USE_XHTML", HTML_USE_XHTML);
     PyModule_AddIntConstant(module, "HTML_SMARTYPANTS", HTML_SMARTYPANTS);
+
+    #if PY_MAJOR_VERSION >= 3
+        return module;
+    #endif
 }
