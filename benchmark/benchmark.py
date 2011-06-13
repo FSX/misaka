@@ -5,31 +5,31 @@ try:
     import pantyshot
 except ImportError:
     pantyshot = None
-    print 'Pantyshot is not available...'
+    print('Pantyshot is not available...')
 
 try:
     import markdown
 except ImportError:
     markdown = None
-    print 'Markdown is not available...'
+    print('Markdown is not available...')
 
 try:
     import markdown2
-except:
+except ImportError:
     markdown2 = None
-    print 'markdown2 is not available...'
+    print('markdown2 is not available...')
 
 try:
     import cMarkdown
 except ImportError:
     cMarkdown = None
-    print 'cMarkdown is not available...'
+    print('cMarkdown is not available...')
 
 try:
     import discount
 except ImportError:
     discount = None
-    print 'discount is not available...'
+    print('discount is not available...')
 
 
 class Benchmark(object):
@@ -41,7 +41,7 @@ class Benchmark(object):
             start = time.clock()
             func(*args, **kwargs)
             end = time.clock()
-            print '%s: %f' % (self._name, end - start)
+            print('%s: %fs' % (self._name, end - start))
         return wrapper
 
 
@@ -79,7 +79,7 @@ if __name__ == '__main__':
     with open('markdown-syntax.md', 'r') as fd:
         text = fd.read()
 
-    loops = xrange(0, 100)
+    loops = range(0, 100)
 
     if pantyshot:
         benchmark_pantyshot(text, loops)

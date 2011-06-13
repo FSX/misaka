@@ -6,6 +6,9 @@ A Python binding for [Upskirt][1].
  [1]: https://github.com/tanoku/upskirt
 
 
+Documentation can be found at: http://pantyshot.61924.nl/
+
+
 Installation
 ------------
 

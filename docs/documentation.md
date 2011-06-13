@@ -1,7 +1,27 @@
+## Introduction
+
+Pantyshot (パンチラ) is a Python (2.7 and 3.2) binding for [Upskirt][-1]. And
+Upskirt is a Markdown library written in C and it's really fast. Here is a
+[benchmark][0]:
+
+    Pantyshot: 0.040000s
+    Markdown: 4.900000s
+    markdown2: 7.210000s
+    cMarkdown: 0.070000s
+    discount: 0.160000s
+
+Python 2.7 was used in the benchmark. I couldn't find any working Markdown
+parsers for Python 3. Is Pantyshot the only one?
+
+
+ [-1]: https://github.com/tanoku/upskirt
+ [0]: https://github.com/FSX/pantyshot/blob/master/benchmark/benchmark.py
+
+
 ## Installation
 
 Download Pantyshot from [Github][1] and run the following command. Keep in mind
-that Pantyshot has only been tested with Python 2.7.
+that Pantyshot has only been tested with Python 2.7 and 3.2.
 
     python setup.py install
 
