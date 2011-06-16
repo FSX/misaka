@@ -1,9 +1,9 @@
 Pantyshot
 =========
 
-A Python binding for [Upskirt][1].
+A Python binding for Upskirt_.
 
- [1]: https://github.com/tanoku/upskirt
+.. _Upskirt: https://github.com/tanoku/upskirt
 
 
 Documentation can be found at: http://pantyshot.61924.nl/
@@ -12,17 +12,25 @@ Documentation can be found at: http://pantyshot.61924.nl/
 Installation
 ------------
 
+With pip::
+
+    pip install pantyshot
+
+Or manually::
+
     python setup.py install
 
 
 Usage
 -----
 
+Without any extensions or flags enabled::
+
     import pantyshot
 
     pantyshot.html('Hello, world!')
 
-With extensions and render flags.
+With extensions and render flags::
 
     import pantyshot as p
 
@@ -32,7 +40,7 @@ With extensions and render flags.
         p.HTML_EXPAND_TABS
     )
 
-In combination with `functools.partial`.
+In combination with ``functools.partial``::
 
     import functools
     import pantyshot as p
@@ -44,7 +52,7 @@ In combination with `functools.partial`.
     )
     markdown('Awesome!')
 
-Or generate a table of contents.
+Or generate a table of contents::
 
     pantyshot.toc('''
     # Header one
@@ -60,7 +68,7 @@ Or generate a table of contents.
 Extensions & render flags
 -------------------------
 
-Extensions:
+Extensions::
 
     EXT_AUTOLINK
     EXT_LAX_HTML_BLOCKS
@@ -70,7 +78,7 @@ Extensions:
     EXT_FENCED_CODE
     EXT_SPACE_HEADERS
 
-Render flags:
+Render flags::
 
     HTML_GITHUB_BLOCKCODE
     HTML_SKIP_HTML

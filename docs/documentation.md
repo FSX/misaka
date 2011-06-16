@@ -128,7 +128,7 @@ The functionality of the following constants is explained at *Render Flags*.
 
 ## Changelog
 
-### 0.3.0 (2011-06-??)
+### 0.3.0 (2011-06-16)
 
  * Added Python 3 support.
  * Updated Upskirt files; See commits from 2011-06-05 to 2011-06-09:
