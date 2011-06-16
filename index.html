@@ -2,7 +2,7 @@
 <html dir="ltr" lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>Pantyshot, a Python binding for Upskirt!</title>
+    <title>Pantyshot (パンチラ), a Python binding for Upskirt!</title>
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -21,40 +21,58 @@
     <nav id="sidebar">
         <ul>
 <li><ul>
-<li><a href="#toc_0">Installation</a></li>
-<li><a href="#toc_1">Usage</a></li>
-<li><a href="#toc_2">API</a></li>
+<li><a href="#toc_0">Introduction</a></li>
+<li><a href="#toc_1">Installation</a></li>
+<li><a href="#toc_2">Usage</a></li>
+<li><a href="#toc_3">API</a></li>
 <li><ul>
-<li><a href="#toc_3">pantyshot.html</a></li>
-<li><a href="#toc_4">pantyshot.toc</a></li>
-<li><a href="#toc_5">Extensions</a></li>
-<li><a href="#toc_6">Render Flags</a></li>
+<li><a href="#toc_4">pantyshot.html</a></li>
+<li><a href="#toc_5">pantyshot.toc</a></li>
+<li><a href="#toc_6">Extensions</a></li>
+<li><a href="#toc_7">Render Flags</a></li>
 </ul></li>
-<li><a href="#toc_7">Changelog</a></li>
+<li><a href="#toc_8">Changelog</a></li>
 <li><ul>
-<li><a href="#toc_8">0.2.1 (2011-06-05)</a></li>
-<li><a href="#toc_9">0.2.0 (2011-05-17)</a></li>
-<li><a href="#toc_10">0.1.1 (2011-05-01)</a></li>
-<li><a href="#toc_11">0.1.0 (2011-05-01)</a></li>
+<li><a href="#toc_9">0.3.0 (2011-06-16)</a></li>
+<li><a href="#toc_10">0.2.1 (2011-06-05)</a></li>
+<li><a href="#toc_11">0.2.0 (2011-05-17)</a></li>
+<li><a href="#toc_12">0.1.1 (2011-05-01)</a></li>
+<li><a href="#toc_13">0.1.0 (2011-05-01)</a></li>
 </ul></li>
-<li><a href="#toc_12">License</a></li>
+<li><a href="#toc_14">License</a></li>
 </ul></li>
 </ul>
 
     </nav>
 
     <section id="content">
-        <h2 id="toc_0">Installation</h2>
+        <h2 id="toc_0">Introduction</h2>
+
+<p>Pantyshot (パンチラ) is a Python (2.7 and 3.2) binding for <a href="https://github.com/tanoku/upskirt">Upskirt</a>. And
+Upskirt is a Markdown library written in C and it's really fast. Here is a
+<a href="https://github.com/FSX/pantyshot/blob/master/benchmark/benchmark.py">benchmark</a>:</p>
+
+<pre><code>Pantyshot: 0.040000s
+Markdown: 4.900000s
+markdown2: 7.210000s
+cMarkdown: 0.070000s
+discount: 0.160000s
+</code></pre>
+
+<p>Python 2.7 was used in the benchmark. I couldn't find any working Markdown
+parsers for Python 3. Is Pantyshot the only one?</p>
+
+<h2 id="toc_1">Installation</h2>
 
 <p>Download Pantyshot from <a href="https://github.com/FSX/pantyshot">Github</a> and run the following command. Keep in mind
-that Pantyshot has only been tested with Python 2.7.</p>
+that Pantyshot has only been tested with Python 2.7 and 3.2.</p>
 
 <pre><code>python setup.py install
 </code></pre>
 
 <p>And you're done.</p>
 
-<h2 id="toc_1">Usage</h2>
+<h2 id="toc_2">Usage</h2>
 
 <p>Example:</p>
 
@@ -100,11 +118,11 @@ Some more text
 ''')
 </code></pre>
 
-<h2 id="toc_2">API</h2>
+<h2 id="toc_3">API</h2>
 
 <p>All of the following functions and constants are from the <code>pantyshot</code> module.</p>
 
-<h3 id="toc_3">pantyshot.html</h3>
+<h3 id="toc_4">pantyshot.html</h3>
 
 <p>The <code>html</code> function converts the Markdown text to HTML. It accepts the following arguments.</p>
 
@@ -114,7 +132,7 @@ Some more text
 <li><code>render_flags</code>: One or more render flag constants (optional).</li>
 </ul>
 
-<h3 id="toc_4">pantyshot.toc</h3>
+<h3 id="toc_5">pantyshot.toc</h3>
 
 <p>The <code>toc</code> function generates a table of contents and accepts the following argument.</p>
 
@@ -122,7 +140,7 @@ Some more text
 <li><code>text</code>: The Markdown source text.</li>
 </ul>
 
-<h3 id="toc_5">Extensions</h3>
+<h3 id="toc_6">Extensions</h3>
 
 <p>The functionality of the following constants is explained at <em>Markdown Extensions</em>.</p>
 
@@ -135,7 +153,7 @@ EXT_FENCED_CODE
 EXT_SPACE_HEADERS
 </code></pre>
 
-<h3 id="toc_6">Render Flags</h3>
+<h3 id="toc_7">Render Flags</h3>
 
 <p>The functionality of the following constants is explained at <em>Render Flags</em>.</p>
 
@@ -152,16 +170,24 @@ HTML_USE_XHTML
 HTML_SMARTYPANTS
 </code></pre>
 
-<h2 id="toc_7">Changelog</h2>
+<h2 id="toc_8">Changelog</h2>
 
-<h3 id="toc_8">0.2.1 (2011-06-05)</h3>
+<h3 id="toc_9">0.3.0 (2011-06-16)</h3>
+
+<ul>
+<li>Added Python 3 support.</li>
+<li>Updated Upskirt files; See commits from 2011-06-05 to 2011-06-09:
+<a href="https://github.com/tanoku/upskirt/commits/master/">https://github.com/tanoku/upskirt/commits/master/</a></li>
+</ul>
+
+<h3 id="toc_10">0.2.1 (2011-06-05)</h3>
 
 <ul>
 <li>Updated Upskirt files; See commits from 2011-05-18 to 2011-06-02:
 <a href="https://github.com/tanoku/upskirt/commits/master/">https://github.com/tanoku/upskirt/commits/master/</a></li>
 </ul>
 
-<h3 id="toc_9">0.2.0 (2011-05-17)</h3>
+<h3 id="toc_11">0.2.0 (2011-05-17)</h3>
 
 <ul>
 <li>Added Smartypants render flag.</li>
@@ -171,40 +197,39 @@ HTML_SMARTYPANTS
 <a href="https://github.com/tanoku/upskirt/commits/master/">https://github.com/tanoku/upskirt/commits/master/</a></li>
 </ul>
 
-<h3 id="toc_10">0.1.1 (2011-05-01)</h3>
+<h3 id="toc_12">0.1.1 (2011-05-01)</h3>
 
 <ul>
 <li>Updated Upskirt files; a HTML escaping bug in the XHTML renderer was fixed.</li>
 </ul>
 
-<h3 id="toc_11">0.1.0 (2011-05-01)</h3>
+<h3 id="toc_13">0.1.0 (2011-05-01)</h3>
 
 <ul>
 <li>Initial release.</li>
 </ul>
 
-<h2 id="toc_12">License</h2>
+<h2 id="toc_14">License</h2>
 
-<pre><code>Copyright (C) 2011 by Frank Smit &lt;frank@61924.nl&gt;
+<p>Copyright (C) 2011 by Frank Smit <a href="mailto:frank@61924.nl">frank@61924.nl</a></p>
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the &quot;Software&quot;), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+furnished to do so, subject to the following conditions:</p>
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
 
-THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+<p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-</code></pre>
+THE SOFTWARE.</p>
 
     </section>
 </div>
