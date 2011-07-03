@@ -1,16 +1,16 @@
 from distutils.core import setup, Extension
 
 setup(
-    name='pantyshot',
-    version='0.3.0',
+    name='misaka',
+    version='0.3.1',
     description='A Python binding for Upskirt.',
     author='Frank Smit',
     author_email='frank@61924.nl',
-    url='http://pantyshot.61924.nl/',
+    url='http://misaka.61924.nl/',
     license='MIT',
     long_description=open('README.txt').read(),
-    ext_modules=[Extension('pantyshot', [
-        'src/pantyshot.c',
+    ext_modules=[Extension('misaka', [
+        'src/misaka.c',
         'src/upskirt/array.c',
         'src/upskirt/buffer.c',
         'src/upskirt/markdown.c',

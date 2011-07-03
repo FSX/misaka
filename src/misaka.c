@@ -22,13 +22,13 @@ unsigned int HTML_SMARTYPANTS = (1 << 12);
 
 
 /* The module doc strings */
-PyDoc_STRVAR(pantyshot_module__doc__, "Pantyshot is a Python binding for Upskirt!");
-PyDoc_STRVAR(pantyshot_html__doc__, "Render Markdown text into HTML.");
-PyDoc_STRVAR(pantyshot_toc__doc__, "Generate a table of contents.");
+PyDoc_STRVAR(misaka_module__doc__, "Misaka is a Python binding for Upskirt!");
+PyDoc_STRVAR(misaka_html__doc__, "Render Markdown text into HTML.");
+PyDoc_STRVAR(misaka_toc__doc__, "Generate a table of contents.");
 
 
 static PyObject *
-pantyshot_render(const char *text, unsigned int extensions,
+misaka_render(const char *text, unsigned int extensions,
                  unsigned int render_flags, char toc_only)
 {
     struct buf *ib, *ob;
@@ -73,7 +73,7 @@ pantyshot_render(const char *text, unsigned int extensions,
 
 
 static PyObject *
-pantyshot_html(PyObject *self, PyObject *args, PyObject *kwargs)
+misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
 {
     static char *kwlist[] = {"text", "extensions", "render_flags"};
     unsigned int extensions = 0, render_flags = 0;
@@ -85,12 +85,12 @@ pantyshot_html(PyObject *self, PyObject *args, PyObject *kwargs)
         return NULL;
     }
 
-    return pantyshot_render(text, extensions, render_flags, -1);
+    return misaka_render(text, extensions, render_flags, -1);
 }
 
 
 static PyObject *
-pantyshot_toc(PyObject *self, PyObject *args)
+misaka_toc(PyObject *self, PyObject *args)
 {
     const char *text;
 
@@ -99,27 +99,27 @@ pantyshot_toc(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    return pantyshot_render(text, 0, 0, 1);
+    return misaka_render(text, 0, 0, 1);
 }
 
 
-static PyMethodDef pantyshot_methods[] = {
-    {"html", (PyCFunction) pantyshot_html, METH_VARARGS | METH_KEYWORDS, pantyshot_html__doc__},
-    {"toc", (PyCFunction) pantyshot_toc, METH_VARARGS,pantyshot_toc__doc__},
+static PyMethodDef misaka_methods[] = {
+    {"html", (PyCFunction) misaka_html, METH_VARARGS | METH_KEYWORDS, misaka_html__doc__},
+    {"toc", (PyCFunction) misaka_toc, METH_VARARGS, misaka_toc__doc__},
     {NULL, NULL, 0, NULL} /* Sentinel */
 };
 
 
 #if PY_MAJOR_VERSION >= 3
     static int
-    pantyshot_traverse(PyObject *m, visitproc visit, void *arg)
+    misaka_traverse(PyObject *m, visitproc visit, void *arg)
     {
         Py_VISIT(GETSTATE(m)->error);
         return 0;
     }
 
     static int
-    pantyshot_clear(PyObject *m)
+    misaka_clear(PyObject *m)
     {
         Py_CLEAR(GETSTATE(m)->error);
         return 0;
@@ -127,32 +127,32 @@ static PyMethodDef pantyshot_methods[] = {
 
     static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
-        "pantyshot",
-        pantyshot_module__doc__,
+        "misaka",
+        misaka_module__doc__,
         sizeof(struct module_state),
-        pantyshot_methods,
+        misaka_methods,
         NULL,
-        pantyshot_traverse,
-        pantyshot_clear,
+        misaka_traverse,
+        misaka_clear,
         NULL
     };
 
     #define INITERROR return NULL
 
     PyObject *
-    PyInit_pantyshot(void)
+    PyInit_misaka(void)
 #else
     #define INITERROR return
 
     PyMODINIT_FUNC
-    initpantyshot(void)
+    initmisaka(void)
 #endif
 {
     #if PY_MAJOR_VERSION >= 3
         PyObject *module = PyModule_Create(&moduledef);
     #else
-        PyObject *module = Py_InitModule3("pantyshot", pantyshot_methods,
-            pantyshot_module__doc__);
+        PyObject *module = Py_InitModule3("misaka", misaka_methods,
+            misaka_module__doc__);
     #endif
 
     if (module == NULL) {
@@ -160,14 +160,14 @@ static PyMethodDef pantyshot_methods[] = {
     }
     struct module_state *st = GETSTATE(module);
 
-    st->error = PyErr_NewException("pantyshot.Error", NULL, NULL);
+    st->error = PyErr_NewException("misaka.Error", NULL, NULL);
     if (st->error == NULL) {
         Py_DECREF(module);
         INITERROR;
     }
 
     /* Version */
-    PyModule_AddStringConstant(module, "__version__", "0.3.0");
+    PyModule_AddStringConstant(module, "__version__", "0.3.1");
 
     /* Markdown extensions */
     PyModule_AddIntConstant(module, "EXT_NO_INTRA_EMPHASIS", MKDEXT_NO_INTRA_EMPHASIS);

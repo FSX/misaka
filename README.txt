@@ -1,12 +1,12 @@
-Pantyshot
-=========
+Misaka
+======
 
 A Python binding for Upskirt_.
 
 .. _Upskirt: https://github.com/tanoku/upskirt
 
 
-Documentation can be found at: http://pantyshot.61924.nl/
+Documentation can be found at: http://misaka.61924.nl/
 
 
 Installation
@@ -14,7 +14,7 @@ Installation
 
 With pip::
 
-    pip install pantyshot
+    pip install misaka
 
 Or manually::
 
@@ -26,35 +26,35 @@ Usage
 
 Without any extensions or flags enabled::
 
-    import pantyshot
+    import misaka
 
-    pantyshot.html('Hello, world!')
+    misaka.html('Hello, world!')
 
 With extensions and render flags::
 
-    import pantyshot as p
+    import misaka as m
 
-    p.html(
+    m.html(
         'Hello, world!',
-        p.EXT_AUTOLINK | p.EXT_TABLES,
-        p.HTML_EXPAND_TABS
+        m.EXT_AUTOLINK | m.EXT_TABLES,
+        m.HTML_EXPAND_TABS
     )
 
 In combination with ``functools.partial``::
 
     import functools
-    import pantyshot as p
+    import misaka as m
 
     markdown = functools.partial(
-        p.html,
-        extensions=p.EXT_AUTOLINK | p.EXT_TABLES,
+        m.html,
+        extensions=m.EXT_AUTOLINK | m.EXT_TABLES,
         render_flags=p.HTML_EXPAND_TABS
     )
     markdown('Awesome!')
 
 Or generate a table of contents::
 
-    pantyshot.toc('''
+    misaka.toc('''
     # Header one
 
     Some text here.
