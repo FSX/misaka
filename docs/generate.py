@@ -1,13 +1,13 @@
-import pantyshot as p
+import misaka as m
 
 if __name__ == '__main__':
 	with open('./documentation.md', 'r') as fd:
 		src =  fd.read().strip()
 
-	html = p.html(
+	html = m.html(
 		src, p.EXT_AUTOLINK, p.HTML_TOC
 	)
-	toc = p.toc(src)
+	toc = m.toc(src)
 
 	with open('template.html', 'r') as fd:
 		tpl = fd.read().strip()

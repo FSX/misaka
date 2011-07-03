@@ -1,69 +1,73 @@
 ## Introduction
 
-Pantyshot (パンチラ) is a Python (2.7 and 3.2) binding for [Upskirt][-1]. And
+Misaka is a Python (2.7 and 3.2) binding for [Upskirt][-1]. And
 Upskirt is a Markdown library written in C and it's really fast. Here is a
 [benchmark][0]:
 
-    Pantyshot: 0.040000s
+    Misaka: 0.040000s
     Markdown: 4.900000s
     markdown2: 7.210000s
     cMarkdown: 0.070000s
     discount: 0.160000s
 
 Python 2.7 was used in the benchmark. I couldn't find any working Markdown
-parsers for Python 3. Is Pantyshot the only one?
+parsers for Python 3. Is Misaka the only one?
 
 
  [-1]: https://github.com/tanoku/upskirt
- [0]: https://github.com/FSX/pantyshot/blob/master/benchmark/benchmark.py
+ [0]: https://github.com/FSX/misaka/blob/master/benchmark/benchmark.py
 
 
 ## Installation
 
-Download Pantyshot from [Github][1] and run the following command. Keep in mind
-that Pantyshot has only been tested with Python 2.7 and 3.2.
+Download Misaka from [Github][1] and run the following command. Keep in mind
+that Misaka has only been tested with Python 2.7 and 3.2.
 
     python setup.py install
+
+Or from PyPi:
+
+    pip install misaka
 
 And you're done.
 
 
- [1]: https://github.com/FSX/pantyshot
+ [1]: https://github.com/FSX/misaka
 
 
 ## Usage
 
 Example:
 
-    import pantyshot
+    import misaka
 
-    pantyshot.html('Hello, world!')
+    misaka.html('Hello, world!')
 
 With extensions and render flags:
 
-    import pantyshot as p
+    import misaka as m
 
-    p.html(
+    m.html(
         'Hello, world!',
-        p.EXT_AUTOLINK | p.EXT_TABLES,
-        p.HTML_EXPAND_TABS
+        m.EXT_AUTOLINK | m.EXT_TABLES,
+        m.HTML_EXPAND_TABS
     )
 
 In combination with functools.partial:
 
     import functools
-    import pantyshot as p
+    import misaka as m
 
     markdown = functools.partial(
-        p.html,
-        extensions=p.EXT_AUTOLINK | p.EXT_TABLES,
-        render_flags=p.HTML_EXPAND_TABS
+        m.html,
+        extensions=m.EXT_AUTOLINK | m.EXT_TABLES,
+        render_flags=m.HTML_EXPAND_TABS
     )
     markdown('Awesome!')
 
 Or generate a table of contents:
 
-    pantyshot.toc('''
+    misaka.toc('''
     # Header one
 
     Some text here.
@@ -76,10 +80,10 @@ Or generate a table of contents:
 
 ## API
 
-All of the following functions and constants are from the `pantyshot` module.
+All of the following functions and constants are from the `misaka` module.
 
 
-### pantyshot.html
+### misaka.html
 
 The `html` function converts the Markdown text to HTML. It accepts the following arguments.
 
@@ -88,7 +92,7 @@ The `html` function converts the Markdown text to HTML. It accepts the following
  * `render_flags`: One or more render flag constants (optional).
 
 
-### pantyshot.toc
+### misaka.toc
 
 The `toc` function generates a table of contents and accepts the following argument.
 
@@ -128,6 +132,10 @@ The functionality of the following constants is explained at *Render Flags*.
 
 ## Changelog
 
+### 0.3.1 (2011-07-03)
+
+ * Renamed Pantyshot to Misaka.
+
 ### 0.3.0 (2011-06-16)
 
  * Added Python 3 support.
@@ -147,11 +155,9 @@ The functionality of the following constants is explained at *Render Flags*.
  * Updated Upskirt files; See commits from 2011-05-02 to 2011-05-17:
    https://github.com/tanoku/upskirt/commits/master/
 
-
 ### 0.1.1 (2011-05-01)
 
  * Updated Upskirt files; a HTML escaping bug in the XHTML renderer was fixed.
-
 
 ### 0.1.0 (2011-05-01)
 
