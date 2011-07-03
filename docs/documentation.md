@@ -132,6 +132,10 @@ The functionality of the following constants is explained at *Render Flags*.
 
 ## Changelog
 
+### 0.3.2 (2011-07-03)
+
+ * Fixed minor error in setup.py.
+
 ### 0.3.1 (2011-07-03)
 
  * Renamed Pantyshot to Misaka.

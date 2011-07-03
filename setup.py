@@ -2,7 +2,7 @@ from distutils.core import setup, Extension
 
 setup(
     name='misaka',
-    version='0.3.1',
+    version='0.3.2',
     description='A Python binding for Upskirt.',
     author='Frank Smit',
     author_email='frank@61924.nl',
@@ -16,7 +16,6 @@ setup(
         'src/upskirt/markdown.c',
         'src/upskirt/html.c',
         'src/upskirt/html_smartypants.c',
-        'src/upskirt/autolink.c',
-        'src/upskirt/html_autolink.c'
+        'src/upskirt/autolink.c'
     ])]
 )
