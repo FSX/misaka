@@ -135,6 +135,8 @@ The functionality of the following constants is explained at *Render Flags*.
 ### 0.3.1 (2011-07-03)
 
  * Renamed Pantyshot to Misaka.
+ * Updated Upskirt files; See commits from 2011-06-06 to 2011-06-23:
+   https://github.com/tanoku/upskirt/commits/master/
 
 ### 0.3.0 (2011-06-16)
 

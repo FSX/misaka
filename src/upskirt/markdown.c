@@ -365,10 +365,10 @@ parse_inline(struct buf *ob, struct render *rndr, char *data, size_t size)
 		end = markdown_char_ptrs[(int)action](ob, rndr, data + i, i, size - i);
 		if (!end) /* no action from the callback */
 			end = i + 1;
-		else {
+		else { 
 			i += end;
 			end = i;
-		}
+		} 
 	}
 }
 
@@ -479,7 +479,7 @@ parse_emph2(struct buf *ob, struct render *rndr, char *data, size_t size, char c
 
 	if (!render_method)
 		return 0;
-
+	
 	while (i < size) {
 		len = find_emph_char(data + i, size - i, c);
 		if (!len) return 0;
@@ -536,7 +536,7 @@ parse_emph3(struct buf *ob, struct render *rndr, char *data, size_t size, char c
 			else return len - 1;
 		}
 	}
-	return 0;
+	return 0; 
 }
 
 /* char_emphasis • single and double emphasis parsing */
@@ -569,7 +569,7 @@ char_emphasis(struct buf *ob, struct render *rndr, char *data, size_t offset, si
 		return ret + 3;
 	}
 
-	return 0;
+	return 0; 
 }
 
 
@@ -1519,7 +1519,7 @@ parse_listitem(struct buf *ob, struct render *rndr, char *data, size_t size, int
 		/* intermediate render of block li */
 		if (sublist && sublist < work->size) {
 			parse_block(inter, rndr, work->data, sublist);
-			parse_block(inter, rndr, work->data + sublist, work->size - sublist);
+			parse_block(inter, rndr, work->data + sublist, work->size - sublist); 
 		}
 		else
 			parse_block(inter, rndr, work->data, work->size);
@@ -1670,7 +1670,7 @@ parse_htmlblock(struct buf *ob, struct render *rndr, char *data, size_t size, in
 				if (do_render && rndr->make.blockhtml)
 					rndr->make.blockhtml(ob, &work, rndr->make.opaque);
 				return work.size;
-			}
+			} 
 		}
 
 		/* HR, which is the only self-closing block tag considered */
@@ -1688,7 +1688,7 @@ parse_htmlblock(struct buf *ob, struct render *rndr, char *data, size_t size, in
 						rndr->make.blockhtml(ob, &work, rndr->make.opaque);
 					return work.size;
 				}
-			}
+			} 
 		}
 
 		/* no special case recognised */
@@ -1719,7 +1719,7 @@ parse_htmlblock(struct buf *ob, struct render *rndr, char *data, size_t size, in
 				found = 1;
 				break;
 			}
-		}
+		} 
 	}
 
 	if (!found) return 0;
@@ -2068,7 +2068,7 @@ is_ref(char *data, size_t beg, size_t end, size_t *last, struct array *refs)
 		bufput(lr->title, data + title_offset,
 					title_end - title_offset); }
 	else lr->title = 0;
-	return 1;
+	return 1; 
 }
 
 static void expand_tabs(struct buf *ob, const char *line, size_t size)
