@@ -2,10 +2,10 @@ import time
 
 
 try:
-    import pantyshot
+    import misaka
 except ImportError:
-    pantyshot = None
-    print('Pantyshot is not available...')
+    misaka = None
+    print('misaka is not available...')
 
 try:
     import markdown
@@ -45,10 +45,10 @@ class Benchmark(object):
         return wrapper
 
 
-@Benchmark('Pantyshot')
-def benchmark_pantyshot(text, loops):
+@Benchmark('misaka')
+def benchmark_misaka(text, loops):
     for i in loops:
-        pantyshot.html(text)
+        misaka.html(text)
 
 
 @Benchmark('markdown2')
@@ -81,8 +81,8 @@ if __name__ == '__main__':
 
     loops = range(0, 100)
 
-    if pantyshot:
-        benchmark_pantyshot(text, loops)
+    if misaka:
+        benchmark_misaka(text, loops)
     if markdown:
         benchmark_markdown(text, loops)
     if markdown2:
