@@ -48,7 +48,7 @@ In combination with ``functools.partial``::
     markdown = functools.partial(
         m.html,
         extensions=m.EXT_AUTOLINK | m.EXT_TABLES,
-        render_flags=p.HTML_EXPAND_TABS
+        render_flags=m.HTML_EXPAND_TABS
     )
     markdown('Awesome!')
 
