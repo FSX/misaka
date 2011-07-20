@@ -1,7 +1,7 @@
 #include <Python.h>
 
-#include "upskirt/markdown.h"
-#include "upskirt/html.h"
+#include "sundown/markdown.h"
+#include "sundown/html.h"
 
 
 struct module_state {
@@ -22,7 +22,7 @@ unsigned int HTML_SMARTYPANTS = (1 << 12);
 
 
 /* The module doc strings */
-PyDoc_STRVAR(misaka_module__doc__, "Misaka is a Python binding for Upskirt!");
+PyDoc_STRVAR(misaka_module__doc__, "Misaka is a Python binding for Sundown!");
 PyDoc_STRVAR(misaka_html__doc__, "Render Markdown text into HTML.");
 PyDoc_STRVAR(misaka_toc__doc__, "Generate a table of contents.");
 
@@ -43,19 +43,19 @@ misaka_render(const char *text, unsigned int extensions,
 
     /* Parse Markdown */
     if (toc_only != -1) {
-        upshtml_toc_renderer(&renderer);
+        sdhtml_toc_renderer(&renderer);
     } else {
-        upshtml_renderer(&renderer, render_flags);
+        sdhtml_renderer(&renderer, render_flags);
     }
 
-    ups_markdown(ob, ib, &renderer, extensions);
-    upshtml_free_renderer(&renderer);
+    sd_markdown(ob, ib, &renderer, extensions);
+    sdhtml_free_renderer(&renderer);
 
     /* Smartypants actions */
     if (render_flags & HTML_SMARTYPANTS)
     {
         struct buf *sb = bufnew(1);
-        upshtml_smartypants(sb, ob);
+        sdhtml_smartypants(sb, ob);
         ob = bufdup(sb, sb->size); /* Duplicate Smartypants buffer to output buffer */
         bufrelease(sb); /* Cleanup Smartypants buffer */
     }
@@ -167,7 +167,7 @@ static PyMethodDef misaka_methods[] = {
     }
 
     /* Version */
-    PyModule_AddStringConstant(module, "__version__", "0.3.2");
+    PyModule_AddStringConstant(module, "__version__", "0.3.3");
 
     /* Markdown extensions */
     PyModule_AddIntConstant(module, "EXT_NO_INTRA_EMPHASIS", MKDEXT_NO_INTRA_EMPHASIS);

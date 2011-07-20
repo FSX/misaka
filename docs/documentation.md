@@ -1,7 +1,7 @@
 ## Introduction
 
-Misaka is a Python (2.7 and 3.2) binding for [Upskirt][-1]. And
-Upskirt is a Markdown library written in C and it's really fast. Here is a
+Misaka is a Python (2.7 and 3.2) binding for [Sundown][-1]. And
+Sundown is a Markdown library written in C and it's really fast. Here is a
 [benchmark][0]:
 
     Misaka: 0.040000s
@@ -14,7 +14,7 @@ Python 2.7 was used in the benchmark. I couldn't find any working Markdown
 parsers for Python 3. Is Misaka the only one?
 
 
- [-1]: https://github.com/tanoku/upskirt
+ [-1]: https://github.com/tanoku/sundown
  [0]: https://github.com/FSX/misaka/blob/master/benchmark/benchmark.py
 
 
@@ -131,6 +131,14 @@ The functionality of the following constants is explained at *Render Flags*.
 
 
 ## Changelog
+
+### 0.3.3 (2011-07-21)
+
+ * Fix a typo in README.txt. (heintz)
+ * Fix non-NULL-terminated `kwlist` in `misaka_html`. (heintz)
+ * Rename pantyshot to misaka in benchmark.py. (honza)
+ * Renamed Upskirt to Sundown and updated the source files from 2011-07-04
+   to 2011-07-19: https://github.com/tanoku/sundown/commits/master
 
 ### 0.3.2 (2011-07-03)
 

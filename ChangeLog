@@ -1,6 +1,15 @@
 News/Changelog
 ==============
 
+0.3.3 (2011-07-21)
+------------------
+
+ * Fix a typo in README.txt. (heintz)
+ * Fix non-NULL-terminated `kwlist` in `misaka_html`. (heintz)
+ * Rename pantyshot to misaka in benchmark.py. (honza)
+ * Renamed Upskirt to Sundown and updated the source files from 2011-07-04
+   to 2011-07-19: https://github.com/tanoku/sundown/commits/master
+
 0.3.2 (2011-07-03)
 ------------------
 
