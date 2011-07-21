@@ -140,7 +140,7 @@ The functionality of the following constants is explained at *Render Flags*.
 
 ## Changelog
 
-### 0.3.3 (2011-07-21)
+### 0.3.3 (2011-07-22)
 
  * Fix a typo in README.txt. (heintz)
  * Fix non-NULL-terminated `kwlist` in `misaka_html`. (heintz)
