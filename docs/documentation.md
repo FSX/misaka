@@ -39,43 +39,51 @@ And you're done.
 
 Example:
 
-    import misaka
+~~~~ {.python}
+import misaka
 
-    misaka.html('Hello, world!')
+misaka.html('Hello, world!')
+~~~~
 
 With extensions and render flags:
 
-    import misaka as m
+~~~~ {.python}
+import misaka as m
 
-    m.html(
-        'Hello, world!',
-        m.EXT_AUTOLINK | m.EXT_TABLES,
-        m.HTML_EXPAND_TABS
-    )
+m.html(
+    'Hello, world!',
+    m.EXT_AUTOLINK | m.EXT_TABLES,
+    m.HTML_EXPAND_TABS<
+)
+~~~~
 
 In combination with functools.partial:
 
-    import functools
-    import misaka as m
+~~~~ {.python}
+import functools
+import misaka as m
 
-    markdown = functools.partial(
-        m.html,
-        extensions=m.EXT_AUTOLINK | m.EXT_TABLES,
-        render_flags=m.HTML_EXPAND_TABS
-    )
-    markdown('Awesome!')
+markdown = functools.partial(
+    m.html,
+    extensions=m.EXT_AUTOLINK | m.EXT_TABLES,
+    render_flags=m.HTML_EXPAND_TABS
+)
+markdown('Awesome!')
+~~~~
 
 Or generate a table of contents:
 
-    misaka.toc('''
-    # Header one
+~~~~ {.python}
+misaka.toc('''
+# Header one
 
-    Some text here.
+Some text here.
 
-    ## Header two
+## Header two
 
-    Some more text
-    ''')
+Some more text
+''')
+~~~~
 
 
 ## API
