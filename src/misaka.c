@@ -75,7 +75,7 @@ misaka_render(const char *text, unsigned int extensions,
 static PyObject *
 misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
 {
-    static char *kwlist[] = {"text", "extensions", "render_flags"};
+    static char *kwlist[] = {"text", "extensions", "render_flags", NULL};
     unsigned int extensions = 0, render_flags = 0;
     const char *text;
 
