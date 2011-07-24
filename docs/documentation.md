@@ -4,11 +4,12 @@ Misaka is a Python (2.7 and 3.2) binding for [Sundown][-1]. And
 Sundown is a Markdown library written in C and it's really fast. Here is a
 [benchmark][0]:
 
-    Misaka: 0.040000s
-    Markdown: 4.900000s
-    markdown2: 7.210000s
-    cMarkdown: 0.070000s
-    discount: 0.160000s
+    Parsing the Markdown Syntax document 10000 times...
+    Misaka: 3.34s
+    Markdown: 486.86s
+    Markdown2: 677.55s
+    cMarkdown: 7.05s
+    Discount: 16.76s
 
 Python 2.7 was used in the benchmark. I couldn't find any working Markdown
 parsers for Python 3. Is Misaka the only one?
@@ -42,7 +43,7 @@ Example:
 ~~~~ {.python}
 import misaka
 
-misaka.html('Hello, world!')
+print misaka.html('Hello, world!')
 ~~~~
 
 With extensions and render flags:
@@ -50,14 +51,14 @@ With extensions and render flags:
 ~~~~ {.python}
 import misaka as m
 
-m.html(
+print m.html(
     'Hello, world!',
     m.EXT_AUTOLINK | m.EXT_TABLES,
-    m.HTML_EXPAND_TABS<
+    m.HTML_EXPAND_TABS
 )
 ~~~~
 
-In combination with functools.partial:
+In combination with `functools.partial`:
 
 ~~~~ {.python}
 import functools
@@ -68,13 +69,13 @@ markdown = functools.partial(
     extensions=m.EXT_AUTOLINK | m.EXT_TABLES,
     render_flags=m.HTML_EXPAND_TABS
 )
-markdown('Awesome!')
+print markdown('Awesome!')
 ~~~~
 
 Or generate a table of contents:
 
 ~~~~ {.python}
-misaka.toc('''
+sometext = '''
 # Header one
 
 Some text here.
@@ -82,8 +83,71 @@ Some text here.
 ## Header two
 
 Some more text
-''')
+'''
+
+# To generate the TOC tree
+print misaka.html(sometext,
+    render_flags=misaka.HTML_TOC_TREE)
+
+# To generate the HTML with the
+#headers adjusted for the TOC
+print misaka.html(sometext,
+    render_flags=misaka.HTML_TOC)
 ~~~~
+
+<div class="note">
+    <p><b>Note:</b><br />
+    When using fenced codeblocks you should also include <code>EXT_FENCED_CODE</code>
+    when you generate a TOC tree. Otherwise code inside the fenced codeblocks
+    that look like Markdown headers are also included in the TOC tree.</p>
+</div>
+
+
+## Syntax highlighting
+
+Misaka and Sundown do not have syntax highlighting by default. With the fenced
+codeblock extension and the the Github codeblock renderflag you can add classes
+or a language attribute to codeblocks.
+
+With the following snippet you can highlight codeblocks with [Pygments][2] by
+passing HTML through it.
+
+~~~~ {.python}
+import re
+
+from pygments import highlight
+from pygments.formatters import HtmlFormatter
+from pygments.lexers import get_lexer_by_name
+
+
+_re_codeblock = re.compile(r'<pre(?: lang="([a-z0-9]+)")?><code'
+    '(?: class="([a-z0-9]+).*?")?>(.*?)</code></pre>',
+    re.IGNORECASE | re.DOTALL)
+
+def highlight_code(html):
+    def _unescape_html(html):
+        html = html.replace('&lt;', '<')
+        html = html.replace('&gt;', '>')
+        html = html.replace('&amp;', '&')
+        return html.replace('&quot;', '"')
+    def _highlight_match(match):
+        language, classname, code = match.groups()
+        if (language or classname) is None:
+            return match.group(0)
+        return highlight(_unescape_html(code),
+            get_lexer_by_name(language or classname),
+            HtmlFormatter())
+    return _re_codeblock.sub(_highlight_match, html)
+~~~~
+
+It looks for all codeblocks and either uses the language attribute or the first
+class in the class attribute. It assumes that all the HTML is correct and no
+no nesting of codeblocks occur.
+
+The unescaping function is needed to unescape the code before Pygments procecesses
+it. Otherwise you'll get double escape HTML.
+
+ [2]: http://pygments.org/
 
 
 ## API
@@ -98,13 +162,6 @@ The `html` function converts the Markdown text to HTML. It accepts the following
  * `text`: The Markdown source text.
  * `extensions`: One or more extension constants (optional).
  * `render_flags`: One or more render flag constants (optional).
-
-
-### misaka.toc
-
-The `toc` function generates a table of contents and accepts the following argument.
-
- * `text`: The Markdown source text.
 
 
 ### Extensions
@@ -136,9 +193,17 @@ The functionality of the following constants is explained at *Render Flags*.
     HTML_EXPAND_TABS
     HTML_USE_XHTML
     HTML_SMARTYPANTS
+    HTML_TOC_TREE
 
 
 ## Changelog
+
+### 0.4.0 (2011-07-24)
+
+ * API change: `misaka.toc` has been removed. Instead `HTML_TOC_TREE` has to be
+   passed with `misaka.html` to get a TOC tree. When `HTML_TOC` is used the
+   text will be rendered as usual, but the header HTML will be adjusted for the
+   TOC.
 
 ### 0.3.3 (2011-07-22)
 

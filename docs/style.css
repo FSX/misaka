@@ -146,22 +146,25 @@ code {
   background: #eee;
   color: #555 }
 pre {
+  overflow-x: auto;
   margin: 1.5em 0 1.5em;
   padding: 0.5em 0 0.5em 1.5em;
-  color: #222 }
+  color: #222;
+  background: #fafafa;
+  border: 1px solid #ccc;
+  border-width: 1px 0 }
 pre, code {
   font-family: Inconsolata, 'DejaVu Sans Mono', Consolas, 'Lucida Console', monospace }
 pre code {
   display: block;
-  padding: 0 0 0.01em;
-  overflow-x: auto;
   white-space: pre;
   background: inherit;
   color: inherit }
 
 #wrapper {
   margin: 0 auto;
-  width: 65% }
+  width: 65%;
+  min-width: 800px }
 
 #header, #content { margin: 0 25% }
 #content { padding-bottom: 1.5em }
@@ -182,14 +185,19 @@ pre code {
 #sidebar li ul li ul {
   padding-right: 1.8em }
 
+.note {
+  margin: 1.5em 0;
+  border: 1px solid #9F6000;
+  color: #9F6000;
+  background: #FEEFB3;
+  padding: .01em .6em;
+  font-size: .8em }
+.note p {
+  margin: 1em }
 
 /* --- Pygments
 --------------------------------------------------------------------*/
 
-pre {
-  background: #fafafa;
-  border: 1px solid #ccc;
-  border-width: 1px 0 }
 .highlight pre { margin: 0 }
 
 .hll { background-color: #ffffcc }

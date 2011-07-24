@@ -2,7 +2,7 @@ from distutils.core import setup, Extension
 
 setup(
     name='misaka',
-    version='0.3.3',
+    version='0.4.0',
     description='A Python binding for Upskirt.',
     author='Frank Smit',
     author_email='frank@61924.nl',

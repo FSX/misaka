@@ -20,17 +20,28 @@ struct module_state {
 /* An extra flag to enabled Smartypants */
 unsigned int HTML_SMARTYPANTS = (1 << 12);
 
+/* Only render a table of contents tree */
+unsigned int HTML_TOC_TREE = (1 << 13);
+
 
 /* The module doc strings */
 PyDoc_STRVAR(misaka_module__doc__, "Misaka is a Python binding for Sundown!");
 PyDoc_STRVAR(misaka_html__doc__, "Render Markdown text into HTML.");
-PyDoc_STRVAR(misaka_toc__doc__, "Generate a table of contents.");
 
 
 static PyObject *
-misaka_render(const char *text, unsigned int extensions,
-                 unsigned int render_flags, char toc_only)
+misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
 {
+    static char *kwlist[] = {"text", "extensions", "render_flags", NULL};
+    unsigned int extensions = 0, render_flags = 0;
+    const char *text;
+
+    /* Parse arguments */
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|ii", kwlist,
+        &text, &extensions, &render_flags)) {
+        return NULL;
+    }
+
     struct buf *ib, *ob;
     struct mkd_renderer renderer;
 
@@ -42,7 +53,7 @@ misaka_render(const char *text, unsigned int extensions,
     ob = bufnew(ib->size * 1.2);
 
     /* Parse Markdown */
-    if (toc_only != -1) {
+    if (render_flags & HTML_TOC_TREE) {
         sdhtml_toc_renderer(&renderer);
     } else {
         sdhtml_renderer(&renderer, render_flags);
@@ -72,40 +83,8 @@ misaka_render(const char *text, unsigned int extensions,
 }
 
 
-static PyObject *
-misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
-{
-    static char *kwlist[] = {"text", "extensions", "render_flags", NULL};
-    unsigned int extensions = 0, render_flags = 0;
-    const char *text;
-
-    /* Parse arguments */
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|ii", kwlist,
-        &text, &extensions, &render_flags)) {
-        return NULL;
-    }
-
-    return misaka_render(text, extensions, render_flags, -1);
-}
-
-
-static PyObject *
-misaka_toc(PyObject *self, PyObject *args)
-{
-    const char *text;
-
-    /* Parse arguments */
-    if (!PyArg_ParseTuple(args, "s", &text)) {
-        return NULL;
-    }
-
-    return misaka_render(text, 0, 0, 1);
-}
-
-
 static PyMethodDef misaka_methods[] = {
     {"html", (PyCFunction) misaka_html, METH_VARARGS | METH_KEYWORDS, misaka_html__doc__},
-    {"toc", (PyCFunction) misaka_toc, METH_VARARGS, misaka_toc__doc__},
     {NULL, NULL, 0, NULL} /* Sentinel */
 };
 
@@ -167,7 +146,7 @@ static PyMethodDef misaka_methods[] = {
     }
 
     /* Version */
-    PyModule_AddStringConstant(module, "__version__", "0.3.3");
+    PyModule_AddStringConstant(module, "__version__", "0.4.0");
 
     /* Markdown extensions */
     PyModule_AddIntConstant(module, "EXT_NO_INTRA_EMPHASIS", MKDEXT_NO_INTRA_EMPHASIS);
@@ -178,7 +157,7 @@ static PyMethodDef misaka_methods[] = {
     PyModule_AddIntConstant(module, "EXT_LAX_HTML_BLOCKS", MKDEXT_LAX_HTML_BLOCKS);
     PyModule_AddIntConstant(module, "EXT_SPACE_HEADERS", MKDEXT_SPACE_HEADERS);
 
-    /* XHTML Render flags */
+    /* HTML Render flags */
     PyModule_AddIntConstant(module, "HTML_SKIP_HTML", HTML_SKIP_HTML);
     PyModule_AddIntConstant(module, "HTML_SKIP_STYLE", HTML_SKIP_STYLE);
     PyModule_AddIntConstant(module, "HTML_SKIP_IMAGES", HTML_SKIP_IMAGES);
@@ -189,7 +168,10 @@ static PyMethodDef misaka_methods[] = {
     PyModule_AddIntConstant(module, "HTML_HARD_WRAP", HTML_HARD_WRAP);
     PyModule_AddIntConstant(module, "HTML_GITHUB_BLOCKCODE", HTML_GITHUB_BLOCKCODE);
     PyModule_AddIntConstant(module, "HTML_USE_XHTML", HTML_USE_XHTML);
+
+    /* Extra HTML render flags - these are not from Sundown */
     PyModule_AddIntConstant(module, "HTML_SMARTYPANTS", HTML_SMARTYPANTS);
+    PyModule_AddIntConstant(module, "HTML_TOC_TREE", HTML_TOC_TREE);
 
     #if PY_MAJOR_VERSION >= 3
         return module;

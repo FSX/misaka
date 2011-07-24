@@ -1,35 +1,10 @@
 import time
 
-
-try:
-    import misaka
-except ImportError:
-    misaka = None
-    print('misaka is not available...')
-
-try:
-    import markdown
-except ImportError:
-    markdown = None
-    print('Markdown is not available...')
-
-try:
-    import markdown2
-except ImportError:
-    markdown2 = None
-    print('markdown2 is not available...')
-
-try:
-    import cMarkdown
-except ImportError:
-    cMarkdown = None
-    print('cMarkdown is not available...')
-
-try:
-    import discount
-except ImportError:
-    discount = None
-    print('discount is not available...')
+import misaka
+import markdown
+import markdown2
+import cMarkdown
+import discount
 
 
 class Benchmark(object):
@@ -41,53 +16,53 @@ class Benchmark(object):
             start = time.clock()
             func(*args, **kwargs)
             end = time.clock()
-            print('%s: %fs' % (self._name, end - start))
+            return end - start
         return wrapper
 
 
-@Benchmark('misaka')
-def benchmark_misaka(text, loops):
-    for i in loops:
-        misaka.html(text)
+@Benchmark('Misaka')
+def benchmark_misaka(text):
+    misaka.html(text)
 
 
 @Benchmark('markdown2')
-def benchmark_markdown2(text, loops):
-    for i in loops:
-        markdown2.markdown(text)
+def benchmark_markdown2(text):
+    markdown2.markdown(text)
 
 
 @Benchmark('Markdown')
-def benchmark_markdown(text, loops):
-    for i in loops:
-        markdown.markdown(text)
+def benchmark_markdown(text):
+    markdown.markdown(text)
 
 
 @Benchmark('cMarkdown')
-def benchmark_cmarkdown(text, loops):
-    for i in loops:
-        cMarkdown.markdown(text)
+def benchmark_cmarkdown(text):
+    cMarkdown.markdown(text)
 
 
 @Benchmark('discount')
-def benchmark_discount(text, loops):
-    for i in loops:
-        discount.Markdown(text).get_html_content()
+def benchmark_discount(text):
+    discount.Markdown(text).get_html_content()
 
 
 if __name__ == '__main__':
     with open('markdown-syntax.md', 'r') as fd:
         text = fd.read()
 
-    loops = range(0, 100)
+    loops = 10000
+    totals = []
+    methods = [
+        ('Misaka', benchmark_misaka),
+        ('Markdown', benchmark_markdown),
+        ('Markdown2', benchmark_markdown2),
+        ('cMarkdown', benchmark_cmarkdown),
+        ('Discount', benchmark_discount)
+    ]
 
-    if misaka:
-        benchmark_misaka(text, loops)
-    if markdown:
-        benchmark_markdown(text, loops)
-    if markdown2:
-        benchmark_markdown2(text, loops)
-    if cMarkdown:
-        benchmark_cmarkdown(text, loops)
-    if discount:
-        benchmark_discount(text, loops)
+    print 'Parsing the Markdown Syntax document %s times...' % loops
+
+    for i, method in enumerate(methods):
+        total = 0
+        for nth in range(0, loops):
+            total += method[1](text)
+        print '%s: %gs' % (method[0], total)
