@@ -24,6 +24,8 @@
 #include <ctype.h>
 
 struct html_renderopt {
+	void *extra;
+
 	struct {
 		int header_count;
 		int current_level;
@@ -499,6 +501,16 @@ rndr_tablecell(struct buf *ob, struct buf *text, int align, void *opaque)
 	BUFPUTSL(ob, "</td>");
 }
 
+static int
+rndr_superscript(struct buf *ob, struct buf *text, void *opaque)
+{
+	if (!text || !text->size) return 0;
+	BUFPUTSL(ob, "<sup>");
+	bufput(ob, text->data, text->size);
+	BUFPUTSL(ob, "</sup>");
+	return 1;
+}
+
 static void
 rndr_normal_text(struct buf *ob, struct buf *text, void *opaque)
 {
@@ -546,7 +558,7 @@ toc_finalize(struct buf *ob, void *opaque)
 }
 
 void
-sdhtml_toc_renderer(struct mkd_renderer *renderer)
+sdhtml_toc_renderer(struct mkd_renderer *renderer, void *extra)
 {
 	static const struct mkd_renderer toc_render = {
 		NULL,
@@ -571,6 +583,7 @@ sdhtml_toc_renderer(struct mkd_renderer *renderer)
 		NULL,
 		rndr_triple_emphasis,
 		rndr_strikethrough,
+		rndr_superscript,
 
 		NULL,
 		NULL,
@@ -584,13 +597,14 @@ sdhtml_toc_renderer(struct mkd_renderer *renderer)
 	struct html_renderopt *options;	
 	options = calloc(1, sizeof(struct html_renderopt));
 	options->flags = HTML_TOC;
+	options->extra = extra;
 
 	memcpy(renderer, &toc_render, sizeof(struct mkd_renderer));
 	renderer->opaque = options;
 }
 
 void
-sdhtml_renderer(struct mkd_renderer *renderer, unsigned int render_flags)
+sdhtml_renderer(struct mkd_renderer *renderer, unsigned int render_flags, void *extra)
 {
 	static const char *xhtml_close = "/>\n";
 	static const char *html_close = ">\n";
@@ -618,6 +632,7 @@ sdhtml_renderer(struct mkd_renderer *renderer, unsigned int render_flags)
 		rndr_raw_html,
 		rndr_triple_emphasis,
 		rndr_strikethrough,
+		rndr_superscript,
 
 		NULL,
 		rndr_normal_text,
@@ -632,6 +647,7 @@ sdhtml_renderer(struct mkd_renderer *renderer, unsigned int render_flags)
 	options = calloc(1, sizeof(struct html_renderopt));
 	options->flags = render_flags;
 	options->close_tag = (render_flags & HTML_USE_XHTML) ? xhtml_close : html_close;
+	options->extra = extra;
 
 	memcpy(renderer, &renderer_default, sizeof(struct mkd_renderer));
 	renderer->opaque = options;

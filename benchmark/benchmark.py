@@ -1,4 +1,5 @@
 import time
+import os.path as path
 
 import misaka
 import markdown
@@ -46,7 +47,7 @@ def benchmark_discount(text):
 
 
 if __name__ == '__main__':
-    with open('markdown-syntax.md', 'r') as fd:
+    with open(path.join(path.dirname(__file__), 'markdown-syntax.md'), 'r') as fd:
         text = fd.read()
 
     loops = 10000

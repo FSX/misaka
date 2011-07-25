@@ -175,6 +175,7 @@ The functionality of the following constants is explained at *Markdown Extension
     EXT_STRIKETHROUGH
     EXT_FENCED_CODE
     EXT_SPACE_HEADERS
+    EXT_SUPERSCRIPT
 
 
 ### Render Flags
@@ -198,12 +199,15 @@ The functionality of the following constants is explained at *Render Flags*.
 
 ## Changelog
 
-### 0.4.0 (2011-07-24)
+### 0.4.0 (2011-07-25)
 
  * API change: `misaka.toc` has been removed. Instead `HTML_TOC_TREE` has to be
    passed with `misaka.html` to get a TOC tree. When `HTML_TOC` is used the
    text will be rendered as usual, but the header HTML will be adjusted for the
    TOC.
+ * Updated Sundown files; See commits from 2011-07-22 to 2011-07-24:
+   https://github.com/tanoku/sundown/commits/master/
+ * Added support for the Superscript extension.
 
 ### 0.3.3 (2011-07-22)
 

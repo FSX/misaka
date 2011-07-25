@@ -54,9 +54,9 @@ misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
 
     /* Parse Markdown */
     if (render_flags & HTML_TOC_TREE) {
-        sdhtml_toc_renderer(&renderer);
+        sdhtml_toc_renderer(&renderer, NULL);
     } else {
-        sdhtml_renderer(&renderer, render_flags);
+        sdhtml_renderer(&renderer, render_flags, NULL);
     }
 
     sd_markdown(ob, ib, &renderer, extensions);
@@ -156,6 +156,7 @@ static PyMethodDef misaka_methods[] = {
     PyModule_AddIntConstant(module, "EXT_STRIKETHROUGH", MKDEXT_STRIKETHROUGH);
     PyModule_AddIntConstant(module, "EXT_LAX_HTML_BLOCKS", MKDEXT_LAX_HTML_BLOCKS);
     PyModule_AddIntConstant(module, "EXT_SPACE_HEADERS", MKDEXT_SPACE_HEADERS);
+    PyModule_AddIntConstant(module, "EXT_SUPERSCRIPT", MKDEXT_SUPERSCRIPT);
 
     /* HTML Render flags */
     PyModule_AddIntConstant(module, "HTML_SKIP_HTML", HTML_SKIP_HTML);
