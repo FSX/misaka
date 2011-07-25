@@ -6,7 +6,6 @@
     <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -23,46 +22,44 @@
 <li><a href="#toc_0">Introduction</a></li>
 <li><a href="#toc_1">Installation</a></li>
 <li><a href="#toc_2">Usage</a></li>
-</ul></li>
-<li><a href="#toc_3">Header one</a></li>
+<li><a href="#toc_3">Syntax highlighting</a></li>
+<li><a href="#toc_4">API</a></li>
 <li><ul>
-<li><a href="#toc_4">Header two</a></li>
-<li><a href="#toc_5">API</a></li>
-<li><ul>
-<li><a href="#toc_6">misaka.html</a></li>
-<li><a href="#toc_7">misaka.toc</a></li>
-<li><a href="#toc_8">Extensions</a></li>
-<li><a href="#toc_9">Render Flags</a></li>
+<li><a href="#toc_5">misaka.html</a></li>
+<li><a href="#toc_6">Extensions</a></li>
+<li><a href="#toc_7">Render Flags</a></li>
 </ul></li>
-<li><a href="#toc_10">Changelog</a></li>
+<li><a href="#toc_8">Changelog</a></li>
 <li><ul>
-<li><a href="#toc_11">0.3.3 (2011-07-22)</a></li>
-<li><a href="#toc_12">0.3.2 (2011-07-03)</a></li>
-<li><a href="#toc_13">0.3.1 (2011-07-03)</a></li>
-<li><a href="#toc_14">0.3.0 (2011-06-16)</a></li>
-<li><a href="#toc_15">0.2.1 (2011-06-05)</a></li>
-<li><a href="#toc_16">0.2.0 (2011-05-17)</a></li>
-<li><a href="#toc_17">0.1.1 (2011-05-01)</a></li>
-<li><a href="#toc_18">0.1.0 (2011-05-01)</a></li>
+<li><a href="#toc_9">0.4.0 (2011-07-25)</a></li>
+<li><a href="#toc_10">0.3.3 (2011-07-22)</a></li>
+<li><a href="#toc_11">0.3.2 (2011-07-03)</a></li>
+<li><a href="#toc_12">0.3.1 (2011-07-03)</a></li>
+<li><a href="#toc_13">0.3.0 (2011-06-16)</a></li>
+<li><a href="#toc_14">0.2.1 (2011-06-05)</a></li>
+<li><a href="#toc_15">0.2.0 (2011-05-17)</a></li>
+<li><a href="#toc_16">0.1.1 (2011-05-01)</a></li>
+<li><a href="#toc_17">0.1.0 (2011-05-01)</a></li>
 </ul></li>
-<li><a href="#toc_19">License</a></li>
+<li><a href="#toc_18">License</a></li>
 </ul></li>
 </ul>
 
     </nav>
 
     <section id="content">
-        <div><h2 id="toc_0">Introduction</h2>
+        <h2 id="toc_0">Introduction</h2>
 
 <p>Misaka is a Python (2.7 and 3.2) binding for <a href="https://github.com/tanoku/sundown">Sundown</a>. And
 Sundown is a Markdown library written in C and it's really fast. Here is a
 <a href="https://github.com/FSX/misaka/blob/master/benchmark/benchmark.py">benchmark</a>:</p>
 
-<pre><code>Misaka: 0.040000s
-Markdown: 4.900000s
-markdown2: 7.210000s
-cMarkdown: 0.070000s
-discount: 0.160000s
+<pre><code>Parsing the Markdown Syntax document 10000 times...
+Misaka: 3.34s
+Markdown: 486.86s
+Markdown2: 677.55s
+cMarkdown: 7.05s
+Discount: 16.76s
 </code></pre>
 
 <p>Python 2.7 was used in the benchmark. I couldn't find any working Markdown
@@ -89,17 +86,23 @@ that Misaka has only been tested with Python 2.7 and 3.2.</p>
 
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">misaka</span>
 
-<span class="n">misaka</span><span class="o">.</span><span class="n">html</span><span class="p">(</span><span class="s">'Hello, world!'</span><span class="p">)</span>
-</pre></div><p>With extensions and render flags:</p>
+<span class="k">print</span> <span class="n">misaka</span><span class="o">.</span><span class="n">html</span><span class="p">(</span><span class="s">&#39;Hello, world!&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>With extensions and render flags:</p>
 
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">misaka</span> <span class="kn">as</span> <span class="nn">m</span>
 
-<span class="n">m</span><span class="o">.</span><span class="n">html</span><span class="p">(</span>
-    <span class="s">'Hello, world!'</span><span class="p">,</span>
+<span class="k">print</span> <span class="n">m</span><span class="o">.</span><span class="n">html</span><span class="p">(</span>
+    <span class="s">&#39;Hello, world!&#39;</span><span class="p">,</span>
     <span class="n">m</span><span class="o">.</span><span class="n">EXT_AUTOLINK</span> <span class="o">|</span> <span class="n">m</span><span class="o">.</span><span class="n">EXT_TABLES</span><span class="p">,</span>
-    <span class="n">m</span><span class="o">.</span><span class="n">HTML_EXPAND_TABS</span><span class="o">&lt;</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">HTML_EXPAND_TABS</span>
 <span class="p">)</span>
-</pre></div><p>In combination with functools.partial:</p>
+</pre></div>
+
+
+<p>In combination with <code>functools.partial</code>:</p>
 
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">misaka</span> <span class="kn">as</span> <span class="nn">m</span>
@@ -109,10 +112,13 @@ that Misaka has only been tested with Python 2.7 and 3.2.</p>
     <span class="n">extensions</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">EXT_AUTOLINK</span> <span class="o">|</span> <span class="n">m</span><span class="o">.</span><span class="n">EXT_TABLES</span><span class="p">,</span>
     <span class="n">render_flags</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">HTML_EXPAND_TABS</span>
 <span class="p">)</span>
-<span class="n">markdown</span><span class="p">(</span><span class="s">'Awesome!'</span><span class="p">)</span>
-</pre></div><p>Or generate a table of contents:</p>
+<span class="k">print</span> <span class="n">markdown</span><span class="p">(</span><span class="s">&#39;Awesome!&#39;</span><span class="p">)</span>
+</pre></div>
 
-<div class="highlight"><pre><span class="n">misaka</span><span class="o">.</span><span class="n">toc</span><span class="p">(</span><span class="s">'''</span>
+
+<p>Or generate a table of contents:</p>
+
+<div class="highlight"><pre><span class="n">sometext</span> <span class="o">=</span> <span class="s">&#39;&#39;&#39;</span>
 <span class="s"># Header one</span>
 
 <span class="s">Some text here.</span>
@@ -120,24 +126,85 @@ that Misaka has only been tested with Python 2.7 and 3.2.</p>
 <span class="s">## Header two</span>
 
 <span class="s">Some more text</span>
-<span class="s">'''</span><span class="p">)</span>
-</pre></div><h2 id="toc_3">API</h2>
+<span class="s">&#39;&#39;&#39;</span>
+
+<span class="c"># To generate the TOC tree</span>
+<span class="k">print</span> <span class="n">misaka</span><span class="o">.</span><span class="n">html</span><span class="p">(</span><span class="n">sometext</span><span class="p">,</span>
+    <span class="n">render_flags</span><span class="o">=</span><span class="n">misaka</span><span class="o">.</span><span class="n">HTML_TOC_TREE</span><span class="p">)</span>
+
+<span class="c"># To generate the HTML with the</span>
+<span class="c">#headers adjusted for the TOC</span>
+<span class="k">print</span> <span class="n">misaka</span><span class="o">.</span><span class="n">html</span><span class="p">(</span><span class="n">sometext</span><span class="p">,</span>
+    <span class="n">render_flags</span><span class="o">=</span><span class="n">misaka</span><span class="o">.</span><span class="n">HTML_TOC</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="note">
+    <p><b>Note:</b><br />
+    When using fenced codeblocks you should also include <code>EXT_FENCED_CODE</code>
+    when you generate a TOC tree. Otherwise code inside the fenced codeblocks
+    that look like Markdown headers are also included in the TOC tree.</p>
+</div>
+
+<h2 id="toc_3">Syntax highlighting</h2>
+
+<p>Misaka and Sundown do not have syntax highlighting by default. With the fenced
+codeblock extension and the the Github codeblock renderflag you can add classes
+or a language attribute to codeblocks.</p>
+
+<p>With the following snippet you can highlight codeblocks with <a href="http://pygments.org/">Pygments</a> by
+passing HTML through it.</p>
+
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">pygments</span> <span class="kn">import</span> <span class="n">highlight</span>
+<span class="kn">from</span> <span class="nn">pygments.formatters</span> <span class="kn">import</span> <span class="n">HtmlFormatter</span>
+<span class="kn">from</span> <span class="nn">pygments.lexers</span> <span class="kn">import</span> <span class="n">get_lexer_by_name</span>
+
+
+<span class="n">_re_codeblock</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;&lt;pre(?: lang=&quot;([a-z0-9]+)&quot;)?&gt;&lt;code&#39;</span>
+    <span class="s">&#39;(?: class=&quot;([a-z0-9]+).*?&quot;)?&gt;(.*?)&lt;/code&gt;&lt;/pre&gt;&#39;</span><span class="p">,</span>
+    <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">highlight_code</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_unescape_html</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&amp;lt;&#39;</span><span class="p">,</span> <span class="s">&#39;&lt;&#39;</span><span class="p">)</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&amp;gt;&#39;</span><span class="p">,</span> <span class="s">&#39;&gt;&#39;</span><span class="p">)</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&amp;amp;&#39;</span><span class="p">,</span> <span class="s">&#39;&amp;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">html</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s">&#39;&quot;&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_highlight_match</span><span class="p">(</span><span class="n">match</span><span class="p">):</span>
+        <span class="n">language</span><span class="p">,</span> <span class="n">classname</span><span class="p">,</span> <span class="n">code</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">language</span> <span class="ow">or</span> <span class="n">classname</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">highlight</span><span class="p">(</span><span class="n">_unescape_html</span><span class="p">(</span><span class="n">code</span><span class="p">),</span>
+            <span class="n">get_lexer_by_name</span><span class="p">(</span><span class="n">language</span> <span class="ow">or</span> <span class="n">classname</span><span class="p">),</span>
+            <span class="n">HtmlFormatter</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">_re_codeblock</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">_highlight_match</span><span class="p">,</span> <span class="n">html</span><span class="p">)</span>
+</pre></div>
+
+
+<p>It looks for all codeblocks and either uses the language attribute or the first
+class in the class attribute. It assumes that all the HTML is correct and no
+no nesting of codeblocks occur.</p>
+
+<p>The unescaping function is needed to unescape the code before Pygments procecesses
+it. Otherwise you'll get double escape HTML.</p>
+
+<h2 id="toc_4">API</h2>
 
 <p>All of the following functions and constants are from the <code>misaka</code> module.</p>
 
-<h3 id="toc_4">misaka.html</h3>
+<h3 id="toc_5">misaka.html</h3>
 
 <p>The <code>html</code> function converts the Markdown text to HTML. It accepts the following arguments.</p>
 
-<ul><li><code>text</code>: The Markdown source text.</li>
+<ul>
+<li><code>text</code>: The Markdown source text.</li>
 <li><code>extensions</code>: One or more extension constants (optional).</li>
 <li><code>render_flags</code>: One or more render flag constants (optional).</li>
-</ul><h3 id="toc_5">misaka.toc</h3>
+</ul>
 
-<p>The <code>toc</code> function generates a table of contents and accepts the following argument.</p>
-
-<ul><li><code>text</code>: The Markdown source text.</li>
-</ul><h3 id="toc_6">Extensions</h3>
+<h3 id="toc_6">Extensions</h3>
 
 <p>The functionality of the following constants is explained at <em>Markdown Extensions</em>.</p>
 
@@ -148,6 +215,7 @@ EXT_NO_INTRA_EMPHASIS
 EXT_STRIKETHROUGH
 EXT_FENCED_CODE
 EXT_SPACE_HEADERS
+EXT_SUPERSCRIPT
 </code></pre>
 
 <h3 id="toc_7">Render Flags</h3>
@@ -165,53 +233,90 @@ HTML_SKIP_IMAGES
 HTML_EXPAND_TABS
 HTML_USE_XHTML
 HTML_SMARTYPANTS
+HTML_TOC_TREE
 </code></pre>
 
 <h2 id="toc_8">Changelog</h2>
 
-<h3 id="toc_9">0.3.3 (2011-07-22)</h3>
+<h3 id="toc_9">0.4.0 (2011-07-25)</h3>
 
-<ul><li>Fix a typo in README.txt. (heintz)</li>
+<ul>
+<li>API change: <code>misaka.toc</code> has been removed. Instead <code>HTML_TOC_TREE</code> has to be
+passed with <code>misaka.html</code> to get a TOC tree. When <code>HTML_TOC</code> is used the
+text will be rendered as usual, but the header HTML will be adjusted for the
+TOC.</li>
+<li>Updated Sundown files; See commits from 2011-07-22 to 2011-07-24:
+<a href="https://github.com/tanoku/sundown/commits/master/">https://github.com/tanoku/sundown/commits/master/</a></li>
+<li>Added support for the Superscript extension.</li>
+</ul>
+
+<h3 id="toc_10">0.3.3 (2011-07-22)</h3>
+
+<ul>
+<li>Fix a typo in README.txt. (heintz)</li>
 <li>Fix non-NULL-terminated <code>kwlist</code> in <code>misaka_html</code>. (heintz)</li>
 <li>Rename pantyshot to misaka in benchmark.py. (honza)</li>
 <li>Renamed Upskirt to Sundown and updated the source files from 2011-07-04
 to 2011-07-19: <a href="https://github.com/tanoku/sundown/commits/master">https://github.com/tanoku/sundown/commits/master</a></li>
-</ul><h3 id="toc_10">0.3.2 (2011-07-03)</h3>
+</ul>
 
-<ul><li>Fixed minor error in setup.py.</li>
-</ul><h3 id="toc_11">0.3.1 (2011-07-03)</h3>
+<h3 id="toc_11">0.3.2 (2011-07-03)</h3>
 
-<ul><li>Renamed Pantyshot to Misaka.</li>
+<ul>
+<li>Fixed minor error in setup.py.</li>
+</ul>
+
+<h3 id="toc_12">0.3.1 (2011-07-03)</h3>
+
+<ul>
+<li>Renamed Pantyshot to Misaka.</li>
 <li>Updated Upskirt files; See commits from 2011-06-06 to 2011-06-23:
 <a href="https://github.com/tanoku/upskirt/commits/master/">https://github.com/tanoku/upskirt/commits/master/</a></li>
-</ul><h3 id="toc_12">0.3.0 (2011-06-16)</h3>
+</ul>
 
-<ul><li>Added Python 3 support.</li>
+<h3 id="toc_13">0.3.0 (2011-06-16)</h3>
+
+<ul>
+<li>Added Python 3 support.</li>
 <li>Updated Upskirt files; See commits from 2011-06-05 to 2011-06-09:
 <a href="https://github.com/tanoku/upskirt/commits/master/">https://github.com/tanoku/upskirt/commits/master/</a></li>
-</ul><h3 id="toc_13">0.2.1 (2011-06-05)</h3>
+</ul>
 
-<ul><li>Updated Upskirt files; See commits from 2011-05-18 to 2011-06-02:
+<h3 id="toc_14">0.2.1 (2011-06-05)</h3>
+
+<ul>
+<li>Updated Upskirt files; See commits from 2011-05-18 to 2011-06-02:
 <a href="https://github.com/tanoku/upskirt/commits/master/">https://github.com/tanoku/upskirt/commits/master/</a></li>
-</ul><h3 id="toc_14">0.2.0 (2011-05-17)</h3>
+</ul>
 
-<ul><li>Added Smartypants render flag.</li>
+<h3 id="toc_15">0.2.0 (2011-05-17)</h3>
+
+<ul>
+<li>Added Smartypants render flag.</li>
 <li>Added a <code>toc</code> function that outputs a table of contents.</li>
 <li>Renamed <code>markdown</code> function to <code>html</code>.</li>
 <li>Updated Upskirt files; See commits from 2011-05-02 to 2011-05-17:
 <a href="https://github.com/tanoku/upskirt/commits/master/">https://github.com/tanoku/upskirt/commits/master/</a></li>
-</ul><h3 id="toc_15">0.1.1 (2011-05-01)</h3>
+</ul>
 
-<ul><li>Updated Upskirt files; a HTML escaping bug in the XHTML renderer was fixed.</li>
-</ul><h3 id="toc_16">0.1.0 (2011-05-01)</h3>
+<h3 id="toc_16">0.1.1 (2011-05-01)</h3>
 
-<ul><li>Initial release.</li>
-</ul><h2 id="toc_17">License</h2>
+<ul>
+<li>Updated Upskirt files; a HTML escaping bug in the XHTML renderer was fixed.</li>
+</ul>
+
+<h3 id="toc_17">0.1.0 (2011-05-01)</h3>
+
+<ul>
+<li>Initial release.</li>
+</ul>
+
+<h2 id="toc_18">License</h2>
 
 <p>Copyright (C) 2011 by Frank Smit <a href="mailto:frank@61924.nl">frank@61924.nl</a></p>
 
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
+of this software and associated documentation files (the &quot;Software&quot;), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
@@ -220,13 +325,14 @@ furnished to do so, subject to the following conditions:</p>
 <p>The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.</p>
 
-<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+<p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.</p></div>
+THE SOFTWARE.</p>
+
     </section>
 </div>
 
