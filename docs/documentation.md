@@ -11,8 +11,9 @@ Sundown is a Markdown library written in C and it's really fast. Here is a
     cMarkdown: 7.05s
     Discount: 16.76s
 
-Python 2.7 was used in the benchmark. I couldn't find any working Markdown
-parsers for Python 3. Is Misaka the only one?
+Python 2.7 was used in the benchmark. Besides Markdown (Python-Markdown) I
+haven't been able to find any working Markdown parsers for Python 3. If there
+are more, please notify me.
 
 
  [-1]: https://github.com/tanoku/sundown
