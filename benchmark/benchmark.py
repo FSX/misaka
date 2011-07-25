@@ -60,10 +60,10 @@ if __name__ == '__main__':
         ('Discount', benchmark_discount)
     ]
 
-    print 'Parsing the Markdown Syntax document %s times...' % loops
+    print('Parsing the Markdown Syntax document %s times...' % loops)
 
     for i, method in enumerate(methods):
         total = 0
         for nth in range(0, loops):
             total += method[1](text)
-        print '%s: %gs' % (method[0], total)
+        print('%s: %gs' % (method[0], total))
