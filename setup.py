@@ -3,7 +3,7 @@ from distutils.core import setup, Extension
 setup(
     name='misaka',
     version='0.4.0',
-    description='A Python binding for Upskirt.',
+    description='A Python binding for Sundown.',
     author='Frank Smit',
     author_email='frank@61924.nl',
     url='http://misaka.61924.nl/',
