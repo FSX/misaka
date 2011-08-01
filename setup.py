@@ -17,5 +17,16 @@ setup(
         'src/sundown/html.c',
         'src/sundown/html_smartypants.c',
         'src/sundown/autolink.c'
-    ])]
+    ])],
+    classifiers = [
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: C',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.2',
+        'Topic :: Text Processing :: Markup',
+        'Topic :: Text Processing :: Markup :: HTML',
+        'Topic :: Utilities'
+    ]
 )
