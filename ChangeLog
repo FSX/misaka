@@ -1,6 +1,14 @@
 News/Changelog
 ==============
 
+0.4.1 (2011-08-01)
+------------------
+
+ * Fixed buffer management. It was broken and leaked memory. (tanoku)
+ * Updated Sundown files; See commits from 2011-07-29 to 2011-08-01:
+   https://github.com/tanoku/sundown/commits/master/
+
+
 0.4.0 (2011-07-25)
 ------------------
 

@@ -142,7 +142,7 @@ static PyMethodDef misaka_methods[] = {
     }
 
     /* Version */
-    PyModule_AddStringConstant(module, "__version__", "0.4.0");
+    PyModule_AddStringConstant(module, "__version__", "0.4.1");
 
     /* Markdown extensions */
     PyModule_AddIntConstant(module, "EXT_NO_INTRA_EMPHASIS", MKDEXT_NO_INTRA_EMPHASIS);

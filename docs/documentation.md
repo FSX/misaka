@@ -91,7 +91,7 @@ print misaka.html(sometext,
     render_flags=misaka.HTML_TOC_TREE)
 
 # To generate the HTML with the
-#headers adjusted for the TOC
+# headers adjusted for the TOC
 print misaka.html(sometext,
     render_flags=misaka.HTML_TOC)
 ~~~~
@@ -199,6 +199,12 @@ The functionality of the following constants is explained at *Render Flags*.
 
 
 ## Changelog
+
+### 0.4.1 (2011-08-01)
+
+ * Fixed buffer management. It was broken and leaked memory. (tanoku)
+ * Updated Sundown files; See commits from 2011-07-29 to 2011-08-01:
+   https://github.com/tanoku/sundown/commits/master/
 
 ### 0.4.0 (2011-07-25)
 
