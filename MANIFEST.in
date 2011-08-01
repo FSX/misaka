@@ -1,2 +1,2 @@
-include README.txt setup.py
+include README.txt setup.py THANKS
 recursive-include src/ *
