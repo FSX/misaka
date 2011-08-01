@@ -31,17 +31,18 @@
 </ul></li>
 <li><a href="#toc_8">Changelog</a></li>
 <li><ul>
-<li><a href="#toc_9">0.4.0 (2011-07-25)</a></li>
-<li><a href="#toc_10">0.3.3 (2011-07-22)</a></li>
-<li><a href="#toc_11">0.3.2 (2011-07-03)</a></li>
-<li><a href="#toc_12">0.3.1 (2011-07-03)</a></li>
-<li><a href="#toc_13">0.3.0 (2011-06-16)</a></li>
-<li><a href="#toc_14">0.2.1 (2011-06-05)</a></li>
-<li><a href="#toc_15">0.2.0 (2011-05-17)</a></li>
-<li><a href="#toc_16">0.1.1 (2011-05-01)</a></li>
-<li><a href="#toc_17">0.1.0 (2011-05-01)</a></li>
+<li><a href="#toc_9">0.4.1 (2011-08-01)</a></li>
+<li><a href="#toc_10">0.4.0 (2011-07-25)</a></li>
+<li><a href="#toc_11">0.3.3 (2011-07-22)</a></li>
+<li><a href="#toc_12">0.3.2 (2011-07-03)</a></li>
+<li><a href="#toc_13">0.3.1 (2011-07-03)</a></li>
+<li><a href="#toc_14">0.3.0 (2011-06-16)</a></li>
+<li><a href="#toc_15">0.2.1 (2011-06-05)</a></li>
+<li><a href="#toc_16">0.2.0 (2011-05-17)</a></li>
+<li><a href="#toc_17">0.1.1 (2011-05-01)</a></li>
+<li><a href="#toc_18">0.1.0 (2011-05-01)</a></li>
 </ul></li>
-<li><a href="#toc_18">License</a></li>
+<li><a href="#toc_19">License</a></li>
 </ul></li>
 </ul>
 
@@ -62,7 +63,7 @@ cMarkdown: 7.05s
 Discount: 16.76s
 </code></pre>
 
-<p>Python 2.7 was used in the benchmark. Besides Markdown (Python-Markdown) I 
+<p>Python 2.7 was used in the benchmark. Besides Markdown (Python-Markdown) I
 haven't been able to find any working Markdown parsers for Python 3. If there
 are more, please notify me.</p>
 
@@ -134,7 +135,7 @@ that Misaka has only been tested with Python 2.7 and 3.2.</p>
     <span class="n">render_flags</span><span class="o">=</span><span class="n">misaka</span><span class="o">.</span><span class="n">HTML_TOC_TREE</span><span class="p">)</span>
 
 <span class="c"># To generate the HTML with the</span>
-<span class="c">#headers adjusted for the TOC</span>
+<span class="c"># headers adjusted for the TOC</span>
 <span class="k">print</span> <span class="n">misaka</span><span class="o">.</span><span class="n">html</span><span class="p">(</span><span class="n">sometext</span><span class="p">,</span>
     <span class="n">render_flags</span><span class="o">=</span><span class="n">misaka</span><span class="o">.</span><span class="n">HTML_TOC</span><span class="p">)</span>
 </pre></div>
@@ -239,7 +240,15 @@ HTML_TOC_TREE
 
 <h2 id="toc_8">Changelog</h2>
 
-<h3 id="toc_9">0.4.0 (2011-07-25)</h3>
+<h3 id="toc_9">0.4.1 (2011-08-01)</h3>
+
+<ul>
+<li>Fixed buffer management. It was broken and leaked memory. (tanoku)</li>
+<li>Updated Sundown files; See commits from 2011-07-29 to 2011-08-01:
+<a href="https://github.com/tanoku/sundown/commits/master/">https://github.com/tanoku/sundown/commits/master/</a></li>
+</ul>
+
+<h3 id="toc_10">0.4.0 (2011-07-25)</h3>
 
 <ul>
 <li>API change: <code>misaka.toc</code> has been removed. Instead <code>HTML_TOC_TREE</code> has to be
@@ -251,7 +260,7 @@ TOC.</li>
 <li>Added support for the Superscript extension.</li>
 </ul>
 
-<h3 id="toc_10">0.3.3 (2011-07-22)</h3>
+<h3 id="toc_11">0.3.3 (2011-07-22)</h3>
 
 <ul>
 <li>Fix a typo in README.txt. (heintz)</li>
@@ -261,13 +270,13 @@ TOC.</li>
 to 2011-07-19: <a href="https://github.com/tanoku/sundown/commits/master">https://github.com/tanoku/sundown/commits/master</a></li>
 </ul>
 
-<h3 id="toc_11">0.3.2 (2011-07-03)</h3>
+<h3 id="toc_12">0.3.2 (2011-07-03)</h3>
 
 <ul>
 <li>Fixed minor error in setup.py.</li>
 </ul>
 
-<h3 id="toc_12">0.3.1 (2011-07-03)</h3>
+<h3 id="toc_13">0.3.1 (2011-07-03)</h3>
 
 <ul>
 <li>Renamed Pantyshot to Misaka.</li>
@@ -275,7 +284,7 @@ to 2011-07-19: <a href="https://github.com/tanoku/sundown/commits/master">https:
 <a href="https://github.com/tanoku/upskirt/commits/master/">https://github.com/tanoku/upskirt/commits/master/</a></li>
 </ul>
 
-<h3 id="toc_13">0.3.0 (2011-06-16)</h3>
+<h3 id="toc_14">0.3.0 (2011-06-16)</h3>
 
 <ul>
 <li>Added Python 3 support.</li>
@@ -283,14 +292,14 @@ to 2011-07-19: <a href="https://github.com/tanoku/sundown/commits/master">https:
 <a href="https://github.com/tanoku/upskirt/commits/master/">https://github.com/tanoku/upskirt/commits/master/</a></li>
 </ul>
 
-<h3 id="toc_14">0.2.1 (2011-06-05)</h3>
+<h3 id="toc_15">0.2.1 (2011-06-05)</h3>
 
 <ul>
 <li>Updated Upskirt files; See commits from 2011-05-18 to 2011-06-02:
 <a href="https://github.com/tanoku/upskirt/commits/master/">https://github.com/tanoku/upskirt/commits/master/</a></li>
 </ul>
 
-<h3 id="toc_15">0.2.0 (2011-05-17)</h3>
+<h3 id="toc_16">0.2.0 (2011-05-17)</h3>
 
 <ul>
 <li>Added Smartypants render flag.</li>
@@ -300,19 +309,19 @@ to 2011-07-19: <a href="https://github.com/tanoku/sundown/commits/master">https:
 <a href="https://github.com/tanoku/upskirt/commits/master/">https://github.com/tanoku/upskirt/commits/master/</a></li>
 </ul>
 
-<h3 id="toc_16">0.1.1 (2011-05-01)</h3>
+<h3 id="toc_17">0.1.1 (2011-05-01)</h3>
 
 <ul>
 <li>Updated Upskirt files; a HTML escaping bug in the XHTML renderer was fixed.</li>
 </ul>
 
-<h3 id="toc_17">0.1.0 (2011-05-01)</h3>
+<h3 id="toc_18">0.1.0 (2011-05-01)</h3>
 
 <ul>
 <li>Initial release.</li>
 </ul>
 
-<h2 id="toc_18">License</h2>
+<h2 id="toc_19">License</h2>
 
 <p>Copyright (C) 2011 by Frank Smit <a href="mailto:frank@61924.nl">frank@61924.nl</a></p>
 
