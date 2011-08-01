@@ -1,8 +1,8 @@
+#define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
 #include "sundown/markdown.h"
 #include "sundown/html.h"
-
 
 struct module_state {
     PyObject *error;
@@ -33,24 +33,24 @@ static PyObject *
 misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
 {
     static char *kwlist[] = {"text", "extensions", "render_flags", NULL};
+
+    struct buf ib, *ob;
+    struct mkd_renderer renderer;
     unsigned int extensions = 0, render_flags = 0;
-    const char *text;
+
+    PyObject *py_result;
+
+	memset(&ib, 0x0, sizeof(struct buf));
 
     /* Parse arguments */
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s|ii", kwlist,
-        &text, &extensions, &render_flags)) {
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s#|ii", kwlist,
+        &ib.data, &ib.size, &extensions, &render_flags)) {
         return NULL;
     }
 
-    struct buf *ib, *ob;
-    struct mkd_renderer renderer;
-
-    /* Input buffer */
-    ib = bufnew(1);
-    bufputs(ib, text);
-
     /* Output buffer */
-    ob = bufnew(ib->size * 1.2);
+    ob = bufnew(128);
+	bufgrow(ob, ib.size * 1.4f);
 
     /* Parse Markdown */
     if (render_flags & HTML_TOC_TREE) {
@@ -59,27 +59,23 @@ misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
         sdhtml_renderer(&renderer, render_flags, NULL);
     }
 
-    sd_markdown(ob, ib, &renderer, extensions);
+    sd_markdown(ob, &ib, &renderer, extensions);
     sdhtml_free_renderer(&renderer);
 
     /* Smartypants actions */
-    if (render_flags & HTML_SMARTYPANTS)
-    {
-        struct buf *sb = bufnew(1);
+    if (render_flags & HTML_SMARTYPANTS) {
+        struct buf *sb = bufnew(128);
         sdhtml_smartypants(sb, ob);
-        ob = bufdup(sb, sb->size); /* Duplicate Smartypants buffer to output buffer */
-        bufrelease(sb); /* Cleanup Smartypants buffer */
+        bufrelease(ob);
+        ob = sb;
     }
 
-    /* Append a null terminator to the output buffer and make a Python string */
-    bufnullterm(ob);
-    PyObject *html = Py_BuildValue("s", ob->data);
+    /* make a Python string */
+    py_result = Py_BuildValue("s#", ob->data, (int)ob->size);
 
     /* Cleanup */
-    bufrelease(ib);
     bufrelease(ob);
-
-    return html;
+    return py_result;
 }
 
 
