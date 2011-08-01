@@ -40,7 +40,7 @@ misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
 
     PyObject *py_result;
 
-	memset(&ib, 0x0, sizeof(struct buf));
+    memset(&ib, 0x0, sizeof(struct buf));
 
     /* Parse arguments */
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, "s#|ii", kwlist,
@@ -50,7 +50,7 @@ misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
 
     /* Output buffer */
     ob = bufnew(128);
-	bufgrow(ob, ib.size * 1.4f);
+    bufgrow(ob, ib.size * 1.4f);
 
     /* Parse Markdown */
     if (render_flags & HTML_TOC_TREE) {
