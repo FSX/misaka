@@ -1,19 +1,39 @@
 ## Introduction
 
-Misaka is a Python (2.7 and 3.2) binding for [Sundown][-1]. And
-Sundown is a Markdown library written in C and it's really fast. Here is a
-[benchmark][0]:
+Misaka is a Python (2.7 and 3.2) and PyPy (1.6) binding for [Sundown][-1]. And
+Sundown is a Markdown library written in C and it's really fast. Here are some
+[benchmarks][0]:
+
+Python 2.7:
 
     Parsing the Markdown Syntax document 10000 times...
-    Misaka: 3.34s
-    Markdown: 486.86s
-    Markdown2: 677.55s
-    cMarkdown: 7.05s
-    Discount: 16.76s
+    Misaka: 3.18s
+    Markdown: 566.8s
+    Markdown2: 689.09s
+    cMarkdown: 6.15s
+    Discount: 15.28s
 
-Python 2.7 was used in the benchmark. Besides Markdown (Python-Markdown) I
-haven't been able to find any working Markdown parsers for Python 3. If there
-are more, please notify me.
+Python 3.2:
+
+    Parsing the Markdown Syntax document 10000 times...
+    Misaka: 4.12s
+    Markdown: 578.43s
+    Markdown2 is not available
+    cMarkdown is not available
+    Discount is not available
+
+PyPy 1.6:
+
+    Parsing the Markdown Syntax document 10000 times...
+    Misaka: 9.88602s
+    Markdown: 746.591s
+    Markdown2: 684.435s
+    cMarkdown: 25.9316s
+    Discount is not available
+
+Besides Markdown (Python-Markdown, latest checkout from Git) I haven't been able
+to find any working  Markdown parsers for Python 3. If there are more, please
+notify me.
 
 
  [-1]: https://github.com/tanoku/sundown
@@ -23,7 +43,7 @@ are more, please notify me.
 ## Installation
 
 Download Misaka from [Github][1] and run the following command. Keep in mind
-that Misaka has only been tested with Python 2.7 and 3.2.
+that Misaka has only been tested with Python 2.7 and 3.2 and PyPy 1.6.
 
     python setup.py install
 

@@ -3,7 +3,7 @@ import os.path as path
 
 
 modules = {}
-names = ('misaka', 'markdown', 'markdown2', 'cMarkdown', 'discdount')
+names = ('misaka', 'markdown', 'markdown2', 'cMarkdown', 'discount')
 for name in names:
     try:
         modules[name] = __import__(name)
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     with open(path.join(path.dirname(__file__), 'markdown-syntax.md'), 'r') as fd:
         text = fd.read()
 
-    loops = 1000
+    loops = 10000
     totals = []
     methods = [
         ('Misaka', benchmark_misaka),
