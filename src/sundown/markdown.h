@@ -31,11 +31,19 @@
  * TYPE DEFINITIONS *
  ********************/
 
-/* mkd_autolink • type of autolink */
+/* mkd_autolink - type of autolink */
 enum mkd_autolink {
 	MKDA_NOT_AUTOLINK,	/* used internally when it is not an autolink*/
 	MKDA_NORMAL,		/* normal http/http/ftp/mailto/etc link */
 	MKDA_EMAIL,			/* e-mail link without explit mailto: */
+};
+
+enum mkd_tableflags {
+	MKD_TABLE_ALIGN_L = 1,
+	MKD_TABLE_ALIGN_R = 2,
+	MKD_TABLE_ALIGN_CENTER = 3,
+	MKD_TABLE_ALIGNMASK = 3,
+	MKD_TABLE_HEADER = 4
 };
 
 enum mkd_extensions {
@@ -49,8 +57,8 @@ enum mkd_extensions {
 	MKDEXT_SUPERSCRIPT = (1 << 7),
 };
 
-/* mkd_renderer • functions for rendering parsed data */
-struct mkd_renderer {
+/* sd_callbacks - functions for rendering parsed data */
+struct sd_callbacks {
 	/* block level callbacks - NULL skips the block */
 	void (*blockcode)(struct buf *ob, struct buf *text, struct buf *lang, void *opaque);
 	void (*blockquote)(struct buf *ob, struct buf *text, void *opaque);
@@ -85,9 +93,6 @@ struct mkd_renderer {
 	/* header and footer */
 	void (*doc_header)(struct buf *ob, void *opaque);
 	void (*doc_footer)(struct buf *ob, void *opaque);
-
-	/* user data */
-	void *opaque;
 };
 
 /*********
@@ -98,17 +103,13 @@ struct mkd_renderer {
 #define MKD_LIST_ORDERED	1
 #define MKD_LI_BLOCK		2  /* <li> containing block data */
 
-#define MKD_TABLE_ALIGN_L (1 << 0)
-#define MKD_TABLE_ALIGN_R (1 << 1)
-#define MKD_TABLE_ALIGN_CENTER (MKD_TABLE_ALIGN_L | MKD_TABLE_ALIGN_R)
-
 /**********************
  * EXPORTED FUNCTIONS *
  **********************/
 
 /* sd_markdown * parses the input buffer and renders it into the output buffer */
 extern void
-sd_markdown(struct buf *ob, struct buf *ib, const struct mkd_renderer *rndr, unsigned int extensions);
+sd_markdown(struct buf *ob, const struct buf *ib, unsigned int extensions, const struct sd_callbacks *rndr, void *opaque);
 
 /* sd_version * returns the library version as major.minor.rev */
 extern void

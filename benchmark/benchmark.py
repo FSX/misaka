@@ -1,11 +1,14 @@
 import time
 import os.path as path
 
-import misaka
-import markdown
-import markdown2
-import cMarkdown
-import discount
+
+modules = {}
+names = ('misaka', 'markdown', 'markdown2', 'cMarkdown', 'discdount')
+for name in names:
+    try:
+        modules[name] = __import__(name)
+    except ImportError:
+        pass
 
 
 class Benchmark(object):
@@ -18,51 +21,56 @@ class Benchmark(object):
             func(*args, **kwargs)
             end = time.clock()
             return end - start
+        wrapper.__name__ = func.__name__
         return wrapper
 
 
 @Benchmark('Misaka')
 def benchmark_misaka(text):
-    misaka.html(text)
+    modules['misaka'].html(text)
 
 
 @Benchmark('markdown2')
 def benchmark_markdown2(text):
-    markdown2.markdown(text)
+    modules['markdown2'].markdown(text)
 
 
 @Benchmark('Markdown')
 def benchmark_markdown(text):
-    markdown.markdown(text)
+    modules['markdown'].markdown(text)
 
 
 @Benchmark('cMarkdown')
-def benchmark_cmarkdown(text):
-    cMarkdown.markdown(text)
+def benchmark_cMarkdown(text):
+    modules['cMarkdown'].markdown(text)
 
 
 @Benchmark('discount')
 def benchmark_discount(text):
-    discount.Markdown(text).get_html_content()
+    modules['discount'].Markdown(text).get_html_content()
 
 
 if __name__ == '__main__':
     with open(path.join(path.dirname(__file__), 'markdown-syntax.md'), 'r') as fd:
         text = fd.read()
 
-    loops = 10000
+    loops = 1000
     totals = []
     methods = [
         ('Misaka', benchmark_misaka),
         ('Markdown', benchmark_markdown),
         ('Markdown2', benchmark_markdown2),
-        ('cMarkdown', benchmark_cmarkdown),
+        ('cMarkdown', benchmark_cMarkdown),
         ('Discount', benchmark_discount)
     ]
 
-    print('Parsing the Markdown Syntax document %s times...' % loops)
+    print('Parsing the Markdown Syntax document %d times...' % loops)
 
     for i, method in enumerate(methods):
+        name = method[1].__name__.split('_', 2)[1]
+        if name not in modules:
+            print('%s is not available' % method[0])
+            continue
         total = 0
         for nth in range(0, loops):
             total += method[1](text)

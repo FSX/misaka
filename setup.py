@@ -2,7 +2,7 @@ from distutils.core import setup, Extension
 
 setup(
     name='misaka',
-    version='0.4.1',
+    version='0.4.2',
     description='A Python binding for Sundown.',
     author='Frank Smit',
     author_email='frank@61924.nl',

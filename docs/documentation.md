@@ -200,6 +200,11 @@ The functionality of the following constants is explained at *Render Flags*.
 
 ## Changelog
 
+### 0.4.2 (2011-08-25)
+
+ * Updated Sundown files; See commits from 2011-08-03 to 2011-08-09:
+   https://github.com/tanoku/sundown/commits/master/
+
 ### 0.4.1 (2011-08-01)
 
  * Fixed buffer management. It was broken and leaked memory. (tanoku)

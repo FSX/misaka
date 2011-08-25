@@ -35,7 +35,8 @@ misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = {"text", "extensions", "render_flags", NULL};
 
     struct buf ib, *ob;
-    struct mkd_renderer renderer;
+    struct sd_callbacks callbacks;
+    struct html_renderopt options;
     unsigned int extensions = 0, render_flags = 0;
 
     PyObject *py_result;
@@ -54,13 +55,12 @@ misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
 
     /* Parse Markdown */
     if (render_flags & HTML_TOC_TREE) {
-        sdhtml_toc_renderer(&renderer, NULL);
+        sdhtml_toc_renderer(&callbacks, &options);
     } else {
-        sdhtml_renderer(&renderer, render_flags, NULL);
+        sdhtml_renderer(&callbacks, &options, render_flags);
     }
 
-    sd_markdown(ob, &ib, &renderer, extensions);
-    sdhtml_free_renderer(&renderer);
+    sd_markdown(ob, &ib, extensions, &callbacks, &options);
 
     /* Smartypants actions */
     if (render_flags & HTML_SMARTYPANTS) {
@@ -142,7 +142,7 @@ static PyMethodDef misaka_methods[] = {
     }
 
     /* Version */
-    PyModule_AddStringConstant(module, "__version__", "0.4.1");
+    PyModule_AddStringConstant(module, "__version__", "0.4.2");
 
     /* Markdown extensions */
     PyModule_AddIntConstant(module, "EXT_NO_INTRA_EMPHASIS", MKDEXT_NO_INTRA_EMPHASIS);
