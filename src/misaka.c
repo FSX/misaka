@@ -4,8 +4,8 @@
 #include "sundown/markdown.h"
 #include "sundown/html.h"
 
+
 struct module_state {
-    PyObject *error;
 };
 
 
@@ -18,10 +18,10 @@ struct module_state {
 
 
 /* An extra flag to enabled Smartypants */
-unsigned int HTML_SMARTYPANTS = (1 << 12);
+static const unsigned int HTML_SMARTYPANTS = (1 << 12);
 
 /* Only render a table of contents tree */
-unsigned int HTML_TOC_TREE = (1 << 13);
+static const unsigned int HTML_TOC_TREE = (1 << 13);
 
 
 /* The module doc strings */
@@ -86,20 +86,6 @@ static PyMethodDef misaka_methods[] = {
 
 
 #if PY_MAJOR_VERSION >= 3
-    static int
-    misaka_traverse(PyObject *m, visitproc visit, void *arg)
-    {
-        Py_VISIT(GETSTATE(m)->error);
-        return 0;
-    }
-
-    static int
-    misaka_clear(PyObject *m)
-    {
-        Py_CLEAR(GETSTATE(m)->error);
-        return 0;
-    }
-
     static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
         "misaka",
@@ -107,8 +93,8 @@ static PyMethodDef misaka_methods[] = {
         sizeof(struct module_state),
         misaka_methods,
         NULL,
-        misaka_traverse,
-        misaka_clear,
+        NULL,
+        NULL,
         NULL
     };
 
@@ -133,16 +119,11 @@ static PyMethodDef misaka_methods[] = {
     if (module == NULL) {
         INITERROR;
     }
-    struct module_state *st = GETSTATE(module);
 
-    st->error = PyErr_NewException("misaka.Error", NULL, NULL);
-    if (st->error == NULL) {
-        Py_DECREF(module);
-        INITERROR;
-    }
+    // struct module_state *st = GETSTATE(module);
 
     /* Version */
-    PyModule_AddStringConstant(module, "__version__", "0.4.2");
+    PyModule_AddStringConstant(module, "__version__", "0.4.3");
 
     /* Markdown extensions */
     PyModule_AddIntConstant(module, "EXT_NO_INTRA_EMPHASIS", MKDEXT_NO_INTRA_EMPHASIS);
