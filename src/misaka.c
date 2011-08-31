@@ -6,6 +6,8 @@
 
 
 struct module_state {
+    struct sd_callbacks callbacks;
+    struct html_renderopt options;
 };
 
 
@@ -35,8 +37,6 @@ misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = {"text", "extensions", "render_flags", NULL};
 
     struct buf ib, *ob;
-    struct sd_callbacks callbacks;
-    struct html_renderopt options;
     unsigned int extensions = 0, render_flags = 0;
 
     PyObject *py_result;
@@ -55,12 +55,12 @@ misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
 
     /* Parse Markdown */
     if (render_flags & HTML_TOC_TREE) {
-        sdhtml_toc_renderer(&callbacks, &options);
+        sdhtml_toc_renderer(&GETSTATE(self)->callbacks, &GETSTATE(self)->options);
     } else {
-        sdhtml_renderer(&callbacks, &options, render_flags);
+        sdhtml_renderer(&GETSTATE(self)->callbacks, &GETSTATE(self)->options, render_flags);
     }
 
-    sd_markdown(ob, &ib, extensions, &callbacks, &options);
+    sd_markdown(ob, &ib, extensions, &GETSTATE(self)->callbacks, &GETSTATE(self)->options);
 
     /* Smartypants actions */
     if (render_flags & HTML_SMARTYPANTS) {
@@ -70,7 +70,7 @@ misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
         ob = sb;
     }
 
-    /* make a Python string */
+    /* Make a Python string */
     py_result = Py_BuildValue("s#", ob->data, (int)ob->size);
 
     /* Cleanup */
