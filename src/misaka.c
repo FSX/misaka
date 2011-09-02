@@ -3,20 +3,7 @@
 
 #include "sundown/markdown.h"
 #include "sundown/html.h"
-
-
-struct module_state {
-    struct sd_callbacks callbacks;
-    struct html_renderopt options;
-};
-
-
-#if PY_MAJOR_VERSION >= 3
-    #define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
-#else
-    #define GETSTATE(m) (&_state)
-    static struct module_state _state;
-#endif
+#include "sundown/buffer.h"
 
 
 /* An extra flag to enabled Smartypants */
@@ -34,6 +21,9 @@ PyDoc_STRVAR(misaka_html__doc__, "Render Markdown text into HTML.");
 static PyObject *
 misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
 {
+    struct sd_callbacks callbacks;
+    struct html_renderopt options;
+    struct sd_markdown *markdown;
     static char *kwlist[] = {"text", "extensions", "render_flags", NULL};
 
     struct buf ib, *ob;
@@ -55,12 +45,14 @@ misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
 
     /* Parse Markdown */
     if (render_flags & HTML_TOC_TREE) {
-        sdhtml_toc_renderer(&GETSTATE(self)->callbacks, &GETSTATE(self)->options);
+        sdhtml_toc_renderer(&callbacks, &options);
     } else {
-        sdhtml_renderer(&GETSTATE(self)->callbacks, &GETSTATE(self)->options, render_flags);
+        sdhtml_renderer(&callbacks, &options, render_flags);
     }
 
-    sd_markdown(ob, &ib, extensions, &GETSTATE(self)->callbacks, &GETSTATE(self)->options);
+    markdown = sd_markdown_new(extensions, 16, &callbacks, &options);
+    sd_markdown_render(ob, &ib, markdown);
+    sd_markdown_free(markdown);
 
     /* Smartypants actions */
     if (render_flags & HTML_SMARTYPANTS) {
@@ -90,7 +82,7 @@ static PyMethodDef misaka_methods[] = {
         PyModuleDef_HEAD_INIT,
         "misaka",
         misaka_module__doc__,
-        sizeof(struct module_state),
+        -1,
         misaka_methods,
         NULL,
         NULL,
@@ -119,8 +111,6 @@ static PyMethodDef misaka_methods[] = {
     if (module == NULL) {
         INITERROR;
     }
-
-    // struct module_state *st = GETSTATE(module);
 
     /* Version */
     PyModule_AddStringConstant(module, "__version__", "0.4.3");
