@@ -203,8 +203,6 @@ The functionality of the following constants is explained at *Markdown Extension
 
 The functionality of the following constants is explained at *Render Flags*.
 
-
-    HTML_GITHUB_BLOCKCODE
     HTML_SKIP_HTML
     HTML_SKIP_STYLE
     HTML_HARD_WRAP

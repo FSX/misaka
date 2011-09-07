@@ -7,10 +7,10 @@
 
 
 /* An extra flag to enabled Smartypants */
-static const unsigned int HTML_SMARTYPANTS = (1 << 12);
+static const unsigned int HTML_SMARTYPANTS = (1 << 9);
 
 /* Only render a table of contents tree */
-static const unsigned int HTML_TOC_TREE = (1 << 13);
+static const unsigned int HTML_TOC_TREE = (1 << 10);
 
 
 /* The module doc strings */
@@ -51,7 +51,7 @@ misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
     }
 
     markdown = sd_markdown_new(extensions, 16, &callbacks, &options);
-    sd_markdown_render(ob, &ib, markdown);
+    sd_markdown_render(ob, ib.data, ib.size, markdown);
     sd_markdown_free(markdown);
 
     /* Smartypants actions */
@@ -134,7 +134,6 @@ static PyMethodDef misaka_methods[] = {
     PyModule_AddIntConstant(module, "HTML_SAFELINK", HTML_SAFELINK);
     PyModule_AddIntConstant(module, "HTML_TOC", HTML_TOC);
     PyModule_AddIntConstant(module, "HTML_HARD_WRAP", HTML_HARD_WRAP);
-    PyModule_AddIntConstant(module, "HTML_GITHUB_BLOCKCODE", HTML_GITHUB_BLOCKCODE);
     PyModule_AddIntConstant(module, "HTML_USE_XHTML", HTML_USE_XHTML);
 
     /* Extra HTML render flags - these are not from Sundown */
