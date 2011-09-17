@@ -57,7 +57,7 @@ misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
     /* Smartypants actions */
     if (render_flags & HTML_SMARTYPANTS) {
         struct buf *sb = bufnew(128);
-        sdhtml_smartypants(sb, ob);
+        sdhtml_smartypants(sb, ob->data, ob->size);
         bufrelease(ob);
         ob = sb;
     }

@@ -16,6 +16,8 @@ setup(
         'src/sundown/markdown.c',
         'src/sundown/html.c',
         'src/sundown/html_smartypants.c',
+        'src/sundown/houdini_href_e.c',
+        'src/sundown/houdini_html_e.c',
         'src/sundown/autolink.c'
     ])],
     classifiers = [

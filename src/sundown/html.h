@@ -51,11 +51,8 @@ typedef enum {
 	HTML_TAG_CLOSE,
 } html_tag;
 
-void
-sdhtml_escape(struct buf *ob, const uint8_t *src, size_t size);
-
 int
-sdhtml_tag(const uint8_t *tag_data, size_t tag_size, const char *tagname);
+sdhtml_is_tag(const uint8_t *tag_data, size_t tag_size, const char *tagname);
 
 extern void
 sdhtml_renderer(struct sd_callbacks *callbacks, struct html_renderopt *options_ptr, unsigned int render_flags);
@@ -64,7 +61,7 @@ extern void
 sdhtml_toc_renderer(struct sd_callbacks *callbacks, struct html_renderopt *options_ptr);
 
 extern void
-sdhtml_smartypants(struct buf *ob, struct buf *text);
+sdhtml_smartypants(struct buf *ob, const uint8_t *text, size_t size);
 
 #endif
 
