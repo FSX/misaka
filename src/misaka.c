@@ -1,5 +1,6 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
+#include <structmember.h>
 
 #include "sundown/markdown.h"
 #include "sundown/html.h"
@@ -17,6 +18,107 @@ static const unsigned int HTML_TOC_TREE = (1 << 10);
 PyDoc_STRVAR(misaka_module__doc__, "Misaka is a Python binding for Sundown!");
 PyDoc_STRVAR(misaka_html__doc__, "Render Markdown text into HTML.");
 
+
+/* Renderer class
+----------------------------------------------------------------------------- */
+
+typedef struct {
+    PyObject_HEAD
+    unsigned int render_flags;
+} Renderer;
+
+
+static void
+Renderer_dealloc(Renderer* self)
+{
+    self->ob_type->tp_free((PyObject*)self);
+}
+
+
+static PyObject *
+Renderer_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+{
+    Renderer *self;
+
+    self = (Renderer *)type->tp_alloc(type, 0);
+    if (self != NULL) {
+        self->render_flags = 0;
+    }
+
+    return (PyObject *)self;
+}
+
+
+static int
+Renderer_init(Renderer *self, PyObject *args, PyObject *kwds)
+{
+    static char *kwlist[] = {"first", "last", "number", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds,
+        "|i", kwlist, &self->render_flags)) {
+        return -1;
+    }
+
+    return 0;
+}
+
+
+static PyMemberDef Renderer_members[] = {
+    {"render_flags", T_INT, offsetof(Renderer, render_flags), 0, NULL},
+    {NULL}  /* Sentinel */
+};
+
+
+static PyMethodDef Renderer_methods[] = {
+    {NULL}  /* Sentinel */
+};
+
+
+static PyTypeObject RendererType = {
+    PyObject_HEAD_INIT(NULL)
+    0,                         /*ob_size*/
+    "misaka.Renderer",         /*tp_name*/
+    sizeof(Renderer),          /*tp_basicsize*/
+    0,                         /*tp_itemsize*/
+    (destructor)Renderer_dealloc, /*tp_dealloc*/
+    0,                         /*tp_print*/
+    0,                         /*tp_getattr*/
+    0,                         /*tp_setattr*/
+    0,                         /*tp_compare*/
+    0,                         /*tp_repr*/
+    0,                         /*tp_as_number*/
+    0,                         /*tp_as_sequence*/
+    0,                         /*tp_as_mapping*/
+    0,                         /*tp_hash */
+    0,                         /*tp_call*/
+    0,                         /*tp_str*/
+    0,                         /*tp_getattro*/
+    0,                         /*tp_setattro*/
+    0,                         /*tp_as_buffer*/
+    Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE, /*tp_flags*/
+    0,                         /* tp_doc */
+    0,                         /* tp_traverse */
+    0,                         /* tp_clear */
+    0,                         /* tp_richcompare */
+    0,                         /* tp_weaklistoffset */
+    0,                         /* tp_iter */
+    0,                         /* tp_iternext */
+    Renderer_methods,          /* tp_methods */
+    Renderer_members,          /* tp_members */
+    0,                         /* tp_getset */
+    0,                         /* tp_base */
+    0,                         /* tp_dict */
+    0,                         /* tp_descr_get */
+    0,                         /* tp_descr_set */
+    0,                         /* tp_dictoffset */
+    (initproc)Renderer_init,   /* tp_init */
+    0,                         /* tp_alloc */
+    Renderer_new,              /* tp_new */
+};
+
+
+/* Simple Markdown to HTML function
+----------------------------------------------------------------------------- */
 
 static PyObject *
 misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
@@ -71,6 +173,9 @@ misaka_html(PyObject *self, PyObject *args, PyObject *kwargs)
 }
 
 
+/* Misaka module
+----------------------------------------------------------------------------- */
+
 static PyMethodDef misaka_methods[] = {
     {"html", (PyCFunction) misaka_html, METH_VARARGS | METH_KEYWORDS, misaka_html__doc__},
     {NULL, NULL, 0, NULL} /* Sentinel */
@@ -101,6 +206,10 @@ static PyMethodDef misaka_methods[] = {
     initmisaka(void)
 #endif
 {
+    RendererType.tp_new = PyType_GenericNew;
+    if (PyType_Ready(&RendererType) < 0)
+        return;
+
     #if PY_MAJOR_VERSION >= 3
         PyObject *module = PyModule_Create(&moduledef);
     #else
@@ -139,6 +248,9 @@ static PyMethodDef misaka_methods[] = {
     /* Extra HTML render flags - these are not from Sundown */
     PyModule_AddIntConstant(module, "HTML_SMARTYPANTS", HTML_SMARTYPANTS);
     PyModule_AddIntConstant(module, "HTML_TOC_TREE", HTML_TOC_TREE);
+
+    Py_INCREF(&RendererType);
+    PyModule_AddObject(module, "Renderer", (PyObject *)&RendererType);
 
     #if PY_MAJOR_VERSION >= 3
         return module;
