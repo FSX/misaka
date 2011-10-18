@@ -1,16 +1,20 @@
 from distutils.core import setup, Extension
+from Cython.Distutils import build_ext
+
 
 setup(
     name='misaka',
-    version='0.4.3',
+    version='1.0.0',
     description='A Python binding for Sundown.',
     author='Frank Smit',
     author_email='frank@61924.nl',
     url='http://misaka.61924.nl/',
     license='MIT',
     long_description=open('README.txt').read(),
+    cmdclass = {'build_ext': build_ext},
     ext_modules=[Extension('misaka', [
-        'src/misaka.c',
+        'src/misaka.pyx',
+        'src/wrapper.c',
         'src/sundown/stack.c',
         'src/sundown/buffer.c',
         'src/sundown/markdown.c',
