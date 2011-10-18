@@ -1,6 +1,13 @@
 News/Changelog
 ==============
 
+1.0.0 (2011-10-??)
+------------------
+
+ - Reimplemented existing functionality in Cython.
+ - Added render classes for customized Markdown rendering (like Redcarpet has).
+
+
 0.4.2 (2011-08-25)
 ------------------
 

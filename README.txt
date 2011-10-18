@@ -11,6 +11,8 @@ Documentation can be found at: http://misaka.61924.nl/
 Installation
 ------------
 
+Cython is needed to compile Misaka.
+
 With pip::
 
     pip install misaka

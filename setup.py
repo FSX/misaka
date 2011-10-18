@@ -29,6 +29,7 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: C',
+        'Programming Language :: Cython',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.2',
         'Topic :: Text Processing :: Markup',
