@@ -106,6 +106,17 @@ cdef class HtmlRenderer(BaseRenderer):
         _overload(self, &self.callbacks)
 
 
+cdef class HtmlTocRenderer(BaseRenderer):
+
+    def __init__(self, int render_flags=0):
+        self.options.self = <void *> self
+
+        sundown.sdhtml_toc_renderer(&self.callbacks,
+            &self.options.html)
+
+        _overload(self, &self.callbacks)
+
+
 cdef class Markdown:
 
     cdef sundown.sd_markdown *markdown
