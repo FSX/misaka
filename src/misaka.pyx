@@ -4,7 +4,9 @@ cimport wrapper
 from sundown cimport buf
 
 from libc.string cimport strdup
-from cpython.string cimport PyString_FromStringAndSize
+from libc.stdint cimport uint8_t
+from cpython.string cimport PyString_FromStringAndSize, PyString_AsString, \
+    PyString_Size
 
 
 __version__ = '1.0.0'
@@ -30,11 +32,13 @@ HTML_TOC = (1 << 6)
 HTML_HARD_WRAP = (1 << 7)
 HTML_USE_XHTML = (1 << 8)
 
+# Deprecated: planned for removal in 1.1.0
 # Extra HTML render flags - these are not from Sundown
 HTML_SMARTYPANTS = (1 << 9)  # An extra flag to enabled Smartypants
 HTML_TOC_TREE = (1 << 10)  # Only render a table of contents tree
 
 
+# Deprecated: planned for removal in 1.1.0
 def html(char *text, unsigned int extensions=0, unsigned int render_flags=0):
 
     cdef object result
@@ -82,6 +86,19 @@ cdef void *_overload(klass, sundown.sd_callbacks *callbacks):
             dest[i] = source[i]
 
 
+cdef class SmartyPants:
+    def postprocess(self, object text):
+        cdef sundown.buf *ob = sundown.bufnew(128)
+
+        sundown.sdhtml_smartypants(ob,
+            <uint8_t *> PyString_AsString(text), PyString_Size(text))
+        cdef object result = PyString_FromStringAndSize(
+            <char *> ob.data, ob.size)
+
+        sundown.bufrelease(ob)
+        return result
+
+
 cdef class BaseRenderer:
 
     cdef sundown.sd_callbacks callbacks
@@ -119,8 +136,10 @@ cdef class HtmlTocRenderer(BaseRenderer):
 cdef class Markdown:
 
     cdef sundown.sd_markdown *markdown
+    cdef BaseRenderer renderer
 
     def __cinit__(self, BaseRenderer renderer, int extensions=0):
+        self.renderer = renderer
         self.markdown = sundown.sd_markdown_new(
             extensions, 16,
             &renderer.callbacks,
@@ -141,6 +160,9 @@ cdef class Markdown:
 
         sundown.bufrelease(ob)
         sundown.bufrelease(ib)
+
+        if hasattr(self.renderer, 'postprocess'):
+            result = self.renderer.postprocess(result)
 
         return result
 
