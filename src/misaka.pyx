@@ -4,6 +4,7 @@ cimport wrapper
 from sundown cimport buf
 
 from libc.string cimport strdup
+from cpython.string cimport PyString_FromStringAndSize
 
 
 __version__ = '1.0.0'
@@ -34,10 +35,10 @@ HTML_SMARTYPANTS = (1 << 9)  # An extra flag to enabled Smartypants
 HTML_TOC_TREE = (1 << 10)  # Only render a table of contents tree
 
 
-cpdef char* html(char *text, unsigned int extensions=0,
+def html(char *text, unsigned int extensions=0,
                  unsigned int render_flags=0):
 
-    cdef char *result
+    cdef object result
     cdef sundown.buf *sb # Smartypants buffer
 
     cdef sundown.sd_callbacks callbacks
@@ -65,8 +66,7 @@ cpdef char* html(char *text, unsigned int extensions=0,
         sundown.bufrelease(ob)
         ob = sb
 
-    sundown.bufcstr(ob)
-    result = strdup(<char *> ob.data)
+    result = PyString_FromStringAndSize(<char *> ob.data, ob.size)
 
     sundown.bufrelease(ob)
     sundown.bufrelease(ib)
