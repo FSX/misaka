@@ -11,6 +11,10 @@ for name in names:
         pass
 
 
+rndr = modules['misaka'].HtmlRenderer()
+m = modules['misaka'].Markdown(rndr)
+
+
 class Benchmark(object):
     def __init__(self, name):
         self._name = name
@@ -28,6 +32,11 @@ class Benchmark(object):
 @Benchmark('Misaka')
 def benchmark_misaka(text):
     modules['misaka'].html(text)
+
+
+@Benchmark('Misaka (classes)')
+def benchmark_misaka_classes(text):
+    m.render(text)
 
 
 @Benchmark('markdown2')
@@ -54,10 +63,11 @@ if __name__ == '__main__':
     with open(path.join(path.dirname(__file__), 'markdown-syntax.md'), 'r') as fd:
         text = fd.read()
 
-    loops = 10000
+    loops = 50000
     totals = []
     methods = [
         ('Misaka', benchmark_misaka),
+        ('Misaka (classes)', benchmark_misaka_classes),
         ('Markdown', benchmark_markdown),
         ('Markdown2', benchmark_markdown2),
         ('cMarkdown', benchmark_cMarkdown),

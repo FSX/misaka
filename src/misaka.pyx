@@ -35,8 +35,7 @@ HTML_SMARTYPANTS = (1 << 9)  # An extra flag to enabled Smartypants
 HTML_TOC_TREE = (1 << 10)  # Only render a table of contents tree
 
 
-def html(char *text, unsigned int extensions=0,
-                 unsigned int render_flags=0):
+def html(char *text, unsigned int extensions=0, unsigned int render_flags=0):
 
     cdef object result
     cdef sundown.buf *sb # Smartypants buffer
@@ -128,7 +127,7 @@ cdef class Markdown:
             <sundown.html_renderopt *> &renderer.options)
 
     def render(self, char *text):
-        cdef char *result
+        cdef object result
 
         cdef sundown.buf *ib = sundown.bufnew(128)
         sundown.bufputs(ib, text)
@@ -138,8 +137,7 @@ cdef class Markdown:
 
         sundown.sd_markdown_render(ob, ib.data, ib.size, self.markdown)
 
-        sundown.bufcstr(ob)
-        result = strdup(<char *> ob.data)
+        result = PyString_FromStringAndSize(<char *> ob.data, ob.size)
 
         sundown.bufrelease(ob)
         sundown.bufrelease(ib)
