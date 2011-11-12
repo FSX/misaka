@@ -138,12 +138,16 @@ cdef class Markdown:
     cdef sundown.sd_markdown *markdown
     cdef BaseRenderer renderer
 
-    def __cinit__(self, BaseRenderer renderer, int extensions=0):
-        self.renderer = renderer
+    def __cinit__(self, object renderer, int extensions=0):
+        if not isinstance(renderer, BaseRenderer):
+            raise ValueError('expected instance of BaseRenderer, %s found' % \
+                renderer.__class__.__name__)
+
+        self.renderer = <BaseRenderer> renderer
         self.markdown = sundown.sd_markdown_new(
             extensions, 16,
-            &renderer.callbacks,
-            <sundown.html_renderopt *> &renderer.options)
+            &self.renderer.callbacks,
+            <sundown.html_renderopt *> &self.renderer.options)
 
     def render(self, char *text):
         cdef object result
@@ -167,4 +171,5 @@ cdef class Markdown:
         return result
 
     def __dealloc__(self):
-        sundown.sd_markdown_free(self.markdown)
+        if self.markdown is not NULL:
+            sundown.sd_markdown_free(self.markdown)
