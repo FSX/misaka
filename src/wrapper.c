@@ -8,7 +8,7 @@
 
 
 #define SPAN_PROCESS_OUTPUT(ret) {\
-    if (ret == NULL || ret == Py_None)\
+    if (ret == NULL || ret == Py_None || !PyString_Check(ret))\
         return 0;\
     bufputs(ob, PyString_AsString(ret));\
     return 1;\
@@ -16,7 +16,7 @@
 
 
 #define BLOCK_PROCESS_OUTPUT(ret) {\
-    if (ret == NULL || ret == Py_None)\
+    if (ret == NULL || ret == Py_None || !PyString_Check(ret))\
         return;\
     bufputs(ob, PyString_AsString(ret));\
 }
