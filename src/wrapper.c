@@ -8,17 +8,19 @@
 
 
 #define SPAN_PROCESS_OUTPUT(ret) {\
-    if (ret == NULL || ret == Py_None || !PyString_Check(ret))\
+    if (ret == NULL || ret == Py_None)\
         return 0;\
-    bufputs(ob, PyString_AsString(ret));\
+    PyObject *byte_string = PyUnicode_AsEncodedString(ret, "utf-8", "strict");\
+    bufputs(ob, PyBytes_AsString(byte_string));\
     return 1;\
 }
 
 
 #define BLOCK_PROCESS_OUTPUT(ret) {\
-    if (ret == NULL || ret == Py_None || !PyString_Check(ret))\
+    if (ret == NULL || ret == Py_None)\
         return;\
-    bufputs(ob, PyString_AsString(ret));\
+    PyObject *byte_string = PyUnicode_AsEncodedString(ret, "utf-8", "strict");\
+    bufputs(ob, PyBytes_AsString(byte_string));\
 }
 
 
