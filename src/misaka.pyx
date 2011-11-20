@@ -109,7 +109,7 @@ cdef class BaseRenderer:
 
     cdef sundown.sd_callbacks callbacks
     cdef wrapper.renderopt options
-    cdef public int flags
+    cdef readonly int flags
 
     def __init__(self, int flags=0):
         self.options.self = <void *> self
