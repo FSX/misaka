@@ -149,7 +149,6 @@ cdef class Markdown:
             <sundown.html_renderopt *> &self.renderer.options)
 
     def render(self, object text):
-
         if hasattr(self.renderer, 'preprocess'):
             text = self.renderer.preprocess(text)
 

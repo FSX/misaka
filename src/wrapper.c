@@ -28,7 +28,7 @@
    ----------- */
 
 
-void
+static void
 rndr_blockcode(struct buf *ob, const struct buf *text, const struct buf *lang, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -41,7 +41,7 @@ rndr_blockcode(struct buf *ob, const struct buf *text, const struct buf *lang, v
 }
 
 
-void
+static void
 rndr_blockquote(struct buf *ob, const struct buf *text, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -53,7 +53,7 @@ rndr_blockquote(struct buf *ob, const struct buf *text, void *opaque)
 }
 
 
-void
+static void
 rndr_raw_block(struct buf *ob, const struct buf *text, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -65,7 +65,7 @@ rndr_raw_block(struct buf *ob, const struct buf *text, void *opaque)
 }
 
 
-void
+static void
 rndr_header(struct buf *ob, const struct buf *text, int level, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -78,7 +78,7 @@ rndr_header(struct buf *ob, const struct buf *text, int level, void *opaque)
 }
 
 
-void
+static void
 rndr_hrule(struct buf *ob, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -88,7 +88,7 @@ rndr_hrule(struct buf *ob, void *opaque)
 }
 
 
-void
+static void
 rndr_list(struct buf *ob, const struct buf *text, int flags, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -101,7 +101,7 @@ rndr_list(struct buf *ob, const struct buf *text, int flags, void *opaque)
 }
 
 
-void
+static void
 rndr_listitem(struct buf *ob, const struct buf *text, int flags, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -114,7 +114,7 @@ rndr_listitem(struct buf *ob, const struct buf *text, int flags, void *opaque)
 }
 
 
-void
+static void
 rndr_paragraph(struct buf *ob, const struct buf *text, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -126,7 +126,7 @@ rndr_paragraph(struct buf *ob, const struct buf *text, void *opaque)
 }
 
 
-void
+static void
 rndr_table(struct buf *ob, const struct buf *header, const struct buf *body, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -139,7 +139,7 @@ rndr_table(struct buf *ob, const struct buf *header, const struct buf *body, voi
 }
 
 
-void
+static void
 rndr_tablerow(struct buf *ob, const struct buf *text, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -151,7 +151,7 @@ rndr_tablerow(struct buf *ob, const struct buf *text, void *opaque)
 }
 
 
-void
+static void
 rndr_tablecell(struct buf *ob, const struct buf *text, int align, void *opaque)
 {
     char *str_align;
@@ -188,7 +188,7 @@ rndr_tablecell(struct buf *ob, const struct buf *text, int align, void *opaque)
    ---------- */
 
 
-int
+static int
 rndr_autolink(struct buf *ob, const struct buf *link, enum mkd_autolink type, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -201,7 +201,7 @@ rndr_autolink(struct buf *ob, const struct buf *link, enum mkd_autolink type, vo
 }
 
 
-int
+static int
 rndr_codespan(struct buf *ob, const struct buf *text, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -213,7 +213,7 @@ rndr_codespan(struct buf *ob, const struct buf *text, void *opaque)
 }
 
 
-int
+static int
 rndr_double_emphasis(struct buf *ob, const struct buf *text, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -225,7 +225,7 @@ rndr_double_emphasis(struct buf *ob, const struct buf *text, void *opaque)
 }
 
 
-int
+static int
 rndr_emphasis(struct buf *ob, const struct buf *text, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -237,7 +237,7 @@ rndr_emphasis(struct buf *ob, const struct buf *text, void *opaque)
 }
 
 
-int
+static int
 rndr_image(struct buf *ob, const struct buf *link, const struct buf *title, const struct buf *alt, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -251,7 +251,7 @@ rndr_image(struct buf *ob, const struct buf *link, const struct buf *title, cons
 }
 
 
-int
+static int
 rndr_linebreak(struct buf *ob, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -261,7 +261,7 @@ rndr_linebreak(struct buf *ob, void *opaque)
 }
 
 
-int
+static int
 rndr_link(struct buf *ob, const struct buf *link, const struct buf *title, const struct buf *content, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -275,7 +275,7 @@ rndr_link(struct buf *ob, const struct buf *link, const struct buf *title, const
 }
 
 
-int
+static int
 rndr_raw_html(struct buf *ob, const struct buf *text, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -287,7 +287,7 @@ rndr_raw_html(struct buf *ob, const struct buf *text, void *opaque)
 }
 
 
-int
+static int
 rndr_triple_emphasis(struct buf *ob, const struct buf *text, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -299,7 +299,7 @@ rndr_triple_emphasis(struct buf *ob, const struct buf *text, void *opaque)
 }
 
 
-int
+static int
 rndr_strikethrough(struct buf *ob, const struct buf *text, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -311,7 +311,7 @@ rndr_strikethrough(struct buf *ob, const struct buf *text, void *opaque)
 }
 
 
-int
+static int
 rndr_superscript(struct buf *ob, const struct buf *text, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -327,7 +327,7 @@ rndr_superscript(struct buf *ob, const struct buf *text, void *opaque)
    ------------- */
 
 
-void
+static void
 rndr_entity(struct buf *ob, const struct buf *text, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -339,7 +339,7 @@ rndr_entity(struct buf *ob, const struct buf *text, void *opaque)
 }
 
 
-void
+static void
 rndr_normal_text(struct buf *ob, const struct buf *text, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -351,7 +351,7 @@ rndr_normal_text(struct buf *ob, const struct buf *text, void *opaque)
 }
 
 
-void
+static void
 rndr_doc_header(struct buf *ob, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -361,7 +361,7 @@ rndr_doc_header(struct buf *ob, void *opaque)
 }
 
 
-void
+static void
 rndr_doc_footer(struct buf *ob, void *opaque)
 {
     struct renderopt *opt = opaque;
@@ -369,3 +369,73 @@ rndr_doc_footer(struct buf *ob, void *opaque)
         (PyObject *) opt->self, "doc_footer", NULL);
     BLOCK_PROCESS_OUTPUT(ret);
 }
+
+
+struct sd_callbacks callback_funcs = {
+    rndr_blockcode,
+    rndr_blockquote,
+    rndr_raw_block,
+    rndr_header,
+    rndr_hrule,
+    rndr_list,
+    rndr_listitem,
+    rndr_paragraph,
+    rndr_table,
+    rndr_tablerow,
+    rndr_tablecell,
+
+    rndr_autolink,
+    rndr_codespan,
+    rndr_double_emphasis,
+    rndr_emphasis,
+    rndr_image,
+    rndr_linebreak,
+    rndr_link,
+    rndr_raw_html,
+    rndr_triple_emphasis,
+    rndr_strikethrough,
+    rndr_superscript,
+
+    rndr_entity,
+    rndr_normal_text,
+
+    rndr_doc_header,
+    rndr_doc_footer,
+};
+
+
+const char *method_names[] = {
+    "block_code",
+    "block_quote",
+    "block_html",
+    "header",
+    "hrule",
+    "list",
+    "list_item",
+    "paragraph",
+    "table",
+    "table_row",
+    "table_cell",
+
+    "autolink",
+    "codespan",
+    "double_emphasis",
+    "emphasis",
+    "image",
+    "linebreak",
+    "link",
+    "raw_html",
+    "triple_emphasis",
+    "strikethrough",
+    "superscript",
+
+    "entity",
+    "normal_text",
+
+    "doc_header",
+    "doc_footer"
+};
+
+
+const size_t method_count = sizeof(
+    method_names)/sizeof(char *);
