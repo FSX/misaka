@@ -111,36 +111,30 @@ cdef class BaseRenderer:
     cdef wrapper.renderopt options
     cdef readonly int flags
 
-    def __init__(self, int flags=0):
+    def __cinit__(self, int flags=0):
         self.options.self = <void *> self
         self.flags = flags
+        self.setup()
         _overload(self, &self.callbacks)
+
+    def setup(self):
+        pass
 
 
 cdef class HtmlRenderer(BaseRenderer):
-
-    def __init__(self, int flags=0):
-        self.options.self = <void *> self
-        self.options.html.flags = flags
-        self.flags = flags
-
-        sundown.sdhtml_renderer(&self.callbacks,
+    def setup(self):
+        self.options.html.flags = self.flags
+        sundown.sdhtml_renderer(
+            &self.callbacks,
             &self.options.html,
             self.options.html.flags)
 
-        _overload(self, &self.callbacks)
-
 
 cdef class HtmlTocRenderer(BaseRenderer):
-
-    def __init__(self, int flags=0):
-        self.options.self = <void *> self
-        self.flags = flags
-
-        sundown.sdhtml_toc_renderer(&self.callbacks,
+    def setup(self, int flags=0):
+        sundown.sdhtml_toc_renderer(
+            &self.callbacks,
             &self.options.html)
-
-        _overload(self, &self.callbacks)
 
 
 cdef class Markdown:
