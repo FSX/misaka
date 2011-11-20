@@ -1,13 +1,7 @@
 cimport sundown
 cimport wrapper
 
-# from sundown cimport buf
-
-from libc cimport stdlib
-from libc.string cimport strdup
 from libc.stdint cimport uint8_t
-# from cpython.string cimport PyString_FromStringAndSize, PyString_AsString, \
-#     PyString_Size
 
 
 __version__ = '1.0.0'
@@ -83,26 +77,20 @@ def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
         sundown.bufrelease(ib)
 
 
-cdef void *_overload(klass, sundown.sd_callbacks *callbacks):
-    cdef void **source = <void **> &wrapper.callback_funcs
-    cdef void **dest = <void **> callbacks
+cdef class SmartyPants:
+    def postprocess(self, object text):
+        cdef bytes py_string = text.encode('UTF-8')
+        cdef char *c_string = py_string
+        del py_string
 
-    for i from 0 <= i < <int> wrapper.method_count by 1:
-        if hasattr(klass, wrapper.method_names[i]):
-            dest[i] = source[i]
+        cdef sundown.buf *ob = sundown.bufnew(128)
+        sundown.sdhtml_smartypants(ob,
+            <uint8_t *> c_string, len(text))
 
-
-# cdef class SmartyPants:
-#     def postprocess(self, object text):
-#         cdef sundown.buf *ob = sundown.bufnew(128)
-
-#         sundown.sdhtml_smartypants(ob,
-#             <uint8_t *> PyString_AsString(text), PyString_Size(text))
-#         cdef object result = PyString_FromStringAndSize(
-#             <char *> ob.data, ob.size)
-
-#         sundown.bufrelease(ob)
-#         return result
+        try:
+            return (<char *> ob.data)[:ob.size].decode('UTF-8', 'strict')
+        finally:
+            sundown.bufrelease(ob)
 
 
 cdef class BaseRenderer:
@@ -115,7 +103,14 @@ cdef class BaseRenderer:
         self.options.self = <void *> self
         self.flags = flags
         self.setup()
-        _overload(self, &self.callbacks)
+
+        # Set callbacks
+        cdef void **source = <void **> &wrapper.callback_funcs
+        cdef void **dest = <void **> &self.callbacks
+
+        for i from 0 <= i < <int> wrapper.method_count by 1:
+            if hasattr(self, wrapper.method_names[i]):
+                dest[i] = source[i]
 
     def setup(self):
         pass
@@ -155,6 +150,9 @@ cdef class Markdown:
 
     def render(self, object text):
 
+        if hasattr(self.renderer, 'preprocess'):
+            text = self.renderer.preprocess(text)
+
         # Convert string
         cdef bytes py_string = text.encode('UTF-8')
         cdef char *c_string = py_string
@@ -167,15 +165,16 @@ cdef class Markdown:
         cdef sundown.buf *ob = sundown.bufnew(128)
         sundown.bufgrow(ob, <size_t> (ib.size * 1.4))
 
-        # Parser
+        # Parse! And make a unicode string
         sundown.sd_markdown_render(ob, ib.data, ib.size, self.markdown)
+        text = (<char *> ob.data)[:ob.size].decode('UTF-8', 'strict')
 
-        # if hasattr(self.renderer, 'postprocess'):
-        #     result = self.renderer.postprocess(result)
+        if hasattr(self.renderer, 'postprocess'):
+            text = self.renderer.postprocess(text)
 
         # Return a string and release buffers
         try:
-            return (<char *> ob.data)[:ob.size].decode('UTF-8', 'strict')
+            return text
         finally:
             sundown.bufrelease(ob)
             sundown.bufrelease(ib)
