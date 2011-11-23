@@ -1,7 +1,7 @@
 Misaka
 ======
 
-A Python binding for Sundown_.
+A Python binding for Sundown_, a markdown library.
 
 Documentation can be found at: http://misaka.61924.nl/
 
@@ -20,3 +20,14 @@ With pip::
 Or manually::
 
     python setup.py install
+
+
+Example
+-------
+
+    from misaka import Markdown, HtmlRenderer
+
+    rndr = HtmlRenderer()
+    md = Markdown(rndr)
+
+    print md.render('some text')

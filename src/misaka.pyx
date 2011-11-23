@@ -6,7 +6,7 @@ from libc.stdint cimport uint8_t
 
 __version__ = '1.0.0'
 
-# Markdown extensions
+#: Markdown extensions
 EXT_NO_INTRA_EMPHASIS = (1 << 0)
 EXT_TABLES = (1 << 1)
 EXT_FENCED_CODE = (1 << 2)
@@ -16,7 +16,7 @@ EXT_LAX_HTML_BLOCKS = (1 << 5)
 EXT_SPACE_HEADERS = (1 << 6)
 EXT_SUPERSCRIPT = (1 << 7)
 
-# HTML Render flags
+#: HTML Render flags
 HTML_SKIP_HTML = (1 << 0)
 HTML_SKIP_STYLE = (1 << 1)
 HTML_SKIP_IMAGES = (1 << 2)
@@ -33,6 +33,16 @@ HTML_TOC_TREE = (1 << 10)  # Only render a table of contents tree
 
 
 def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
+    """Convert a Markdown text to (X)HTML::
+
+        misaka.html('source *text*',
+            extensions=EXT_AUTOLINK|EXT_SUPERSCRIPT|EXT_STRIKETHROUGH,
+            render_flags=HTML_SKIP_HTML|HTML_USE_XHTML)
+
+    :param text: source text as a (unicode) string.
+    :param extensions: enable additional Markdown extensions with the ``EXT_*`` constants.
+    :param render_flags: adjust rendering behaviour with the ``HTML_*`` constants.
+    """
 
     # Convert string
     cdef bytes py_string = text.encode('UTF-8')
@@ -78,14 +88,19 @@ def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
 
 
 cdef class SmartyPants:
+    """Smartypants postprocessor for renderers. This postprocessor can be used
+    like this::
+
+        class BleepRenderer(HtmlRenderer, SmartyPants):
+            pass
+    """
     def postprocess(self, object text):
         cdef bytes py_string = text.encode('UTF-8')
         cdef char *c_string = py_string
-        del py_string
 
         cdef sundown.buf *ob = sundown.bufnew(128)
         sundown.sdhtml_smartypants(ob,
-            <uint8_t *> c_string, len(text))
+            <uint8_t *> c_string, len(py_string))
 
         try:
             return (<char *> ob.data)[:ob.size].decode('UTF-8', 'strict')
@@ -94,9 +109,17 @@ cdef class SmartyPants:
 
 
 cdef class BaseRenderer:
+    """The ``BaseRenderer`` class should not be used directly, but subclassed.
+    It does nothign by itself, because there are no rendering methods. This
+    should be done by the class that subclasses ``BaseRenderer``.
+
+    :param flags: flags that can be used by the renderer.
+    """
 
     cdef sundown.sd_callbacks callbacks
     cdef wrapper.renderopt options
+
+    #: Read-only render flags
     cdef readonly int flags
 
     def __cinit__(self, int flags=0):
@@ -113,10 +136,17 @@ cdef class BaseRenderer:
                 dest[i] = source[i]
 
     def setup(self):
+        """The ``setup`` method can be overridden by a subclass. This method
+        is executed when a new object of the class is created.
+        """
         pass
 
 
 cdef class HtmlRenderer(BaseRenderer):
+    """A HTML renderer.
+
+    :param flags: Accepts the ``HTML_*`` constants as flags.
+    """
     def setup(self):
         self.options.html.flags = self.flags
         sundown.sdhtml_renderer(
@@ -126,6 +156,10 @@ cdef class HtmlRenderer(BaseRenderer):
 
 
 cdef class HtmlTocRenderer(BaseRenderer):
+    """A HTML table of contents renderer.
+
+    :param flags: Accepts the ``HTML_*`` constants as flags.
+    """
     def setup(self, int flags=0):
         sundown.sdhtml_toc_renderer(
             &self.callbacks,
@@ -133,6 +167,11 @@ cdef class HtmlTocRenderer(BaseRenderer):
 
 
 cdef class Markdown:
+    """The Markdown parser.
+
+    :param renderer: an instance of ``BaseRenderer``.
+    :param extensions: enable Markdown extensions with the ``EXT_*`` constants.
+    """
 
     cdef sundown.sd_markdown *markdown
     cdef BaseRenderer renderer
@@ -149,6 +188,10 @@ cdef class Markdown:
             <sundown.html_renderopt *> &self.renderer.options)
 
     def render(self, object text):
+        """Render the given source text.
+
+        :param text: source text as a (unicode) string.
+        """
         if hasattr(self.renderer, 'preprocess'):
             text = self.renderer.preprocess(text)
 

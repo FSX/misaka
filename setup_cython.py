@@ -1,4 +1,5 @@
 from distutils.core import setup, Extension
+from Cython.Distutils import build_ext
 
 
 setup(
@@ -10,8 +11,9 @@ setup(
     url='http://misaka.61924.nl/',
     license='MIT',
     long_description=open('README.txt').read(),
+    cmdclass = {'build_ext': build_ext},
     ext_modules=[Extension('misaka', [
-        'src/misaka.c',
+        'src/misaka.pyx',
         'src/wrapper.c',
         'src/sundown/stack.c',
         'src/sundown/buffer.c',

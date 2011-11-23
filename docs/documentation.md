@@ -1,120 +1,57 @@
 ## Introduction
 
-Misaka is a Python (2.7 and 3.2) and PyPy (1.6) binding for [Sundown][-1]. And
-Sundown is a Markdown library written in C and it's really fast. Here are some
-[benchmarks][0]:
+Misaka is a Python (2.7 and 3.2) binding for [Sundown][1], a markdown library.
+The binding is written in [Cython][2]/C and Sundown is written in C. So it's
+very fast.
 
-Python 2.7:
-
-    Parsing the Markdown Syntax document 10000 times...
-    Misaka: 3.18s
-    Markdown: 566.8s
-    Markdown2: 689.09s
-    cMarkdown: 6.15s
-    Discount: 15.28s
-
-Python 3.2:
-
-    Parsing the Markdown Syntax document 10000 times...
-    Misaka: 4.12s
-    Markdown: 578.43s
-    Markdown2 is not available
-    cMarkdown is not available
-    Discount is not available
-
-PyPy 1.6:
-
-    Parsing the Markdown Syntax document 10000 times...
-    Misaka: 9.88602s
-    Markdown: 746.591s
-    Markdown2: 684.435s
-    cMarkdown: 25.9316s
-    Discount is not available
-
-Besides Markdown (Python-Markdown, latest checkout from Git) I haven't been able
-to find any working  Markdown parsers for Python 3. If there are more, please
-notify me.
-
-
- [-1]: https://github.com/tanoku/sundown
- [0]: https://github.com/FSX/misaka/blob/master/benchmark/benchmark.py
+ [1]: https://github.com/tanoku/sundown
+ [2]: http://cython.org/
 
 
 ## Installation
 
-Download Misaka from [Github][1] and run the following command. Keep in mind
-that Misaka has only been tested with Python 2.7 and 3.2 and PyPy 1.6.
-
-    python setup.py install
-
-Or from PyPi:
+Misaka can be installed with:
 
     pip install misaka
 
-And you're done.
+Or if you want the latest copy from [Github][3]:
 
+    git clone https://github.com/FSX/misaka.git
+    cd misaka
+    python setup.py install
 
- [1]: https://github.com/FSX/misaka
+Cython is not needed, because the generated C file is included. If you want to
+use Cython and regenerate the C file you can user `setup_cython.py` instead of
+`setup.py`.
+
+ [3]: https://github.com/FSX/misaka
 
 
 ## Usage
 
-Example:
+Like this:
 
 ~~~~ {.python}
-import misaka
+from misaka import Markdown, HtmlRenderer
 
-print misaka.html('Hello, world!')
+md = Markdown(HtmlRenderer())
+
+print md.render('some text')
 ~~~~
 
-With extensions and render flags:
+Or like this:
 
 ~~~~ {.python}
-import misaka as m
+from misaka import Markdown, HtmlRenderer, SmartyPants
 
-print m.html(
-    'Hello, world!',
-    m.EXT_AUTOLINK | m.EXT_TABLES,
-    m.HTML_EXPAND_TABS
-)
+class BleepRenderer(HtmlRenderer, SmartyPants):
+    pass
+
+md = Markdown(BleepRenderer())
+
+print md.render('some text')
 ~~~~
 
-In combination with `functools.partial`:
-
-~~~~ {.python}
-import functools
-import misaka as m
-
-markdown = functools.partial(
-    m.html,
-    extensions=m.EXT_AUTOLINK | m.EXT_TABLES,
-    render_flags=m.HTML_EXPAND_TABS
-)
-print markdown('Awesome!')
-~~~~
-
-Or generate a table of contents:
-
-~~~~ {.python}
-sometext = '''
-# Header one
-
-Some text here.
-
-## Header two
-
-Some more text
-'''
-
-# To generate the TOC tree
-print misaka.html(sometext,
-    render_flags=misaka.HTML_TOC_TREE)
-
-# To generate the HTML with the
-# headers adjusted for the TOC
-print misaka.html(sometext,
-    render_flags=misaka.HTML_TOC)
-~~~~
 
 <div class="note">
     <p><b>Note:</b><br />
@@ -124,96 +61,9 @@ print misaka.html(sometext,
 </div>
 
 
-## Syntax highlighting
-
-Misaka and Sundown do not have syntax highlighting by default. With the fenced
-codeblock extension and the the Github codeblock renderflag you can add classes
-or a language attribute to codeblocks.
-
-With the following snippet you can highlight codeblocks with [Pygments][2] by
-passing HTML through it.
-
-~~~~ {.python}
-import re
-
-from pygments import highlight
-from pygments.formatters import HtmlFormatter
-from pygments.lexers import get_lexer_by_name
-
-
-_re_codeblock = re.compile(r'<pre(?: lang="([a-z0-9]+)")?><code'
-    '(?: class="([a-z0-9]+).*?")?>(.*?)</code></pre>',
-    re.IGNORECASE | re.DOTALL)
-
-def highlight_code(html):
-    def _unescape_html(html):
-        html = html.replace('&lt;', '<')
-        html = html.replace('&gt;', '>')
-        html = html.replace('&amp;', '&')
-        return html.replace('&quot;', '"')
-    def _highlight_match(match):
-        language, classname, code = match.groups()
-        if (language or classname) is None:
-            return match.group(0)
-        return highlight(_unescape_html(code),
-            get_lexer_by_name(language or classname),
-            HtmlFormatter())
-    return _re_codeblock.sub(_highlight_match, html)
-~~~~
-
-It looks for all codeblocks and either uses the language attribute or the first
-class in the class attribute. It assumes that all the HTML is correct and no
-no nesting of codeblocks occur.
-
-The unescaping function is needed to unescape the code before Pygments procecesses
-it. Otherwise you'll get double escape HTML.
-
- [2]: http://pygments.org/
-
-
 ## API
 
-All of the following functions and constants are from the `misaka` module.
-
-
-### misaka.html
-
-The `html` function converts the Markdown text to HTML. It accepts the following arguments.
-
- * `text`: The Markdown source text.
- * `extensions`: One or more extension constants (optional).
- * `render_flags`: One or more render flag constants (optional).
-
-
-### Extensions
-
-The functionality of the following constants is explained at *Markdown Extensions*.
-
-    EXT_AUTOLINK
-    EXT_LAX_HTML_BLOCKS
-    EXT_TABLES
-    EXT_NO_INTRA_EMPHASIS
-    EXT_STRIKETHROUGH
-    EXT_FENCED_CODE
-    EXT_SPACE_HEADERS
-    EXT_SUPERSCRIPT
-
-
-### Render Flags
-
-The functionality of the following constants is explained at *Render Flags*.
-
-    HTML_SKIP_HTML
-    HTML_SKIP_STYLE
-    HTML_HARD_WRAP
-    HTML_TOC
-    HTML_SKIP_LINKS
-    HTML_SAFELINK
-    HTML_SKIP_IMAGES
-    HTML_EXPAND_TABS
-    HTML_USE_XHTML
-    HTML_SMARTYPANTS
-    HTML_TOC_TREE
+-
 
 
 ## Changelog
