@@ -81,7 +81,7 @@ def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
 
     # Return a string and release buffers
     try:
-        return (<char *> ob.data)[:ob.size].decode('UTF-8', 'strict')
+        return (<char *> ob.data)[:ob.size].decode('UTF-8', 'ignore')
     finally:
         sundown.bufrelease(ob)
         sundown.bufrelease(ib)
@@ -103,7 +103,7 @@ cdef class SmartyPants:
             <uint8_t *> c_string, len(py_string))
 
         try:
-            return (<char *> ob.data)[:ob.size].decode('UTF-8', 'strict')
+            return (<char *> ob.data)[:ob.size].decode('UTF-8', 'ignore')
         finally:
             sundown.bufrelease(ob)
 
@@ -209,7 +209,7 @@ cdef class Markdown:
 
         # Parse! And make a unicode string
         sundown.sd_markdown_render(ob, ib.data, ib.size, self.markdown)
-        text = (<char *> ob.data)[:ob.size].decode('UTF-8', 'strict')
+        text = (<char *> ob.data)[:ob.size].decode('UTF-8', 'ignore')
 
         if hasattr(self.renderer, 'postprocess'):
             text = self.renderer.postprocess(text)

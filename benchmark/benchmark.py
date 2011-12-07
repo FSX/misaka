@@ -62,6 +62,7 @@ def benchmark_discount(text):
 if __name__ == '__main__':
     with open(path.join(path.dirname(__file__), 'markdown-syntax.md'), 'r') as fd:
         text = fd.read()
+    # text = 'boobs' * 5000
 
     loops = 10000
     totals = []

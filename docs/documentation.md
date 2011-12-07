@@ -63,10 +63,17 @@ print md.render('some text')
 
 ## API
 
--
+None.
 
 
 ## Changelog
+
+### 1.0.0b1 (2011-11-??)
+
+ * Reimplemented existing functionality in Cython.
+ * Added renderer classes for customized Markdown rendering (like Redcarpet has).
+ * Updated Sundown files; See commits from Aug 20, 2011 to Dec 3, 2011:
+   https://github.com/tanoku/sundown/commits/master/
 
 ### 0.4.2 (2011-08-25)
 
