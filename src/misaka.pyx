@@ -45,9 +45,8 @@ def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
     """
 
     # Convert string
-    cdef bytes py_string = text.encode('UTF-8')
+    cdef bytes py_string = text.encode('UTF-8', 'strict')
     cdef char *c_string = py_string
-    del py_string
 
     # Definitions
     cdef sundown.sd_callbacks callbacks
@@ -81,7 +80,7 @@ def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
 
     # Return a string and release buffers
     try:
-        return (<char *> ob.data)[:ob.size].decode('UTF-8', 'ignore')
+        return (<char *> ob.data)[:ob.size].decode('UTF-8', 'strict')
     finally:
         sundown.bufrelease(ob)
         sundown.bufrelease(ib)
@@ -95,7 +94,7 @@ cdef class SmartyPants:
             pass
     """
     def postprocess(self, object text):
-        cdef bytes py_string = text.encode('UTF-8')
+        cdef bytes py_string = text.encode('UTF-8', 'strict')
         cdef char *c_string = py_string
 
         cdef sundown.buf *ob = sundown.bufnew(128)
@@ -103,7 +102,7 @@ cdef class SmartyPants:
             <uint8_t *> c_string, len(py_string))
 
         try:
-            return (<char *> ob.data)[:ob.size].decode('UTF-8', 'ignore')
+            return (<char *> ob.data)[:ob.size].decode('UTF-8', 'strict')
         finally:
             sundown.bufrelease(ob)
 
@@ -196,9 +195,8 @@ cdef class Markdown:
             text = self.renderer.preprocess(text)
 
         # Convert string
-        cdef bytes py_string = text.encode('UTF-8')
+        cdef bytes py_string = text.encode('UTF-8', 'strict')
         cdef char *c_string = py_string
-        del py_string
 
         # Buffers
         cdef sundown.buf *ib = sundown.bufnew(128)
@@ -209,7 +207,7 @@ cdef class Markdown:
 
         # Parse! And make a unicode string
         sundown.sd_markdown_render(ob, ib.data, ib.size, self.markdown)
-        text = (<char *> ob.data)[:ob.size].decode('UTF-8', 'ignore')
+        text = (<char *> ob.data)[:ob.size].decode('UTF-8', 'strict')
 
         if hasattr(self.renderer, 'postprocess'):
             text = self.renderer.postprocess(text)
