@@ -4,7 +4,7 @@ cimport wrapper
 from libc.stdint cimport uint8_t
 
 
-__version__ = '1.0.0'
+__version__ = '1.0.0b1'
 
 #: Markdown extensions
 EXT_NO_INTRA_EMPHASIS = (1 << 0)
