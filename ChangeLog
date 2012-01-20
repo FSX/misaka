@@ -6,7 +6,7 @@ News/Changelog
 
  - Reimplemented existing functionality in Cython.
  - Added renderer classes for customized Markdown rendering (like Redcarpet has).
- - Updated Sundown files; See commits from Aug 20, 2011 to Dec 3, 2011:
+ - Updated Sundown files; See commits from Aug 20, 2011 to Dec 20, 2011:
    https://github.com/tanoku/sundown/commits/master/
 
 

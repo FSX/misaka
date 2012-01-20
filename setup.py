@@ -9,7 +9,7 @@ setup(
     author_email='frank@61924.nl',
     url='http://misaka.61924.nl/',
     license='MIT',
-    long_description=open('README.txt').read(),
+    long_description=open('README.rst').read(),
     ext_modules=[Extension('misaka', [
         'src/misaka.c',
         'src/wrapper.c',
