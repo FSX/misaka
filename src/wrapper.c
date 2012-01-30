@@ -7,19 +7,6 @@
 #include "wrapper.h"
 
 
-#define SPAN_PROCESS_OUTPUT(ret) {\
-    if (ret == NULL || ret == Py_None)\
-        return 0;\
-    if (PyUnicode_Check(ret)) {\
-        PyObject *byte_string = PyUnicode_AsEncodedString(ret, "utf-8", "strict");\
-        bufputs(ob, PyBytes_AsString(byte_string));\
-    } else {\
-        bufputs(ob, PyBytes_AsString(ret));\
-    }\
-    return 1;\
-}
-
-
 #define PROCESS_SPAN(method_name, ...) {\
     struct renderopt *opt = opaque;\
     PyObject *ret = PyObject_CallMethodObjArgs(\
@@ -165,135 +152,77 @@ rndr_tablecell(struct buf *ob, const struct buf *text, int align, void *opaque)
 static int
 rndr_autolink(struct buf *ob, const struct buf *link, enum mkd_autolink type, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "autolink", "ss",
-        bufcstr((struct buf *) link),
-        (type == MKDA_NORMAL ? "url" : "email")
-    );
-    SPAN_PROCESS_OUTPUT(ret);
+    PROCESS_SPAN("autolink", PY_STR(link), PY_INT(type), NULL);
 }
 
 
 static int
 rndr_codespan(struct buf *ob, const struct buf *text, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "codespan", "s",
-        bufcstr((struct buf *) text)
-    );
-    SPAN_PROCESS_OUTPUT(ret);
+    PROCESS_SPAN("codespan", PY_STR(text), NULL);
 }
 
 
 static int
 rndr_double_emphasis(struct buf *ob, const struct buf *text, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "double_emphasis", "s",
-        bufcstr((struct buf *) text)
-    );
-    SPAN_PROCESS_OUTPUT(ret);
+    PROCESS_SPAN("double_emphasis", PY_STR(text), NULL);
 }
 
 
 static int
 rndr_emphasis(struct buf *ob, const struct buf *text, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "emphasis", "s",
-        bufcstr((struct buf *) text)
-    );
-    SPAN_PROCESS_OUTPUT(ret);
+    PROCESS_SPAN("emphasis", PY_STR(text), NULL);
 }
 
 
 static int
 rndr_image(struct buf *ob, const struct buf *link, const struct buf *title, const struct buf *alt, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "image", "sss",
-        bufcstr((struct buf *) link),
-        bufcstr((struct buf *) title),
-        bufcstr((struct buf *) alt)
-    );
-    SPAN_PROCESS_OUTPUT(ret);
+    PROCESS_SPAN("image", PY_STR(link), PY_STR(title), PY_STR(alt), NULL);
 }
 
 
 static int
 rndr_linebreak(struct buf *ob, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "linebreak", NULL);
-    SPAN_PROCESS_OUTPUT(ret);
+    PROCESS_SPAN("linebreak", NULL);
 }
 
 
 static int
 rndr_link(struct buf *ob, const struct buf *link, const struct buf *title, const struct buf *content, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "link", "sss",
-        bufcstr((struct buf *) link),
-        bufcstr((struct buf *) title),
-        bufcstr((struct buf *) content)
-    );
-    SPAN_PROCESS_OUTPUT(ret);
+    PROCESS_SPAN("link", PY_STR(link), PY_STR(title), PY_STR(content), NULL);
 }
 
 
 static int
 rndr_raw_html(struct buf *ob, const struct buf *text, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "raw_html", "s",
-        bufcstr((struct buf *) text)
-    );
-    SPAN_PROCESS_OUTPUT(ret);
+    PROCESS_SPAN("raw_html", PY_STR(text), NULL);
 }
 
 
 static int
 rndr_triple_emphasis(struct buf *ob, const struct buf *text, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "triple_emphasis", "s",
-        bufcstr((struct buf *) text)
-    );
-    SPAN_PROCESS_OUTPUT(ret);
+    PROCESS_SPAN("triple_emphasis", PY_STR(text), NULL);
 }
 
 
 static int
 rndr_strikethrough(struct buf *ob, const struct buf *text, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "strikethrough", "s",
-        bufcstr((struct buf *) text)
-    );
-    SPAN_PROCESS_OUTPUT(ret);
+    PROCESS_SPAN("strikethrough", PY_STR(text), NULL);
 }
 
 
 static int
 rndr_superscript(struct buf *ob, const struct buf *text, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "superscript", "s",
-        bufcstr((struct buf *) text)
-    );
-    SPAN_PROCESS_OUTPUT(ret);
+    PROCESS_SPAN("superscript", PY_STR(text), NULL);
 }
 
 
