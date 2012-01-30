@@ -19,7 +19,29 @@
     return 1;\
 }
 
-#define BLOCK_PROCESS_OUTPUT(ret) {\
+
+#define PROCESS_SPAN(method_name, ...) {\
+    struct renderopt *opt = opaque;\
+    PyObject *ret = PyObject_CallMethodObjArgs(\
+        (PyObject *) opt->self, Py_BuildValue("s", method_name),\
+        __VA_ARGS__);\
+    if (ret == NULL || ret == Py_None)\
+        return 0;\
+    if (PyUnicode_Check(ret)) {\
+        PyObject *byte_string = PyUnicode_AsEncodedString(ret, "utf-8", "strict");\
+        bufputs(ob, PyBytes_AsString(byte_string));\
+    } else {\
+        bufputs(ob, PyBytes_AsString(ret));\
+    }\
+    return 1;\
+}
+
+
+#define PROCESS_BLOCK(method_name, ...) {\
+    struct renderopt *opt = opaque;\
+    PyObject *ret = PyObject_CallMethodObjArgs(\
+        (PyObject *) opt->self, Py_BuildValue("s", method_name),\
+        __VA_ARGS__);\
     if (ret == NULL || ret == Py_None)\
         return;\
     if (PyUnicode_Check(ret)) {\
@@ -31,6 +53,10 @@
 }
 
 
+#define PY_STR(b) (b != NULL ? Py_BuildValue("s#", b->data, (int) b->size) : Py_None)
+#define PY_INT(i) PyInt_FromLong(i)
+
+
 /* Block level
    ----------- */
 
@@ -38,156 +64,97 @@
 static void
 rndr_blockcode(struct buf *ob, const struct buf *text, const struct buf *lang, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "block_code", "ss",
-        bufcstr((struct buf *) text),
-        bufcstr((struct buf *) lang)
-    );
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("block_code", PY_STR(text), PY_STR(lang), NULL);
 }
 
 
 static void
 rndr_blockquote(struct buf *ob, const struct buf *text, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "block_quote", "s",
-        bufcstr((struct buf *) text)
-    );
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("block_quote", PY_STR(text), NULL);
 }
 
 
 static void
 rndr_raw_block(struct buf *ob, const struct buf *text, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "block_html", "s",
-        bufcstr((struct buf *) text)
-    );
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("block_html", PY_STR(text), NULL);
 }
 
 
 static void
 rndr_header(struct buf *ob, const struct buf *text, int level, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "header", "si",
-        bufcstr((struct buf *) text),
-        level
-    );
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("header", PY_STR(text), PY_INT(level), NULL);
 }
 
 
 static void
 rndr_hrule(struct buf *ob, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "hrule", NULL);
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("hrule", NULL);
 }
 
 
 static void
 rndr_list(struct buf *ob, const struct buf *text, int flags, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "list", "ss",
-        bufcstr((struct buf *) text),
-        (flags & MKD_LIST_ORDERED ? "ordered" : "unordered")
-    );
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("list", PY_STR(text), PY_INT(flags), NULL);
 }
 
 
 static void
 rndr_listitem(struct buf *ob, const struct buf *text, int flags, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "list_item", "ss",
-        bufcstr((struct buf *) text),
-        (flags & MKD_LIST_ORDERED ? "ordered" : "unordered")
-    );
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("list_item", PY_STR(text), PY_INT(flags), NULL);
 }
 
 
 static void
 rndr_paragraph(struct buf *ob, const struct buf *text, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "paragraph", "s",
-        bufcstr((struct buf *) text)
-    );
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("paragraph", PY_STR(text), NULL);
 }
 
 
 static void
 rndr_table(struct buf *ob, const struct buf *header, const struct buf *body, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "rndr_table", "ss",
-        bufcstr((struct buf *) header),
-        bufcstr((struct buf *) body)
-    );
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("rndr_table", PY_STR(header), PY_STR(body), NULL);
 }
 
 
 static void
 rndr_tablerow(struct buf *ob, const struct buf *text, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "table_row", "s",
-        bufcstr((struct buf *) text)
-    );
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("table_row", PY_STR(text), NULL);
 }
 
 
 static void
 rndr_tablecell(struct buf *ob, const struct buf *text, int align, void *opaque)
 {
-    char *str_align;
+    // char *str_align;
 
-    switch (align) {
-    case MKD_TABLE_ALIGN_L:
-        str_align = "left";
-        break;
+    // switch (align) {
+    // case MKD_TABLE_ALIGN_L:
+    //     str_align = "left";
+    //     break;
 
-    case MKD_TABLE_ALIGN_R:
-        str_align = "right";
-        break;
+    // case MKD_TABLE_ALIGN_R:
+    //     str_align = "right";
+    //     break;
 
-    case MKD_TABLE_ALIGN_CENTER:
-        str_align = "center";
-        break;
+    // case MKD_TABLE_ALIGN_CENTER:
+    //     str_align = "center";
+    //     break;
 
-    default:
-        str_align = NULL;
-        break;
-    }
+    // default:
+    //     str_align = NULL;
+    //     break;
+    // }
 
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "table_cell", "ss",
-        bufcstr((struct buf *) text),
-        str_align
-    );
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("table_row", PY_STR(text), PY_INT(align), NULL);
 }
 
 
@@ -337,44 +304,28 @@ rndr_superscript(struct buf *ob, const struct buf *text, void *opaque)
 static void
 rndr_entity(struct buf *ob, const struct buf *text, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "entity", "s",
-        bufcstr((struct buf *) text)
-    );
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("entity", PY_STR(text), NULL);
 }
 
 
 static void
 rndr_normal_text(struct buf *ob, const struct buf *text, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "normal_text", "s",
-        bufcstr((struct buf *) text)
-    );
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("normal_text", PY_STR(text), NULL);
 }
 
 
 static void
 rndr_doc_header(struct buf *ob, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "doc_header", NULL);
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("doc_header", NULL);
 }
 
 
 static void
 rndr_doc_footer(struct buf *ob, void *opaque)
 {
-    struct renderopt *opt = opaque;
-    PyObject *ret = PyObject_CallMethod(
-        (PyObject *) opt->self, "doc_footer", NULL);
-    BLOCK_PROCESS_OUTPUT(ret);
+    PROCESS_BLOCK("doc_footer", NULL);
 }
 
 
