@@ -1,5 +1,6 @@
 from libc.stdint cimport uint8_t
 
+
 cdef extern from 'sundown/buffer.h':
     struct buf:
         uint8_t *data

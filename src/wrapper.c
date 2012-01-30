@@ -10,17 +10,24 @@
 #define SPAN_PROCESS_OUTPUT(ret) {\
     if (ret == NULL || ret == Py_None)\
         return 0;\
-    PyObject *byte_string = PyUnicode_AsEncodedString(ret, "utf-8", "strict");\
-    bufputs(ob, PyBytes_AsString(byte_string));\
+    if (PyUnicode_Check(ret)) {\
+        PyObject *byte_string = PyUnicode_AsEncodedString(ret, "utf-8", "strict");\
+        bufputs(ob, PyBytes_AsString(byte_string));\
+    } else {\
+        bufputs(ob, PyBytes_AsString(ret));\
+    }\
     return 1;\
 }
-
 
 #define BLOCK_PROCESS_OUTPUT(ret) {\
     if (ret == NULL || ret == Py_None)\
         return;\
-    PyObject *byte_string = PyUnicode_AsEncodedString(ret, "utf-8", "strict");\
-    bufputs(ob, PyBytes_AsString(byte_string));\
+    if (PyUnicode_Check(ret)) {\
+        PyObject *byte_string = PyUnicode_AsEncodedString(ret, "utf-8", "strict");\
+        bufputs(ob, PyBytes_AsString(byte_string));\
+    } else {\
+        bufputs(ob, PyBytes_AsString(ret));\
+    }\
 }
 
 
