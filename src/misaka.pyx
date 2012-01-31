@@ -4,9 +4,9 @@ cimport wrapper
 from libc.stdint cimport uint8_t
 
 
-__version__ = '1.0.0b1'
+__version__ = '1.0.0'
 
-#: Markdown extensions
+# Markdown extensions
 EXT_NO_INTRA_EMPHASIS = (1 << 0)
 EXT_TABLES = (1 << 1)
 EXT_FENCED_CODE = (1 << 2)
@@ -16,7 +16,7 @@ EXT_LAX_HTML_BLOCKS = (1 << 5)
 EXT_SPACE_HEADERS = (1 << 6)
 EXT_SUPERSCRIPT = (1 << 7)
 
-#: HTML Render flags
+# HTML Render flags
 HTML_SKIP_HTML = (1 << 0)
 HTML_SKIP_STYLE = (1 << 1)
 HTML_SKIP_IMAGES = (1 << 2)
@@ -26,10 +26,24 @@ HTML_SAFELINK = (1 << 5)
 HTML_TOC = (1 << 6)
 HTML_HARD_WRAP = (1 << 7)
 HTML_USE_XHTML = (1 << 8)
+HTML_ESCAPE = (1 << 9)
 
 # Extra HTML render flags - these are not from Sundown
-HTML_SMARTYPANTS = (1 << 9)  # An extra flag to enable Smartypants
-HTML_TOC_TREE = (1 << 10)  # Only render a table of contents tree
+HTML_SMARTYPANTS = (1 << 10)  # An extra flag to enable Smartypants
+HTML_TOC_TREE = (1 << 11)  # Only render a table of contents tree
+
+# Other flags
+AUTOLINK_NORMAL = 1 # MKDA_NORMAL
+AUTOLINK_EMAIL = 2 # MKDA_EMAIL
+
+LIST_ORDERED = 1 # MKD_LIST_ORDERED
+# LIST_LI_BLOCK = 2 # MKD_LI_BLOCK - List item containing block data
+
+TABLE_ALIGN_L = 1 # MKD_TABLE_ALIGN_L
+TABLE_ALIGN_R = 2 # MKD_TABLE_ALIGN_R
+TABLE_ALIGN_C = 3 # MKD_TABLE_ALIGN_CENTER
+TABLE_ALIGNMASK = 3 # MKD_TABLE_ALIGNMASK
+TABLE_HEADER = 4 # MKD_TABLE_HEADER
 
 
 def html(object text, unsigned int extensions=0, unsigned int render_flags=0):

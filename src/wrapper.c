@@ -107,7 +107,7 @@ rndr_paragraph(struct buf *ob, const struct buf *text, void *opaque)
 static void
 rndr_table(struct buf *ob, const struct buf *header, const struct buf *body, void *opaque)
 {
-    PROCESS_BLOCK("rndr_table", PY_STR(header), PY_STR(body), NULL);
+    PROCESS_BLOCK("table", PY_STR(header), PY_STR(body), NULL);
 }
 
 
@@ -119,29 +119,9 @@ rndr_tablerow(struct buf *ob, const struct buf *text, void *opaque)
 
 
 static void
-rndr_tablecell(struct buf *ob, const struct buf *text, int align, void *opaque)
+rndr_tablecell(struct buf *ob, const struct buf *text, int flags, void *opaque)
 {
-    // char *str_align;
-
-    // switch (align) {
-    // case MKD_TABLE_ALIGN_L:
-    //     str_align = "left";
-    //     break;
-
-    // case MKD_TABLE_ALIGN_R:
-    //     str_align = "right";
-    //     break;
-
-    // case MKD_TABLE_ALIGN_CENTER:
-    //     str_align = "center";
-    //     break;
-
-    // default:
-    //     str_align = NULL;
-    //     break;
-    // }
-
-    PROCESS_BLOCK("table_row", PY_STR(text), PY_INT(align), NULL);
+    PROCESS_BLOCK("table_cell", PY_STR(text), PY_INT(flags), NULL);
 }
 
 
