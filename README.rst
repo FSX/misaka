@@ -1,7 +1,7 @@
 Misaka
 ======
 
-A Python binding for Sundown_, a markdown parsing library.
+The Python binding for Sundown_, a markdown parsing library.
 
 Documentation can be found at: http://misaka.61924.nl/
 
