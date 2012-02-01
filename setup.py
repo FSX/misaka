@@ -1,4 +1,4 @@
-from distutils.core import setup, Extension
+from setuptools import Extension, setup
 from Cython.Distutils import build_ext
 
 
@@ -11,6 +11,7 @@ setup(
     url='http://misaka.61924.nl/',
     license='MIT',
     long_description=open('README.rst').read(),
+    install_requires=['cython'],
     cmdclass = {'build_ext': build_ext},
     ext_modules=[Extension('misaka', [
         'src/misaka.pyx',

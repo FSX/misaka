@@ -15,6 +15,7 @@ Contents:
    :maxdepth: 1
 
    news
+   installation
 
 
 Indices and tables
