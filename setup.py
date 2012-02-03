@@ -1,5 +1,11 @@
+import sys
 from setuptools import Extension, setup
-from Cython.Distutils import build_ext
+
+try:
+    from Cython.Distutils import build_ext
+except ImportError:
+    print('Cython is not installed. Please install Cython first.')
+    sys.exit()
 
 
 setup(
