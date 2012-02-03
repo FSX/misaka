@@ -3,7 +3,7 @@
 News/Changelog
 ==============
 
-1.0.0 (2012-02-??)
+1.0.0 (2012-02-04)
 ------------------
 
 - Reimplemented existing functionality in Cython.
