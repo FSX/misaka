@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8">
     
-    <title>Misaka &mdash; Misaka 1.0.0 documentation</title>
+    <title>Installation &mdash; Misaka 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/nature.css" type="text/css">
     <link rel="stylesheet" href="_static/pygments.css" type="text/css">
@@ -23,13 +23,14 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <link rel="next" title="News/Changelog" href="news.html"> 
+    <link rel="next" title="Examples" href="examples.html">
+    <link rel="prev" title="News/Changelog" href="news.html"> 
   </head>
   <body id="doc-top">
 <div class="related">
   <h3>Navigation</h3>
   <ul>
-    <li><a href="#">Misaka 1.0.0 documentation</a> &raquo;</li>
+    <li><a href="index.html">Misaka 1.0.0 documentation</a> &raquo;</li>
     <li>
       <a href="genindex.html" title="General Index"
          accesskey="I">index</a>
@@ -39,8 +40,12 @@
          >modules</a>
       </li>
     <li> / 
-      <a href="news.html" title="News/Changelog"
+      <a href="examples.html" title="Examples"
          accesskey="N">next</a>
+      </li>
+    <li> / 
+      <a href="news.html" title="News/Changelog"
+         accesskey="P">previous</a>
       </li>
   </ul>
 </div>
@@ -51,29 +56,17 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="misaka">
-<h1>Misaka<a class="headerlink" href="#misaka" title="Permalink to this headline">¶</a></h1>
-<p>The Python binding for Sundown, a markdown parsing library.</p>
-<p>Misaka is made with <a class="reference external" href="http://cython.org/">Cython</a> and C and provides the same/similar functionality as
-<a class="reference external" href="https://github.com/tanoku/redcarpet">Redcarpet</a>, the Ruby binding for <a class="reference external" href="https://github.com/tanoku/sundown">Sundown</a>. The parser and renderer are decoupled.
-This means you can make your own renderers.</p>
-<p>Contents:</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="news.html">News/Changelog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
-</ul>
+  <div class="section" id="installation">
+<span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Misaka supports Python 2 and 3 (tested with 2.7 and 3.2). The only dependency
+is <a class="reference external" href="http://cython.org/">Cython</a>, which is used to generate a large part of the C code. Misaka can be
+installed with <em>easy_install</em> or <a class="reference external" href="http://www.pip-installer.org/">pip</a>:</p>
+<div class="highlight-python"><pre>pip install misaka</pre>
 </div>
+<p>The latest sources can be cloned from the <a class="reference external" href="https://github.com/FSX/misaka">Github repository</a> and
+installed with:</p>
+<div class="highlight-python"><pre>python setup.py install</pre>
 </div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
-</ul>
 </div>
 
 
@@ -84,20 +77,15 @@ This means you can make your own renderers.</p>
         <div class="sphinxsidebarwrapper">
 <h3>Misaka</h3>
 <p>The Python binding for Sundown, a markdown parsing library.</p>
-  <h3><a href="#">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Misaka</a><ul>
-</ul>
-</li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
-</ul>
-
-  <h4>Next topic</h4>
+  <h4>Previous topic</h4>
   <p class="topless"><a href="news.html"
-                        title="next chapter">News/Changelog</a></p>
+                        title="previous chapter">News/Changelog</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="examples.html"
+                        title="next chapter">Examples</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="_sources/index.txt"
+    <li><a href="_sources/installation.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <h3>Quick search</h3>
