@@ -33,12 +33,6 @@ HTML_SMARTYPANTS = (1 << 10)  # An extra flag to enable Smartypants
 HTML_TOC_TREE = (1 << 11)  # Only render a table of contents tree
 
 # Other flags
-AUTOLINK_NORMAL = 1 # MKDA_NORMAL
-AUTOLINK_EMAIL = 2 # MKDA_EMAIL
-
-LIST_ORDERED = 1 # MKD_LIST_ORDERED
-# LIST_LI_BLOCK = 2 # MKD_LI_BLOCK - List item containing block data
-
 TABLE_ALIGN_L = 1 # MKD_TABLE_ALIGN_L
 TABLE_ALIGN_R = 2 # MKD_TABLE_ALIGN_R
 TABLE_ALIGN_C = 3 # MKD_TABLE_ALIGN_CENTER
@@ -53,7 +47,7 @@ def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
             extensions=EXT_AUTOLINK|EXT_SUPERSCRIPT|EXT_STRIKETHROUGH,
             render_flags=HTML_SKIP_HTML|HTML_USE_XHTML)
 
-    :param text: source text as a (unicode) string.
+    :param text: text as a (unicode) string.
     :param extensions: enable additional Markdown extensions with the ``EXT_*`` constants.
     :param render_flags: adjust rendering behaviour with the ``HTML_*`` constants.
     """
@@ -101,7 +95,7 @@ def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
 
 
 cdef class SmartyPants:
-    """Smartypants postprocessor for renderers. It can be used like this::
+    """Smartypants post-processor for renderers. It can be used like this::
 
         class BleepRenderer(HtmlRenderer, SmartyPants):
             pass
@@ -203,9 +197,9 @@ cdef class Markdown:
             <sundown.html_renderopt *> &self.renderer.options)
 
     def render(self, object text):
-        """Render the given source text.
+        """Render the given markdown text.
 
-        :param text: source text as a (unicode) string.
+        :param text: text as a (unicode) string.
         """
         if hasattr(self.renderer, 'preprocess'):
             text = self.renderer.preprocess(text)

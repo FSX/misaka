@@ -4,7 +4,7 @@ API
 ===
 
 This page describes all classes, functions and constants. Usage examples
-(renderer classes and pre- and postprocessors) can be found at the
+(renderer classes and pre- and post-processors) can be found at the
 :doc:`/examples` page.
 
 .. module:: momoko
@@ -113,7 +113,7 @@ Constants for the :py:func:`html` function.
 
 .. py:data:: HTML_SMARTYPANTS
 
-   Postprocess rendered markdown text with SmartyPants_.
+   Post-process rendered markdown text with SmartyPants_.
 
 .. py:data:: HTML_TOC_TREE
 
@@ -122,11 +122,6 @@ Constants for the :py:func:`html` function.
 ----
 
 Constants that can be used in custom renderers.
-
-.. py:data:: AUTOLINK_NORMAL
-.. py:data:: AUTOLINK_EMAIL
-
-.. py:data:: LIST_ORDERED
 
 .. py:data:: TABLE_ALIGN_L
 .. py:data:: TABLE_ALIGN_R
@@ -157,12 +152,12 @@ Shorthand
    :param render_flags: adjust rendering behaviour with the ``HTML_*`` constants.
 
 
-Postprocessors
---------------
+Post-processors
+---------------
 
 .. py:class:: SmartyPants()
 
-   Smartypants postprocessor for renderers. It can be used like this::
+   Smartypants post-processor for renderers. It can be used like this::
 
        class BleepRenderer(HtmlRenderer, SmartyPants):
            pass

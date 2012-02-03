@@ -86,14 +86,24 @@ rndr_hrule(struct buf *ob, void *opaque)
 static void
 rndr_list(struct buf *ob, const struct buf *text, int flags, void *opaque)
 {
-    PROCESS_BLOCK("list", PY_STR(text), PY_INT(flags), NULL);
+    PyObject *is_ordered = Py_False;
+    if (flags & MKD_LIST_ORDERED) {
+        is_ordered = Py_True;
+    }
+
+    PROCESS_BLOCK("list", PY_STR(text), is_ordered, NULL);
 }
 
 
 static void
 rndr_listitem(struct buf *ob, const struct buf *text, int flags, void *opaque)
 {
-    PROCESS_BLOCK("list_item", PY_STR(text), PY_INT(flags), NULL);
+    PyObject *is_ordered = Py_False;
+    if (flags & MKD_LIST_ORDERED) {
+        is_ordered = Py_True;
+    }
+
+    PROCESS_BLOCK("list_item", PY_STR(text), is_ordered, NULL);
 }
 
 
@@ -132,7 +142,12 @@ rndr_tablecell(struct buf *ob, const struct buf *text, int flags, void *opaque)
 static int
 rndr_autolink(struct buf *ob, const struct buf *link, enum mkd_autolink type, void *opaque)
 {
-    PROCESS_SPAN("autolink", PY_STR(link), PY_INT(type), NULL);
+    PyObject *is_email = Py_False;
+    if (type == MKDA_EMAIL) {
+        is_email = Py_True;
+    }
+
+    PROCESS_SPAN("autolink", PY_STR(link), is_email, NULL);
 }
 
 

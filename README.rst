@@ -25,6 +25,8 @@ Or manually::
 Example
 -------
 
+Very simple example::
+
     from misaka import Markdown, HtmlRenderer
 
     rndr = HtmlRenderer()
