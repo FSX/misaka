@@ -16,6 +16,8 @@ Contents:
 
    news
    installation
+   examples
+   api
 
 
 Indices and tables

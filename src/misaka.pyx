@@ -47,7 +47,7 @@ TABLE_HEADER = 4 # MKD_TABLE_HEADER
 
 
 def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
-    """Convert a Markdown text to (X)HTML::
+    """Convert markdown text to (X)HTML::
 
         misaka.html('source *text*',
             extensions=EXT_AUTOLINK|EXT_SUPERSCRIPT|EXT_STRIKETHROUGH,
@@ -101,13 +101,16 @@ def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
 
 
 cdef class SmartyPants:
-    """Smartypants postprocessor for renderers. This postprocessor can be used
-    like this::
+    """Smartypants postprocessor for renderers. It can be used like this::
 
         class BleepRenderer(HtmlRenderer, SmartyPants):
             pass
     """
     def postprocess(self, object text):
+        """Process input text.
+
+        :param text: text as a (unicode) string.
+        """
         cdef bytes py_string = text.encode('UTF-8', 'strict')
         cdef char *c_string = py_string
 
@@ -122,9 +125,7 @@ cdef class SmartyPants:
 
 
 cdef class BaseRenderer:
-    """The ``BaseRenderer`` class should not be used directly, but subclassed.
-    It does nothign by itself, because there are no rendering methods. This
-    should be done by the class that subclasses ``BaseRenderer``.
+    """The ``BaseRenderer`` class does nothing by itself. It should be subclassed.
 
     :param flags: flags that can be used by the renderer.
     """
@@ -150,7 +151,8 @@ cdef class BaseRenderer:
 
     def setup(self):
         """The ``setup`` method can be overridden by a subclass. This method
-        is executed when a new object of the class is created.
+        is executed when a new object of the class is created. Right after
+        ``__init__``.
         """
         pass
 
