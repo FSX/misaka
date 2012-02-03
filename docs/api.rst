@@ -7,7 +7,7 @@ This page describes all classes, functions and constants. Usage examples
 (renderer classes and pre- and post-processors) can be found at the
 :doc:`/examples` page.
 
-.. module:: momoko
+.. module:: misaka
 
 
 Constants

@@ -8,6 +8,14 @@ Misaka
 
 The Python binding for Sundown, a markdown parsing library.
 
+Misaka is made with Cython_ and C and provides the same/similar functionality as
+Redcarpet_, the Ruby binding for Sundown_. The parser and renderer are decoupled.
+This means you can make your own renderers.
+
+.. _Cython: http://cython.org/
+.. _Redcarpet: https://github.com/tanoku/redcarpet
+.. _Sundown: https://github.com/tanoku/sundown
+
 
 Contents:
 
