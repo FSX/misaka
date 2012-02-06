@@ -84,7 +84,7 @@ md = Markdown(BleepRenderer(),
     EXT_STRIKETHROUGH | EXT_SUPERSCRIPT)
 
 
-print(md.render(u'''
+print(md.render('''
 Unordered
 
 - One

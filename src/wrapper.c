@@ -40,8 +40,14 @@
 }
 
 
+#if PY_MAJOR_VERSION >= 3
+    #define FromLongToPyLong(i) PyLong_FromLong(i)
+#else
+    #define FromLongToPyLong(i) PyInt_FromLong(i)
+#endif
+
 #define PY_STR(b) (b != NULL ? Py_BuildValue("s#", b->data, (int) b->size) : Py_None)
-#define PY_INT(i) PyInt_FromLong(i)
+#define PY_INT(i) FromLongToPyLong(i)
 
 
 /* Block level
