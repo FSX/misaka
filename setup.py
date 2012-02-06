@@ -1,11 +1,19 @@
 import sys
-from setuptools import Extension, setup
 
 try:
-    from Cython.Distutils import build_ext
+    from setuptools import setup, Extension
 except ImportError:
-    print('Cython is not installed. Please install Cython first.')
-    sys.exit()
+    from distutils.core import setup, Extension
+
+
+if sys.argv[-1] == '--cython':
+    sys.argv.remove('--cython')
+    try:
+        from Cython.Compiler.Main import compile
+        compile('src/misaka.pyx')
+    except ImportError:
+        print('Cython is not installed. Please install Cython first.')
+        sys.exit()
 
 
 setup(
@@ -17,10 +25,8 @@ setup(
     url='http://misaka.61924.nl/',
     license='MIT',
     long_description=open('README.rst').read(),
-    install_requires=['cython'],
-    cmdclass = {'build_ext': build_ext},
     ext_modules=[Extension('misaka', [
-        'src/misaka.pyx',
+        'src/misaka.c',
         'src/wrapper.c',
         'src/sundown/stack.c',
         'src/sundown/buffer.c',
