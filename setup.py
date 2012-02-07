@@ -18,7 +18,7 @@ if sys.argv[-1] == '--cython':
 
 setup(
     name='misaka',
-    version='1.0.0',
+    version='1.0.1',
     description='The Python binding for Sundown, a markdown parsing library.',
     author='Frank Smit',
     author_email='frank@61924.nl',
