@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8">
     
-    <title>Installation &mdash; Misaka 1.0.0 documentation</title>
+    <title>Installation &mdash; Misaka 1.0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/nature.css" type="text/css">
     <link rel="stylesheet" href="_static/pygments.css" type="text/css">
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '1.0.0',
+        VERSION:     '1.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -30,7 +30,7 @@
 <div class="related">
   <h3>Navigation</h3>
   <ul>
-    <li><a href="index.html">Misaka 1.0.0 documentation</a> &raquo;</li>
+    <li><a href="index.html">Misaka 1.0.1 documentation</a> &raquo;</li>
     <li>
       <a href="genindex.html" title="General Index"
          accesskey="I">index</a>
@@ -58,14 +58,17 @@
             
   <div class="section" id="installation">
 <span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>Misaka supports Python 2 and 3 (tested with 2.7 and 3.2). The only dependency
-is <a class="reference external" href="http://cython.org/">Cython</a>, which is used to generate a large part of the C code. Misaka can be
+<p>Misaka supports Python 2 and 3 (tested with 2.7 and 3.2). Misaka can be
 installed with <em>easy_install</em> or <a class="reference external" href="http://www.pip-installer.org/">pip</a>:</p>
 <div class="highlight-python"><pre>pip install misaka</pre>
 </div>
 <p>The latest sources can be cloned from the <a class="reference external" href="https://github.com/FSX/misaka">Github repository</a> and
 installed with:</p>
 <div class="highlight-python"><pre>python setup.py install</pre>
+</div>
+<p><a class="reference external" href="http://cython.org/">Cython</a> is only needed when you would like to regenerate the C file(s). This
+can be done by using the <tt class="docutils literal"><span class="pre">--cython</span></tt> option. For example:</p>
+<div class="highlight-python"><pre>python setup.py install --cython</pre>
 </div>
 </div>
 
