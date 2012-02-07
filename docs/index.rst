@@ -12,9 +12,13 @@ Misaka is made with Cython_ and C and provides the same/similar functionality as
 Redcarpet_, the Ruby binding for Sundown_. The parser and renderer are decoupled.
 This means you can make your own renderers.
 
+The documentation is also available on `Read the Docs`_.
+
+
 .. _Cython: http://cython.org/
 .. _Redcarpet: https://github.com/tanoku/redcarpet
 .. _Sundown: https://github.com/tanoku/sundown
+.. _Read the Docs: http://readthedocs.org/projects/misaka/
 
 
 Contents:
