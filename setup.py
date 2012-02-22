@@ -1,5 +1,6 @@
 import os
 import sys
+import glob
 import shutil
 import os.path
 
@@ -42,6 +43,22 @@ class CythonCommand(BaseCommand):
             print('Cython is not installed. Please install Cython first.')
 
 
+class SundownCommand(BaseCommand):
+    description = 'update Sundown files'
+    def run(self):
+        files = []
+        dest = os.path.join(dirname, 'src/sundown')
+        os.system('git submodule update')
+
+        for path in ['vendor/sundown/src/*', 'vendor/sundown/html/*']:
+            files += glob.glob(os.path.join(dirname, path))
+
+        for path in files:
+            if os.path.exists(path):
+                print('copy %s -> %s' % (path, dest))
+                shutil.copy(path, dest)
+
+
 setup(
     name='misaka',
     version='1.0.2',
@@ -53,7 +70,8 @@ setup(
     long_description=open(os.path.join(dirname, 'README.rst')).read(),
     cmdclass={
         'clean': CleanCommand,
-        'cython': CythonCommand
+        'cython': CythonCommand,
+        'sundown': SundownCommand
     },
     ext_modules=[Extension('misaka', [
         'src/misaka.c',
