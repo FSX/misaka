@@ -1,30 +1,60 @@
+import os
 import sys
+import shutil
+import os.path
 
 try:
-    from setuptools import setup, Extension
+    from setuptools import setup, Extension, Command
 except ImportError:
-    from distutils.core import setup, Extension
+    from distutils.core import setup, Extension, Command
 
 
-if sys.argv[-1] == '--cython':
-    sys.argv.remove('--cython')
-    try:
-        from Cython.Compiler.Main import compile
-        compile('src/misaka.pyx')
-    except ImportError:
-        print('Cython is not installed. Please install Cython first.')
-        sys.exit()
+dirname = os.path.dirname(os.path.abspath(__file__))
+
+
+class BaseCommand(Command):
+    user_options = []
+    def initialize_options(self):
+        pass
+    def finalize_options(self):
+        pass
+
+
+class CleanCommand(BaseCommand):
+    description = 'cleanup directories created by packaging and build processes'
+    def run(self):
+        for path in ['build', 'dist', 'misaka.egg-info', 'docs/_build']:
+            if os.path.exists(path):
+                path = os.path.join(dirname, path)
+                print('removing %s' % path)
+                shutil.rmtree(path)
+
+
+class CythonCommand(BaseCommand):
+    description = 'compile Cython files(s) into C file(s)'
+    def run(self):
+        try:
+            from Cython.Compiler.Main import compile
+            path = os.path.join(dirname, 'src', 'misaka.pyx')
+            print('compiling %s' % path)
+            compile(path)
+        except ImportError:
+            print('Cython is not installed. Please install Cython first.')
 
 
 setup(
     name='misaka',
-    version='1.0.1',
+    version='1.0.2',
     description='The Python binding for Sundown, a markdown parsing library.',
     author='Frank Smit',
     author_email='frank@61924.nl',
     url='http://misaka.61924.nl/',
     license='MIT',
-    long_description=open('README.rst').read(),
+    long_description=open(os.path.join(dirname, 'README.rst')).read(),
+    cmdclass={
+        'clean': CleanCommand,
+        'cython': CythonCommand
+    },
     ext_modules=[Extension('misaka', [
         'src/misaka.c',
         'src/wrapper.c',
