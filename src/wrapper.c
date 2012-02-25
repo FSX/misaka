@@ -12,8 +12,12 @@
     PyObject *ret = PyObject_CallMethodObjArgs(\
         (PyObject *) opt->self, Py_BuildValue("s", method_name),\
         __VA_ARGS__);\
-    if (ret == NULL || ret == Py_None)\
+    if (ret == NULL || ret == Py_None) {\
+        PyObject *r_ex = PyErr_Occurred();\
+        if (r_ex != NULL)\
+            PyErr_Print();\
         return 0;\
+    }\
     if (PyUnicode_Check(ret)) {\
         PyObject *byte_string = PyUnicode_AsEncodedString(ret, "utf-8", "strict");\
         bufputs(ob, PyBytes_AsString(byte_string));\
@@ -29,8 +33,12 @@
     PyObject *ret = PyObject_CallMethodObjArgs(\
         (PyObject *) opt->self, Py_BuildValue("s", method_name),\
         __VA_ARGS__);\
-    if (ret == NULL || ret == Py_None)\
+    if (ret == NULL || ret == Py_None) {\
+        PyObject *r_ex = PyErr_Occurred();\
+        if (r_ex != NULL)\
+            PyErr_Print();\
         return;\
+    }\
     if (PyUnicode_Check(ret)) {\
         PyObject *byte_string = PyUnicode_AsEncodedString(ret, "utf-8", "strict");\
         bufputs(ob, PyBytes_AsString(byte_string));\
