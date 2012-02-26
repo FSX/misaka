@@ -44,11 +44,10 @@ class CythonCommand(BaseCommand):
 
 
 class SundownCommand(BaseCommand):
-    description = 'update Sundown files'
+    description = 'update Sundown files. Use `git submodule update` to the most recent files'
     def run(self):
         files = []
         dest = os.path.join(dirname, 'src/sundown')
-        os.system('git submodule update')
 
         for path in ['vendor/sundown/src/*', 'vendor/sundown/html/*']:
             files += glob.glob(os.path.join(dirname, path))
