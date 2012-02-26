@@ -3,9 +3,13 @@ News/Changelog
 
 ### 1.0.2 (2012-02-??)
 
- - Added `clean`, `cython` and `sundown` commands to `setup.py`.
+ - Added `clean`, `cython` and `sundown` commands to `setup.py`. See
+   `setup.py --help-commands` for more information.
  - Removed the `--cython` install option.
  - Sundown is now added as a Git submodule.
+ - Exceptions that are raised in render methods are now shown on STDOUT. The
+   script execution will not stop. Only the render method will stop and return
+   nothing.
 
 
 ### 1.0.1 (2012-02-07)
