@@ -22,6 +22,8 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#include "winfix.h"
+
 struct smartypants_data {
 	int in_squote;
 	int in_dquote;
