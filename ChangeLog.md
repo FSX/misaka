@@ -1,7 +1,7 @@
 News/Changelog
 ==============
 
-### 1.0.2 (2012-02-??)
+### 1.0.2 (2012-03-??)
 
  - Added `clean`, `cython` and `sundown` commands to `setup.py`. See
    `setup.py --help-commands` for more information.
@@ -10,6 +10,11 @@ News/Changelog
  - Exceptions that are raised in render methods are now shown on STDOUT. The
    script execution will not stop. Only the render method will stop and return
    nothing.
+ - Removed trailing forward slashes from MANIFEST.in. These cause trouble on Windows.
+   ([#12][]/[#13][])
+
+ [#12]: https://github.com/FSX/misaka/pull/12
+ [#13]: https://github.com/FSX/misaka/pull/13
 
 
 ### 1.0.1 (2012-02-07)
