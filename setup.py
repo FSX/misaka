@@ -43,8 +43,8 @@ class CythonCommand(BaseCommand):
             print('Cython is not installed. Please install Cython first.')
 
 
-class SundownCommand(BaseCommand):
-    description = 'update Sundown files. Use `git submodule update` to the most recent files'
+class VendorCommand(BaseCommand):
+    description = 'update Sundown files. Use `git submodule foreach git pull` to the most recent files'
     def run(self):
         files = []
         dest = os.path.join(dirname, 'src/sundown')
@@ -69,8 +69,8 @@ setup(
     long_description=open(os.path.join(dirname, 'README.rst')).read(),
     cmdclass={
         'clean': CleanCommand,
-        'cython': CythonCommand,
-        'sundown': SundownCommand
+        'compile_cython': CythonCommand,
+        'update_vendor': VendorCommand
     },
     ext_modules=[Extension('misaka', [
         'src/misaka.c',

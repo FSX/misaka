@@ -3,7 +3,7 @@ News/Changelog
 
 ### 1.0.2 (2012-03-??)
 
- - Added `clean`, `cython` and `sundown` commands to `setup.py`. See
+ - Added `clean`, `compile_cython` and `update_vendor` commands to `setup.py`. See
    `setup.py --help-commands` for more information.
  - Removed the `--cython` install option.
  - Sundown is now added as a Git submodule.
