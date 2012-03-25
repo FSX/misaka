@@ -22,3 +22,15 @@ can be done by using the ``--cython`` option. For example::
 .. _Cython: http://cython.org/
 .. _pip: http://www.pip-installer.org/
 .. _Github repository: https://github.com/FSX/misaka
+
+
+Visual Studio
+-------------
+
+Visual Studio's support for C is not optimal and most VS compilers are missing
+``stdint.h``, which is needed to compile Misaka. This file can be downloaded
+from msinttypes_ and put into ``C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include``
+for example.
+
+
+.. _msinttypes: http://msinttypes.googlecode.com/svn/trunk/stdint.h
