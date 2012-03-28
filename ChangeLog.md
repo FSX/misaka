@@ -3,8 +3,8 @@ News/Changelog
 
 ### 1.0.2 (2012-03-??)
 
- - Added `clean`, `compile_cython` and `update_vendor` commands to `setup.py`. See
-   `setup.py --help-commands` for more information.
+ - Added `clean`, `compile_cython` and `update_vendor` commands to `setup.py`.
+   See `setup.py --help-commands` for more information.
  - Removed the `--cython` install option.
  - Sundown is now added as a Git submodule.
  - Exceptions that are raised in render methods are now shown on STDOUT. The
@@ -13,7 +13,13 @@ News/Changelog
  - Removed trailing forward slashes from MANIFEST.in. These cause trouble on Windows.
    ([#12][]/[#13][])
  - Input text now be a byte or unicode string. Callback method arguments are
-   always unicode. The returned text in a callback method can be a byte or unicode string
+   always unicode. The returned text in a callback method can be a byte or unicode string.
+ - In Python 3 render callbacks couldn't be seen, because the variable that was
+   used to lookup the methods was a byte string. And Python 3 doesn't see
+   byte string and normalstrings as equal.
+ - Updated Sundown files; See commits from Feb 05, 2012 to Mar 25, 2012.
+   This includes fixes for Visual Studio on Windows:
+   https://github.com/tanoku/sundown/commits/master/
 
  [#12]: https://github.com/FSX/misaka/pull/12
  [#13]: https://github.com/FSX/misaka/pull/13
