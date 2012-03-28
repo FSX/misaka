@@ -10,7 +10,7 @@
 #define PROCESS_SPAN(method_name, ...) {\
     struct renderopt *opt = opaque;\
     PyObject *ret = PyObject_CallMethodObjArgs(\
-        (PyObject *) opt->self, Py_BuildValue("s", method_name),\
+        (PyObject *) opt->self, PyUnicode_FromString(method_name),\
         __VA_ARGS__);\
     if (ret == NULL || ret == Py_None) {\
         PyObject *r_ex = PyErr_Occurred();\
@@ -31,7 +31,7 @@
 #define PROCESS_BLOCK(method_name, ...) {\
     struct renderopt *opt = opaque;\
     PyObject *ret = PyObject_CallMethodObjArgs(\
-        (PyObject *) opt->self, Py_BuildValue("s", method_name),\
+        (PyObject *) opt->self, PyUnicode_FromString(method_name),\
         __VA_ARGS__);\
     if (ret == NULL || ret == Py_None) {\
         PyObject *r_ex = PyErr_Occurred();\
@@ -48,7 +48,7 @@
 }
 
 
-#define PY_STR(b) (b != NULL ? Py_BuildValue("s#", b->data, (int) b->size) : Py_None)
+#define PY_STR(b) (b != NULL ? PyUnicode_FromStringAndSize((const char *) b->data, (int) b->size) : Py_None)
 
 #if PY_MAJOR_VERSION >= 3
     #define PY_INT(i) PyLong_FromLong(i)

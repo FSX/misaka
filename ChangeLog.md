@@ -12,6 +12,8 @@ News/Changelog
    nothing.
  - Removed trailing forward slashes from MANIFEST.in. These cause trouble on Windows.
    ([#12][]/[#13][])
+ - Input text now be a byte or unicode string. Callback method arguments are
+   always unicode. The returned text in a callback method can be a byte or unicode string
 
  [#12]: https://github.com/FSX/misaka/pull/12
  [#13]: https://github.com/FSX/misaka/pull/13

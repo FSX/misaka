@@ -40,6 +40,12 @@ TABLE_ALIGNMASK = 3 # MKD_TABLE_ALIGNMASK
 TABLE_HEADER = 4 # MKD_TABLE_HEADER
 
 
+cdef char* _unicode_to_bytes(unicode text):
+    cdef bytes py_string = text.encode('UTF-8', 'strict')
+    cdef char *c_string = py_string
+    return c_string
+
+
 def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
     """Convert markdown text to (X)HTML::
 
@@ -53,8 +59,11 @@ def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
     """
 
     # Convert string
-    cdef bytes py_string = text.encode('UTF-8', 'strict')
-    cdef char *c_string = py_string
+    cdef char *c_string
+    if isinstance(text, unicode):
+        c_string = _unicode_to_bytes(text)
+    else:
+        c_string = text
 
     # Definitions
     cdef sundown.sd_callbacks callbacks
@@ -86,7 +95,7 @@ def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
         sundown.bufrelease(ob)
         ob = sb
 
-    # Return a string and release buffers
+    # Return a unicode string and release buffers
     try:
         return (<char *> ob.data)[:ob.size].decode('UTF-8', 'strict')
     finally:
@@ -139,8 +148,13 @@ cdef class BaseRenderer:
         cdef void **source = <void **> &wrapper.callback_funcs
         cdef void **dest = <void **> &self.callbacks
 
+        cdef unicode method_name
         for i from 0 <= i < <int> wrapper.method_count by 1:
-            if hasattr(self, wrapper.method_names[i]):
+            # In Python 3 ``wrapper.method_names[i]`` is a byte string.
+            # This means hasattr can't find any method in the renderer, so
+            # ``wrapper.method_names[i]`` is converted to a normal string first.
+            method_name = wrapper.method_names[i].decode('utf-8')
+            if hasattr(self, method_name):
                 dest[i] = source[i]
 
     def setup(self):
@@ -205,8 +219,11 @@ cdef class Markdown:
             text = self.renderer.preprocess(text)
 
         # Convert string
-        cdef bytes py_string = text.encode('UTF-8', 'strict')
-        cdef char *c_string = py_string
+        cdef char *c_string
+        if isinstance(text, unicode):
+            c_string = _unicode_to_bytes(text)
+        else:
+            c_string = text
 
         # Buffers
         cdef sundown.buf *ib = sundown.bufnew(128)
