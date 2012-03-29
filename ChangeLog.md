@@ -17,7 +17,7 @@ News/Changelog
  - In Python 3 render callbacks couldn't be seen, because the variable that was
    used to lookup the methods was a byte string. And Python 3 doesn't see
    byte string and normalstrings as equal.
- - Updated Sundown files; See commits from Feb 05, 2012 to Mar 25, 2012.
+ - Updated Sundown files; See commits from Feb 05, 2012 to Mar 29, 2012.
    This includes fixes for Visual Studio on Windows:
    https://github.com/tanoku/sundown/commits/master/
 
