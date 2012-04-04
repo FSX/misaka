@@ -47,15 +47,13 @@ cdef char* _unicode_to_bytes(unicode text):
 
 
 def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
-    """Convert markdown text to (X)HTML::
+    """Convert markdown text to (X)HTML.
 
-        misaka.html('source *text*',
-            extensions=EXT_AUTOLINK|EXT_SUPERSCRIPT|EXT_STRIKETHROUGH,
-            render_flags=HTML_SKIP_HTML|HTML_USE_XHTML)
+    Returns a unicode string.
 
-    :param text: text as a (unicode) string.
-    :param extensions: enable additional Markdown extensions with the ``EXT_*`` constants.
-    :param render_flags: adjust rendering behaviour with the ``HTML_*`` constants.
+    :param text: A byte or unicode string.
+    :param extensions: Enable additional Markdown extensions with the ``EXT_*`` constants.
+    :param render_flags: Adjust HTML rendering behaviour with the ``HTML_*`` constants.
     """
 
     # Convert string
@@ -104,15 +102,35 @@ def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
 
 
 cdef class SmartyPants:
-    """Smartypants post-processor for renderers. It can be used like this::
+    """Smartypants is a post-processor for (X)HTML renderers and can be used
+    standalone or as a mixin. It adds a methode named ``postprocess`` to the
+    renderer.
 
-        class BleepRenderer(HtmlRenderer, SmartyPants):
-            pass
+    ================================== ========
+    Source                             Result
+    ================================== ========
+    `'s` (s, t, m, d, re, ll, ve) [1]_ &rsquo;s
+    `--`                               &mdash;
+    `-`                                &ndash;
+    `...`                              &hellip;
+    `. . .`                            &hellip;
+    `(c)`                              &copy;
+    `(r)`                              &reg;
+    `(tm)`                             &trade;
+    `3/4`                              &frac34;
+    `1/2`                              &frac12;
+    `1/4`                              &frac14;
+    ================================== ========
+
+    .. [1] A ``'`` followed by a ``s``, ``t``, ``m``, ``d``, ``re``, ``ll`` or
+           ``ve`` will be turned into ``&rsquo;s``, ``&rsquo;t``, and so on.
     """
     def postprocess(self, object text):
-        """Process input text.
+        """Process the input text.
 
-        :param text: text as a (unicode) string.
+        Returns a unicode string.
+
+        :param text: A byte or unicode string.
         """
         cdef bytes py_string = text.encode('UTF-8', 'strict')
         cdef char *c_string = py_string
@@ -128,9 +146,10 @@ cdef class SmartyPants:
 
 
 cdef class BaseRenderer:
-    """The ``BaseRenderer`` class does nothing by itself. It should be subclassed.
+    """The ``BaseRenderer`` is boilerplate code for creating your own renderers by
+    sublassing `BaseRenderer`. It takes care of setting the callbacks and flags.
 
-    :param flags: flags that can be used by the renderer.
+    :param flags: Available as a read-only, integer type attribute named ``self.flags``.
     """
 
     cdef sundown.sd_callbacks callbacks
@@ -158,17 +177,19 @@ cdef class BaseRenderer:
                 dest[i] = source[i]
 
     def setup(self):
-        """The ``setup`` method can be overridden by a subclass. This method
-        is executed when a new object of the class is created. Right after
-        ``__init__``.
+        """A method that can be overridden by the renderer that sublasses ``BaseRenderer``.
+        It's called everytime an instance of a renderer is created.
         """
         pass
 
 
 cdef class HtmlRenderer(BaseRenderer):
-    """A HTML renderer.
+    """The HTML renderer that's included in Sundown.
 
-    :param flags: Accepts the ``HTML_*`` constants as flags.
+    Do you override the ``setup`` method when subclassing ``HtmlRenderer``. If
+    you do make sure to call parent class' ``setup`` method first.
+
+    :param flags: Adjust HTML rendering behaviour with the ``HTML_*`` constants.
     """
     def setup(self):
         self.options.html.flags = self.flags
@@ -179,9 +200,12 @@ cdef class HtmlRenderer(BaseRenderer):
 
 
 cdef class HtmlTocRenderer(BaseRenderer):
-    """A HTML table of contents renderer.
+    """The HTML table of contents renderer that's included in Sundown.
 
-    :param flags: Accepts the ``HTML_*`` constants as flags.
+    Do you override the ``setup`` method when subclassing ``HtmlTocRenderer``.
+    If you do make sure to call parent class' ``setup`` method first.
+
+    :param flags: Adjust HTML rendering behaviour with the ``HTML_*`` constants.
     """
     def setup(self, int flags=0):
         sundown.sdhtml_toc_renderer(
@@ -192,8 +216,8 @@ cdef class HtmlTocRenderer(BaseRenderer):
 cdef class Markdown:
     """The Markdown parser.
 
-    :param renderer: an instance of ``BaseRenderer``.
-    :param extensions: enable Markdown extensions with the ``EXT_*`` constants.
+    :param renderer: An instance of ``BaseRenderer``.
+    :param extensions: Enable additional Markdown extensions with the ``EXT_*`` constants.
     """
 
     cdef sundown.sd_markdown *markdown
@@ -211,9 +235,11 @@ cdef class Markdown:
             <sundown.html_renderopt *> &self.renderer.options)
 
     def render(self, object text):
-        """Render the given markdown text.
+        """Render the Markdon text.
 
-        :param text: text as a (unicode) string.
+        Returns a unicode string.
+
+        :param text: A byte or unicode string.
         """
         if hasattr(self.renderer, 'preprocess'):
             text = self.renderer.preprocess(text)

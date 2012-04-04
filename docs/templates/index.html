@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ escape(page.title) }}{% end %}
+{% block location %}{{ page.location }}-section{% end %}
+
+{% block content %}
+  <article class="page">
+    {{ page.content }}
+  </article>
+{% end %}

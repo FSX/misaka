@@ -1,0 +1,26 @@
+base_url: http://misaka.61924.nl
+
+links:
+ - ['/', 'index']
+ - ['/changelog/', 'changelog']
+ - ['/manual/', 'manual']
+ - ['/api/', 'api']
+
+root:
+ - index
+ - '404'
+
+post_scripts:
+ - process_assets.sh
+
+misaka_extensions:
+ - no_intra_emphasis
+ - tables
+ - fenced_code
+ - autolink
+ - strikethrough
+ - superscript
+
+# Javascript dependencies:
+#
+# - LESS

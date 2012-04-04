@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}None{% end %} — Misaka</title>
+  <!--[if IE]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link rel="stylesheet" type="text/css" href="{{ get_asset('/all.css') }}">
+</head>
+<body id="{% block location %}index-section{% end %}">
+
+<nav id="navigation">
+  <h1>Misaka</h1>
+
+  <div>
+    {% for link, name in site.links %}
+      <a id="nav-{{ name }}" href="{{ get_url(link) }}">{{ name }}</a>
+    {% end %}
+  </div>
+</nav>
+
+<section id="content">
+{% block content %}{% end %}
+</section>
+
+<footer id="bottom">
+  <p>&copy; 2011-2012. <a href="https://github.com/FSX">Frank Smit</a>.</p>
+</footer>
+
+</body>
+</html>
