@@ -1,2 +1,6 @@
-env/
+env*
 *.sublime-*
+_build
+build
+dist
+*.egg-info
