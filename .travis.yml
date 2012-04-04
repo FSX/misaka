@@ -5,8 +5,9 @@ python:
  - 3.2
 
 install:
- - pip install cython --use-mirrors
- - python setup.py compile_cython
+ # - pip install cython --use-mirrors
+ # - python setup.py compile_cython
  - python setup.py install
 
-#script:  PLEASE CHANGE ME
+script:
+ - python tests/misaka_test.py
