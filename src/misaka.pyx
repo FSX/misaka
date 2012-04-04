@@ -132,12 +132,16 @@ cdef class SmartyPants:
 
         :param text: A byte or unicode string.
         """
-        cdef bytes py_string = text.encode('UTF-8', 'strict')
-        cdef char *c_string = py_string
+        # Convert string
+        cdef char *c_string
+        if isinstance(text, unicode):
+            c_string = _unicode_to_bytes(text)
+        else:
+            c_string = text
 
         cdef sundown.buf *ob = sundown.bufnew(128)
         sundown.sdhtml_smartypants(ob,
-            <uint8_t *> c_string, len(py_string))
+            <uint8_t *> c_string, len(c_string))
 
         try:
             return (<char *> ob.data)[:ob.size].decode('UTF-8', 'strict')
