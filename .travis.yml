@@ -1,10 +1,11 @@
+# http://travis-ci.org/#!/FSX/misaka
 language: python
 python:
  - 2.7
  - 3.2
 
 install:
- - pip install cython
+ - pip install cython --use-mirrors
  - python setup.py compile_cython
  - python setup.py install
 
