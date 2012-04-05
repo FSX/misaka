@@ -67,6 +67,7 @@ setup(
     url='http://misaka.61924.nl/',
     license='MIT',
     long_description=open(os.path.join(dirname, 'README.rst')).read(),
+    scripts=['scripts/misaka'],
     cmdclass={
         'clean': CleanCommand,
         'compile_cython': CythonCommand,

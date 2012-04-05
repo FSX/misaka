@@ -1,0 +1,81 @@
+#!/usr/bin/env python
+
+import sys
+from os import path
+from misaka import html as to_html, \
+    EXT_NO_INTRA_EMPHASIS, EXT_TABLES, EXT_FENCED_CODE, EXT_AUTOLINK, \
+    EXT_STRIKETHROUGH, EXT_LAX_HTML_BLOCKS, EXT_SPACE_HEADERS, \
+    EXT_SUPERSCRIPT, \
+    HTML_SKIP_HTML, HTML_SKIP_STYLE, HTML_SKIP_IMAGES, HTML_SKIP_LINKS, \
+    HTML_EXPAND_TABS, HTML_SAFELINK, HTML_TOC, HTML_HARD_WRAP, \
+    HTML_USE_XHTML, HTML_ESCAPE, \
+    HTML_SMARTYPANTS
+
+
+misaka_extensions = {
+    '--parse-no-intra-emphasis': EXT_NO_INTRA_EMPHASIS,
+    '--parse-tables': EXT_TABLES,
+    '--parse-fenced-code': EXT_FENCED_CODE,
+    '--parse-autolink': EXT_AUTOLINK,
+    '--parse-strikethrough': EXT_STRIKETHROUGH,
+    '--parse-lax-html-blocks': EXT_LAX_HTML_BLOCKS,
+    '--parse-space-headers': EXT_SPACE_HEADERS,
+    '--parse-superscript': EXT_SUPERSCRIPT
+}
+
+misaka_html_flags = {
+    '--render-skip-html': HTML_SKIP_HTML,
+    '--render-skip-style': HTML_SKIP_STYLE,
+    '--render-skip-images': HTML_SKIP_IMAGES,
+    '--render-skip-links': HTML_SKIP_LINKS,
+    '--render-expand-tabs': HTML_EXPAND_TABS,
+    '--render-safelink': HTML_SAFELINK,
+    '--render-toc': HTML_TOC,
+    '--render-hard_wrap': HTML_HARD_WRAP,
+    '--render-use-xhtml': HTML_USE_XHTML,
+    '--render-escape': HTML_ESCAPE,
+    '--smarty': HTML_SMARTYPANTS
+}
+
+
+help = '''Usage: misaka [--parse-<extension>...] [--render-<flag>...] [--smarty] [<file>...]
+
+Parser extensions:
+%s
+
+Render flags:
+%s
+''' % (
+    '\n'.join(['  %s' % a for a in misaka_extensions]),
+    '\n'.join(['  %s' % a for a in misaka_html_flags]))
+
+
+if __name__ == '__main__':
+    args = sys.argv[1:]
+
+    files = []
+    flags = 0
+    extensions = 0
+
+    for arg in args:
+        if arg in ('-h', '--help'):
+            print help
+            sys.exit(0)
+        elif arg in misaka_html_flags:
+            flags |= misaka_html_flags[arg]
+        elif arg in misaka_extensions:
+            extensions |= misaka_extensions[arg]
+        else:
+            # If it's not a extension or HTML flag,
+            # then it must be a file, right?
+            files.append(arg)
+
+    for fn in files:
+        fn = path.abspath(fn)
+        if not path.exists(fn):
+            print 'Does not exists: %s' % fn
+
+        with open(fn, 'r') as fd:
+            source = fd.read()
+
+        print(to_html(source, extensions, flags))
