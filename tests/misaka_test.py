@@ -3,14 +3,21 @@
 import re
 from os import path
 from glob import glob
+from subprocess import Popen, PIPE, STDOUT
 
 import misaka
-from tidylib import tidy_document
 from misaka import Markdown, BaseRenderer, HtmlRenderer, \
     SmartyPants, \
     HTML_ESCAPE
 
 from minitest import TestCase, ok, runner
+
+
+def clean_html(dirty_html):
+    p = Popen(['tidy', '--show-body-only', '1', '--quiet', '1', '--show-warnings', '0'],
+        stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+    return p.communicate(input=dirty_html.encode('utf-8'))[0].decode('utf-8')
+
 
 
 class SmartyPantsTest(TestCase):
@@ -65,8 +72,11 @@ class MarkdownConformanceTest_10(TestCase):
                 expected_html = fd.read()
 
             actual_html = self.r(text)
-            expected_result, errors = tidy_document(expected_html)
-            actual_result, errors = tidy_document(actual_html)
+            # expected_result, errors = tidy_document(expected_html)
+            # actual_result, errors = tidy_document(actual_html)
+
+            expected_result = clean_html(expected_html)
+            actual_result = clean_html(actual_html)
 
             ok(actual_result).diff(expected_result)
 

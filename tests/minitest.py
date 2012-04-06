@@ -77,8 +77,8 @@ class TestCase(object):
             try:
                 func()
                 error = None
-            except Exception as e:
-                error = e.message
+            except AssertionError as e:
+                error = str(e)
             return Result(func.__name__, func.__doc__, error)
         self._tests.append(catch_exception)
         return catch_exception
@@ -104,15 +104,15 @@ def runner(testcases, config={}):
         tests = testcase(config)
 
         if hasattr(tests, 'name'):
-            print '\n>> %s' % tests.name
+            print('\n>> %s' % tests.name)
 
         for result in tests.run():
             name = result.name or result.func
             if result.error is not None:
                 failed += 1
-                print '%s ... FAILED\n\n%s\n' % (name, result.error)
+                print('%s ... FAILED\n\n%s\n' % (name, result.error))
             else:
                 passed += 1
-                print '%s ... PASSED' % name
+                print('%s ... PASSED' % name)
 
-    print '\n\n%s passed; %s failed.' % (passed, failed)
+    print('\n\n%s passed; %s failed.' % (passed, failed))
