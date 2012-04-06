@@ -6,18 +6,27 @@ from glob import glob
 from subprocess import Popen, PIPE, STDOUT
 
 import misaka
+
 from misaka import Markdown, BaseRenderer, HtmlRenderer, \
     SmartyPants, \
     HTML_ESCAPE
-
+from lxml.html.clean import clean_html as lxml_clean_html
 from minitest import TestCase, ok, runner
 
 
 def clean_html(dirty_html):
     p = Popen(['tidy', '--show-body-only', '1', '--quiet', '1', '--show-warnings', '0'],
         stdout=PIPE, stdin=PIPE, stderr=STDOUT)
-    return p.communicate(input=dirty_html.encode('utf-8'))[0].decode('utf-8')
+    return p.communicate(input=bytes(dirty_html, 'utf-8'))[0].decode('utf-8')
 
+
+# def clean_html(dirty_html):
+#     html = lxml_clean_html(dirty_html)
+#     # html = '\n'.join(html.split())
+#     # html = re.sub(r'>\s+<', '>\n<', html)
+#     html = re.sub(r'<li>\s+', '<li>', html)
+#     html = html.replace('\n\n', '\n')
+#     return html
 
 
 class SmartyPantsTest(TestCase):
@@ -57,8 +66,6 @@ class MarkdownConformanceTest_10(TestCase):
     suite = 'MarkdownTest_1.0'
 
     def setup(self):
-        self.r = misaka.html
-
         tests_dir = path.dirname(__file__)
         for text_path in glob(path.join(tests_dir, self.suite, '*.text')):
             html_path = '%s.html' % path.splitext(text_path)[0]
@@ -71,7 +78,7 @@ class MarkdownConformanceTest_10(TestCase):
             with open(html_path, 'r') as fd:
                 expected_html = fd.read()
 
-            actual_html = self.r(text)
+            actual_html = misaka.html(text)
             # expected_result, errors = tidy_document(expected_html)
             # actual_result, errors = tidy_document(actual_html)
 

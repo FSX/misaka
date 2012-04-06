@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     for arg in args:
         if arg in ('-h', '--help'):
-            print help
+            print(help)
             sys.exit(0)
         elif arg in misaka_html_flags:
             flags |= misaka_html_flags[arg]
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     for fn in files:
         fn = path.abspath(fn)
         if not path.exists(fn):
-            print 'Does not exists: %s' % fn
+            print('Does not exists: %s' % fn)
 
         with open(fn, 'r') as fd:
             source = fd.read()
