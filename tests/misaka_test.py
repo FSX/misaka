@@ -10,23 +10,16 @@ import misaka
 from misaka import Markdown, BaseRenderer, HtmlRenderer, \
     SmartyPants, \
     HTML_ESCAPE
-from lxml.html.clean import clean_html as lxml_clean_html
 from minitest import TestCase, ok, runner
 
 
 def clean_html(dirty_html):
-    p = Popen(['tidy', '--show-body-only', '1', '--quiet', '1', '--show-warnings', '0'],
+    input_html = dirty_html.encode('utf-8')
+    p = Popen(['tidy', '--show-body-only', '1', '--quiet', '1', '--show-warnings', '0', '-utf8'],
         stdout=PIPE, stdin=PIPE, stderr=STDOUT)
-    return p.communicate(input=bytes(dirty_html, 'utf-8'))[0].decode('utf-8')
+    stdout, stderr = p.communicate(input=input_html)
 
-
-# def clean_html(dirty_html):
-#     html = lxml_clean_html(dirty_html)
-#     # html = '\n'.join(html.split())
-#     # html = re.sub(r'>\s+<', '>\n<', html)
-#     html = re.sub(r'<li>\s+', '<li>', html)
-#     html = html.replace('\n\n', '\n')
-#     return html
+    return stdout.decode('utf-8')
 
 
 class SmartyPantsTest(TestCase):
@@ -79,9 +72,6 @@ class MarkdownConformanceTest_10(TestCase):
                 expected_html = fd.read()
 
             actual_html = misaka.html(text)
-            # expected_result, errors = tidy_document(expected_html)
-            # actual_result, errors = tidy_document(actual_html)
-
             expected_result = clean_html(expected_html)
             actual_result = clean_html(actual_html)
 
