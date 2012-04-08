@@ -29,28 +29,28 @@ class AssertionObject(object):
 
     def __lt__(self, other):
         if not self._target < other:
-            raise AssertionError(msg('%s < %s' % (self._target, other)))
+            raise AssertionError(msg('%r < %r' % (self._target, other)))
 
     def __le__(self, other):
         if not self._target <= other:
-            raise AssertionError(msg('%s <= %s' % (self._target, other)))
+            raise AssertionError(msg('%r <= %r' % (self._target, other)))
 
 
     def __eq__(self, other):
         if not self._target == other:
-            raise AssertionError(msg('%s == %s' % (self._target, other)))
+            raise AssertionError(msg('%r == %r' % (self._target, other)))
 
     def __ne__(self, other):
         if not self._target != other:
-            raise AssertionError(msg('%s != %s' % (self._target, other)))
+            raise AssertionError(msg('%r != % ' % (self._target, other)))
 
     def __gt__(self, other):
         if not self._target > other:
-            raise AssertionError(msg('%s > %s' % (self._target, other)))
+            raise AssertionError(msg('%r > %r' % (self._target, other)))
 
     def __ge__(self, other):
         if not self._target >= other:
-            raise AssertionError(msg('%s >= %s' % (self._target, other)))
+            raise AssertionError(msg('%r >= %r' % (self._target, other)))
 
     def diff(self, other):
         if self._target != other:
@@ -58,6 +58,14 @@ class AssertionObject(object):
                 other.splitlines(True),
                 self._target.splitlines(True))
             raise AssertionError(msg(''.join(difference)))
+
+    def contains(self, other):
+        if other not in self._target:
+            raise AssertionError(msg('%r in %r' % (other, self._target)))
+
+    def not_contains(self, other):
+        if other in self._target:
+            raise AssertionError(msg('%r not in %r' % (other, self._target)))
 
 
 def ok(target):

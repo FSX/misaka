@@ -56,49 +56,18 @@ def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
     :param render_flags: Adjust HTML rendering behaviour with the ``HTML_*`` constants.
     """
 
-    # Convert string
-    cdef char *c_string
-    if isinstance(text, unicode):
-        c_string = _unicode_to_bytes(text)
-    else:
-        c_string = text
-
-    # Definitions
-    cdef sundown.sd_callbacks callbacks
-    cdef sundown.html_renderopt options
-    cdef sundown.sd_markdown *markdown
-
-    # Buffers
-    cdef sundown.buf *ib = sundown.bufnew(128)
-    sundown.bufputs(ib, c_string)
-
-    cdef sundown.buf *ob = sundown.bufnew(128)
-    sundown.bufgrow(ob, <size_t> (ib.size * 1.4))
-
-    # Renderer
     if render_flags & HTML_TOC_TREE:
-        sundown.sdhtml_toc_renderer(&callbacks, &options)
+        renderer = HtmlTocRenderer(render_flags)
     else:
-        sundown.sdhtml_renderer(&callbacks, &options, render_flags)
+        renderer = HtmlRenderer(render_flags)
 
-    # Parser
-    markdown = sundown.sd_markdown_new(extensions, 16, &callbacks, &options)
-    sundown.sd_markdown_render(ob, ib.data, ib.size, markdown)
-    sundown.sd_markdown_free(markdown)
+    markdown = Markdown(renderer, extensions)
+    result = markdown.render(text)
 
-    # Smartypantsu
     if render_flags & HTML_SMARTYPANTS:
-        sb = sundown.bufnew(128)
-        sundown.sdhtml_smartypants(sb, ob.data, ob.size)
-        sundown.bufrelease(ob)
-        ob = sb
+        result = SmartyPants().postprocess(result)
 
-    # Return a unicode string and release buffers
-    try:
-        return (<char *> ob.data)[:ob.size].decode('UTF-8', 'strict')
-    finally:
-        sundown.bufrelease(ob)
-        sundown.bufrelease(ib)
+    return result
 
 
 cdef class SmartyPants:
