@@ -4,6 +4,9 @@ python:
  - 2.7
  - 3.2
 
+before_install:
+ - sudo apt-get install tidyhtml
+
 install:
  - python setup.py install
 

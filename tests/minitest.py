@@ -1,10 +1,12 @@
+# minitest is inspired by Oktest, http://www.kuwata-lab.com/oktest/
+
 import re
 import sys
 from difflib import unified_diff
 from collections import namedtuple
 
 
-RE_TEST_NAME = re.compile(r'test_[a-zA-Z0-9_]*')
+_RE_TEST_NAME = re.compile(r'test_[a-zA-Z0-9_]+')
 Result = namedtuple('Result', ('func', 'name', 'error'))
 
 
@@ -77,7 +79,7 @@ class TestCase(object):
         self.config = config
         self._tests = []
         for t in dir(self):
-            if RE_TEST_NAME.match(t):
+            if _RE_TEST_NAME.match(t):
                 self.add_test(getattr(self, t))
 
     def add_test(self, func):
