@@ -1,14 +1,13 @@
 Misaka
 ======
 
+[![Build Status](https://secure.travis-ci.org/FSX/misaka.png)](http://travis-ci.org/FSX/misaka)
+
 The Python binding for Sundown_, a markdown parsing library.
 
 Documentation can be found at: http://misaka.61924.nl/
 
 .. _Sundown: https://github.com/tanoku/sundown
-
-
-[![Build Status](https://secure.travis-ci.org/FSX/misaka.png?branch=master)](http://travis-ci.org/FSX/misaka)
 
 
 Installation
