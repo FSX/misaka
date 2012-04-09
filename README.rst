@@ -1,7 +1,7 @@
 Misaka
 ======
 
-![Build Status](https://secure.travis-ci.org/FSX/misaka.png)
+.. image:: https://secure.travis-ci.org/FSX/misaka.png?branch=master
 
 The Python binding for Sundown_, a markdown parsing library.
 
