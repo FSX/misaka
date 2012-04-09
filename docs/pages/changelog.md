@@ -5,7 +5,7 @@ title: Changelog
 toc: True
 ---
 
-## 1.0.2 (2012-04-??)
+## 1.0.2 (2012-04-09)
 
  - Added `clean`, `compile_cython` and `update_vendor` commands to `setup.py`.
    See `setup.py --help-commands` for more information.
@@ -21,6 +21,7 @@ toc: True
  - In Python 3 render callbacks couldn't be seen, because the variable that was
    used to lookup the methods was a byte string. And Python 3 doesn't see
    byte string and normal strings as equal.
+ - Added unit tests.
  - Updated Sundown files; See commits from Feb 05, 2012 to Mar 29, 2012.
    This includes fixes for Visual Studio on Windows:
    https://github.com/tanoku/sundown/commits/master/

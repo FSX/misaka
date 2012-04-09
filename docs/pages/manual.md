@@ -13,17 +13,17 @@ What's possible, how it works and what you get.
 
 Installation from [PyPi][]:
 
-```console
+~~~ console
 % pip install misaka
-```
+~~~
 
 Or get the most recent version from [Github][]:
 
-```console
+~~~ console
 % git clone git://github.com/FSX/misaka.git
 % cd misaka
 % python setup.py install
-```
+~~~
 
 `setup.py` has been extended with some extra commands:
 
@@ -33,17 +33,30 @@ Or get the most recent version from [Github][]:
 
 For example:
 
-```console
+~~~ console
 % python setup.py compile_cython
 running cython
 compiling /home/frank/Code/misaka/src/misaka.pyx
-```
+~~~
 
 For the `compile_cython` command you need to have Cython installed. And [Git][] needs to
 be installed to make the `update_vendor` command effective.
 
 You have to manually run `git submodule foreach git pull` before running the
 `update_vendor` command so the most recent files are downloaded first.
+
+To run the unit tests [HTML Tidy][] must be installed first.
+
+    pacman -S tidyhtml # on Arch Linux
+    sudo apt-get install tidy # on Ubuntu
+
+And then:
+
+~~~ console
+cd tests
+python misaka_test.py
+~~~
+
 
   [PyPi]: http://pypi.python.org/pypi/misaka
   [Github]: https://github.com/FSX/misaka
