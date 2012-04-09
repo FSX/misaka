@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>API — Misaka</title>
+<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="http://misaka.61924.nl/assets/all.css">
+</head>
+<body id="api-section">
+<nav id="navigation">
+<h1>Misaka</h1>
+<div>
+
+<a id="nav-index" href="http://misaka.61924.nl/">index</a>
+
+<a id="nav-changelog" href="http://misaka.61924.nl/changelog/">changelog</a>
+
+<a id="nav-manual" href="http://misaka.61924.nl/manual/">manual</a>
+
+<a id="nav-api" href="http://misaka.61924.nl/api/">api</a>
+
+</div>
+</nav>
+<section id="content">
+
+
+<section class="toc">
+<ul>
+<li>
+<a href="#toc_0">Markdown Extensions</a>
+</li>
+<li>
+<a href="#toc_1">HTML Render Flags</a>
+</li>
+<li>
+<a href="#toc_2">Render Flags</a>
+</li>
+<li>
+<a href="#toc_3">html</a>
+</li>
+<li>
+<a href="#toc_4">Smartypants</a>
+<ul>
+<li>
+<a href="#toc_5">postprocess</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_6">BaseRenderer</a>
+<ul>
+<li>
+<a href="#toc_7">setup</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_8">HtmlRenderer</a>
+</li>
+<li>
+<a href="#toc_9">HtmlTocRenderer</a>
+</li>
+<li>
+<a href="#toc_10">Markdown</a>
+<ul>
+<li>
+<a href="#toc_11">render</a>
+</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+<article class="page">
+<header>
+<h1>API</h1>
+</header>
+<p>Listings and descriptions of all constants, functions, classes and methods. This
+page only describes the public objects, see the manual for usage examples.</p>
+
+<p>If there is no list of arguments/parameters or no description of what the function
+or method returns it does not accept or return anything.</p>
+
+<h2 id="toc_0">Markdown Extensions</h2>
+
+<ul>
+<li><p><strong>EXT_NO_INTRA_EMPHASIS</strong> &mdash; Do not parse emphasis inside of words. Strings
+such as <code>foo_bar_baz</code> will not generate <code>&lt;em&gt;</code> tags.</p></li>
+<li><p><strong>EXT_TABLES</strong> &mdash; Parse <a href="http://michelf.com/projects/php-markdown/extra/#table">PHP-Markdown tables</a>.</p></li>
+<li><p><strong>EXT_FENCED_CODE</strong> &mdash; Parse fenced code blocks, PHP-Markdown style. Blocks
+delimited with 3 or more <code>~</code> or backticks will be considered as code, without
+the need to be indented. An optional language name may be added at the end of
+the opening fence for the code block.</p></li>
+<li><p><strong>EXT_AUTOLINK</strong> &mdash; Parse links even when they are not enclosed in <code>&lt;&gt;</code> characters.
+Autolinks for the http, https and ftp protocols will be automatically detected.
+Email addresses are also handled, and http links without protocol, but starting
+with <code>www</code>.</p></li>
+<li><p><strong>EXT_STRIKETHROUGH</strong> &mdash; Parse strikethrough, PHP-Markdown style Two <code>~</code>
+characters mark the start of a strikethrough, e.g. <code>this is ~~good~~ bad</code>.</p></li>
+<li><p><strong>EXT_LAX_HTML_BLOCKS</strong> &mdash; HTML blocks do not require to be surrounded by an empty
+line as in the Markdown standard.</p></li>
+<li><p><strong>EXT_SPACE_HEADERS</strong> &mdash; A space is always required between the hash at the
+beginning of a header and its name, e.g. <code>#this is my header</code> would not be a
+valid header.</p></li>
+<li><p><strong>EXT_SUPERSCRIPT</strong> &mdash; Parse superscripts after the <code>^</code> character; contiguous
+superscripts are nested together, and complex values can be enclosed in
+parenthesis, e.g. <code>this is the 2^(nd) time</code>.</p></li>
+</ul>
+
+<h2 id="toc_1">HTML Render Flags</h2>
+
+<ul>
+<li><p><strong>HTML_SKIP_HTML</strong> &mdash; Do not allow any user-inputted HTML in the output.</p></li>
+<li><p><strong>HTML_SKIP_STYLE</strong> &mdash; Do not generate any <code>&lt;style&gt;</code> tags.</p></li>
+<li><p><strong>HTML_SKIP_IMAGES</strong> &mdash; Do not generate any <code>&lt;img&gt;</code> tags.</p></li>
+<li><p><strong>HTML_SKIP_LINKS</strong> &mdash; Do not generate any <code>&lt;a&gt;</code> tags.</p></li>
+<li><p><strong>HTML_EXPAND_TABS</strong> &mdash; Unused.</p></li>
+<li><p><strong>HTML_SAFELINK</strong> &mdash; Only generate links for protocols which are considered safe.</p></li>
+<li><p><strong>HTML_TOC</strong> &mdash; Add HTML anchors to each header in the output HTML, to allow
+linking to each section.</p></li>
+<li><p><strong>HTML_HARD_WRAP</strong> &mdash; Insert HTML <code>&lt;br&gt;</code> tags inside on paragraphs where the
+origin Markdown document had newlines (by default, Markdown ignores these newlines).</p></li>
+<li><p><strong>HTML_USE_XHTML</strong> &mdash; Output XHTML-conformant tags.</p></li>
+<li><p><strong>HTML_ESCAPE</strong> &mdash; <code>HTML_ESCAPE</code> overrides <code>SKIP_HTML</code>, <code>SKIP_STYLE</code>, <code>SKIP_LINKS</code>
+and <code>SKIP_IMAGES</code>. It doens&#39;t see if there are any valid tags, just escape all of them.</p></li>
+</ul>
+
+<p>The following two flags are only for <code>misaka.html</code>.</p>
+
+<ul>
+<li><p><strong>HTML_SMARTYPANTS</strong> &mdash; Post-process rendered markdown text with <a href="http://daringfireball.net/projects/smartypants/">SmartyPants</a>.</p></li>
+<li><p><strong>HTML_TOC_TREE</strong> &mdash; Render a table of contents.</p></li>
+</ul>
+
+<h2 id="toc_2">Render Flags</h2>
+
+<p>Constants that can be used in custom renderers.</p>
+
+<ul>
+<li><strong>TABLE_ALIGN_L</strong></li>
+<li><strong>TABLE_ALIGN_R</strong></li>
+<li><strong>TABLE_ALIGN_C</strong></li>
+<li><strong>TABLE_ALIGNMASK</strong></li>
+<li><strong>TABLE_HEADER</strong></li>
+</ul>
+
+<h2 id="toc_3">html</h2>
+
+<p>Convert markdown text to (X)HTML.</p>
+
+<p>Returns a unicode string.</p>
+
+<ul>
+<li><strong>text</strong> &mdash; A byte or unicode string.</li>
+<li><strong>extensions</strong> &mdash; Enable additional Markdown extensions with the <code>EXT_*</code> constants.</li>
+<li><strong>render_flags</strong> &mdash; Adjust HTML rendering behaviour with the <code>HTML_*</code> constants.</li>
+</ul>
+
+<h2 id="toc_4">Smartypants</h2>
+
+<p>Smartypants is a post-processor for (X)HTML renderers and can be used standalone
+or as a mixin. It adds a methode named <code>postprocess</code> to the renderer.</p>
+
+<table><thead>
+<tr>
+<th>Source</th>
+<th>Result</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>&#39;s</code> (s, t, m, d, re, ll, ve) <sup>1</sup></td>
+<td>&rsquo;s</td>
+</tr>
+<tr>
+<td><code>--</code></td>
+<td>&mdash;</td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>&ndash;</td>
+</tr>
+<tr>
+<td><code>...</code></td>
+<td>&hellip;</td>
+</tr>
+<tr>
+<td><code>. . .</code></td>
+<td>&hellip;</td>
+</tr>
+<tr>
+<td><code>(c)</code></td>
+<td>&copy;</td>
+</tr>
+<tr>
+<td><code>(r)</code></td>
+<td>&reg;</td>
+</tr>
+<tr>
+<td><code>(tm)</code></td>
+<td>&trade;</td>
+</tr>
+<tr>
+<td><code>3/4</code></td>
+<td>&frac34;</td>
+</tr>
+<tr>
+<td><code>1/2</code></td>
+<td>&frac12;</td>
+</tr>
+<tr>
+<td><code>1/4</code></td>
+<td>&frac14;</td>
+</tr>
+</tbody></table>
+
+<ol>
+<li>A <code>&#39;</code> followed by a <code>s</code>, <code>t</code>, <code>m</code>, <code>d</code>, <code>re</code>, <code>ll</code> or <code>ve</code> will be turned
+into <code>&amp;rsquo;s</code>, <code>&amp;rsquo;t</code>, and so on.</li>
+</ol>
+
+<h3 id="toc_5">postprocess</h3>
+
+<p>Process the input text.</p>
+
+<p>Returns a unicode string.</p>
+
+<ul>
+<li><strong>text</strong> &mdash; A byte or unicode string.</li>
+</ul>
+
+<h2 id="toc_6">BaseRenderer</h2>
+
+<p>The <code>BaseRenderer</code> is boilerplate code for creating your own renderers by
+sublassing <code>BaseRenderer</code>. It takes care of setting the callbacks and flags.</p>
+
+<ul>
+<li><strong>flags</strong> &mdash; Available as a read-only, integer type attribute named <code>self.flags</code>.</li>
+</ul>
+
+<h3 id="toc_7">setup</h3>
+
+<p>A method that can be overridden by the renderer that sublasses <code>BaseRenderer</code>.
+It&#39;s called everytime an instance of a renderer is created.</p>
+
+<h2 id="toc_8">HtmlRenderer</h2>
+
+<p>The HTML renderer that&#39;s included in Sundown.</p>
+
+<p>Do you override the <code>setup</code> method when subclassing <code>HtmlRenderer</code>. If you do
+make sure to call parent class&#39; <code>setup</code> method first.</p>
+
+<ul>
+<li><strong>flags</strong> &mdash; Adjust HTML rendering behaviour with the <code>HTML_*</code> constants.</li>
+</ul>
+
+<h2 id="toc_9">HtmlTocRenderer</h2>
+
+<p>The HTML table of contents renderer that&#39;s included in Sundown.</p>
+
+<p>Do you override the <code>setup</code> method when subclassing <code>HtmlTocRenderer</code>. If you do
+make sure to call parent class&#39; <code>setup</code> method first.</p>
+
+<ul>
+<li><strong>flags</strong> &mdash; Adjust HTML rendering behaviour with the <code>HTML_*</code> constants.</li>
+</ul>
+
+<h2 id="toc_10">Markdown</h2>
+
+<p>The Markdown parser.</p>
+
+<ul>
+<li><strong>renderer</strong> &mdash; An instance of <code>BaseRenderer</code>.</li>
+<li><strong>extensions</strong> &mdash; Enable additional Markdown extensions with the <code>EXT_*</code> constants.</li>
+</ul>
+
+<h3 id="toc_11">render</h3>
+
+<p>Render the Markdon text.</p>
+
+<p>Returns a unicode string.</p>
+
+<ul>
+<li><strong>text</strong> &mdash; A byte or unicode string.</li>
+</ul>
+
+</article>
+
+</section>
+<footer id="bottom">
+<p>&copy; 2011-2012. <a href="https://github.com/FSX">Frank Smit</a>.</p>
+</footer>
+</body>
+</html>

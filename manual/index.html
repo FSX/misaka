@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Manual — Misaka</title>
+<!--[if IE]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="http://misaka.61924.nl/assets/all.css">
+</head>
+<body id="manual-section">
+<nav id="navigation">
+<h1>Misaka</h1>
+<div>
+
+<a id="nav-index" href="http://misaka.61924.nl/">index</a>
+
+<a id="nav-changelog" href="http://misaka.61924.nl/changelog/">changelog</a>
+
+<a id="nav-manual" href="http://misaka.61924.nl/manual/">manual</a>
+
+<a id="nav-api" href="http://misaka.61924.nl/api/">api</a>
+
+</div>
+</nav>
+<section id="content">
+
+
+<section class="toc">
+<ul>
+<li>
+<a href="#toc_12">Installation</a>
+</li>
+<li>
+<a href="#toc_13">Basic Usage</a>
+</li>
+<li>
+<a href="#toc_14">Custom Renderers</a>
+<ul>
+<li>
+<a href="#toc_15">Code Highlighting</a>
+</li>
+</ul>
+</li>
+<li>
+<a href="#toc_16">Pre- &amp; Postprocessors</a>
+<ul>
+<li>
+<a href="#toc_17">Smartypants</a>
+</li>
+</ul>
+</li>
+</ul>
+
+</section>
+
+<article class="page">
+<header>
+<h1>Manual</h1>
+</header>
+<p>Some usage examples of Misaka. Everything about the examples is explained here.
+What&#39;s possible, how it works and what you get.</p>
+
+<h2 id="toc_12">Installation</h2>
+
+<p>Installation from <a href="http://pypi.python.org/pypi/misaka">PyPi</a>:</p>
+<pre class="highlight"><code><span class="gp">%</span> pip install misaka
+</code></pre>
+<p>Or get the most recent version from <a href="https://github.com/FSX/misaka">Github</a>:</p>
+<pre class="highlight"><code><span class="gp">%</span> git clone git://github.com/FSX/misaka.git
+<span class="gp">%</span> <span class="nb">cd </span>misaka
+<span class="gp">%</span> python setup.py install
+</code></pre>
+<p>Visual Studio&#39;s support for C is not optimal and most VS compilers are missing
+<code>stdint.h</code>, which is needed to compile Misaka. This file can be downloaded
+from <a href="http://msinttypes.googlecode.com/svn/trunk/stdint.h">msinttypes</a> and put into <code>C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include</code>
+for example.</p>
+
+<p><code>setup.py</code> has been extended with some extra commands:</p>
+
+<pre class="highlight"><code>clean          - cleanup directories created by packaging and build processes
+compile_cython - compile Cython files(s) into C file(s)
+update_vendor  - update Sundown files. Use `git submodule foreach git pull` to the most recent files</code></pre>
+
+<p>For example:</p>
+<pre class="highlight"><code><span class="gp">%</span> python setup.py compile_cython
+<span class="go">running cython</span>
+<span class="go">compiling /home/frank/Code/misaka/src/misaka.pyx</span>
+</code></pre>
+<p>For the <code>compile_cython</code> command you need to have Cython installed. And <a href="http://git-scm.com/">Git</a> needs to
+be installed to make the <code>update_vendor</code> command effective.</p>
+
+<p>You have to manually run <code>git submodule foreach git pull</code> before running the
+<code>update_vendor</code> command so the most recent files are downloaded first.</p>
+
+<p>To run the unit tests [HTML Tidy][] must be installed first.</p>
+
+<pre class="highlight"><code>pacman -S tidyhtml # on Arch Linux
+sudo apt-get install tidy # on Ubuntu</code></pre>
+
+<p>And then:</p>
+<pre class="highlight"><code><span class="go">cd tests</span>
+<span class="go">python misaka_test.py</span>
+</code></pre>
+<h2 id="toc_13">Basic Usage</h2>
+
+<p>You can make it yourself really easy by using <code>misaka.html</code>.</p>
+<pre class="highlight"><code><span class="kn">import</span> <span class="nn">misaka</span> <span class="kn">as</span> <span class="nn">m</span>
+
+<span class="k">print</span> <span class="n">m</span><span class="o">.</span><span class="n">html</span><span class="p">(</span><span class="s">&#39;A ~~complex~~ simple example.&#39;</span><span class="p">,</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">EXT_STRIKETHROUGH</span><span class="p">)</span>
+<span class="c"># &lt;p&gt;A &lt;del&gt;complex&lt;/del&gt; simple example.&lt;/p&gt;</span>
+</code></pre>
+<p>Add another extension has been added by using the <a href="http://docs.python.org/library/stdtypes.html#bitwise-operations-on-integer-types">bitwise</a> OR operator.</p>
+<pre class="highlight"><code><span class="k">print</span> <span class="n">m</span><span class="o">.</span><span class="n">html</span><span class="p">(</span><span class="s">&#39;The 2^(nd) ~~complex~~ simple example.&#39;</span><span class="p">,</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">EXT_STRIKETHROUGH</span> <span class="o">|</span> <span class="n">m</span><span class="o">.</span><span class="n">EXT_SUPERSCRIPT</span><span class="p">)</span>
+<span class="c"># &lt;p&gt;The 2&lt;sup&gt;nd&lt;/sup&gt; &lt;del&gt;complex&lt;/del&gt; simple example.&lt;/p&gt;</span>
+</code></pre>
+<p>Adding render flags works in the same way as adding extensions. See the <a href="http://misaka.61924.nl/api">API</a>
+documentation for a listing of Markdown extensions and HTML render flags.</p>
+<pre class="highlight"><code><span class="k">print</span> <span class="n">m</span><span class="o">.</span><span class="n">html</span><span class="p">(</span><span class="s">&#39;The 3^(nd) ~~complex~~ &lt;i&gt;simple&lt;/i&gt; example.&#39;</span><span class="p">,</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">EXT_STRIKETHROUGH</span> <span class="o">|</span> <span class="n">m</span><span class="o">.</span><span class="n">EXT_SUPERSCRIPT</span><span class="p">,</span>
+    <span class="n">render_flags</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">HTML_SKIP_HTML</span><span class="p">)</span>
+<span class="c"># &lt;p&gt;The 3&lt;sup&gt;nd&lt;/sup&gt; &lt;del&gt;complex&lt;/del&gt; simple example.&lt;/p&gt;</span>
+</code></pre>
+<p>The <code>&lt;i&gt;</code>&#39;s from <code>&lt;i&gt;simple&lt;/i&gt;</code> are not in the output.</p>
+
+<h2 id="toc_14">Custom Renderers</h2>
+
+<p>If you would like to influence the rendering or make a new renderer yourself,
+don&#39;t wait and subclass <code>BaseRenderer</code> and start implementing your render
+methods.</p>
+
+<p>Here is a list of methods that can be implemented in a renderer. All method
+arguments are prefixed with their type. A <code>bool</code> is a boolean, <code>int</code> an integer
+and <code>str</code> a string or unicode string in Python 2. Remember that these methods are
+going to be implemented in a class. So the first argument is always <code>self</code>. The
+data that&#39;s returned from a render method should always be a byte or unicode string.</p>
+
+<p>When an exception is raised in a render method a stacktrace will be shown in
+STDOUT, but the rendering process will not stop. Instead the render method just
+returns nothing.</p>
+
+<p><strong>Block-level</strong>:</p>
+
+<pre class="highlight"><code>block_code(str code, str language)
+block_quote(str quote)
+block_html(str raw_html)
+header(str text, int level)
+hrule()
+list(str contents, bool is_ordered)
+list_item(str text, bool is_ordered)
+paragraph(str text)
+table(str header, str body)
+table_row(str content)
+table_cell(str content, int flags)</code></pre>
+
+<p>The <code>flags</code> argument of the <code>table_cell</code> method can be compared with one of the
+<code>TABLE_*</code> render flags. For example:</p>
+<pre class="highlight"><code><span class="c"># Table cell is a header?</span>
+<span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">m</span><span class="o">.</span><span class="n">TABLE_HEADER</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;This is a header cell&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;This is not a header cell&#39;</span>
+
+<span class="c"># Alignment of the cell?</span>
+<span class="n">alignment</span> <span class="o">=</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="n">m</span><span class="o">.</span><span class="n">TABLE_ALIGNMASK</span>
+
+<span class="k">if</span> <span class="n">alignment</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">TABLE_ALIGN_C</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;Center&#39;</span>
+<span class="k">elif</span> <span class="n">alignment</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">TABLE_ALIGN_L</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;Left&#39;</span>
+<span class="k">elif</span> <span class="n">alignment</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">TABLE_ALIGN_R</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;Right&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&#39;Not aligned&#39;</span>
+</code></pre>
+<p><strong>Span-level</strong>:</p>
+
+<pre class="highlight"><code>autolink(str link, bool is_email)
+codespan(str code)
+double_emphasis(str text)
+emphasis(str text)
+image(str link, str title, str alt_text)
+linebreak()
+link(str link, str title, str content)
+raw_html(str raw_html)
+triple_emphasis(str text)
+strikethrough(str text)
+superscript(str text)</code></pre>
+
+<p><strong>Low-level</strong>:</p>
+
+<pre class="highlight"><code>entity(str text)
+normal_text(str text)</code></pre>
+
+<p><strong>Header and footer of the document</strong>:</p>
+
+<pre class="highlight"><code>doc_header()
+doc_footer()</code></pre>
+
+<p><strong>Pre- and post-processing</strong>:</p>
+
+<pre class="highlight"><code>preprocess(str full_document)
+postprocess(str full_document)</code></pre>
+
+<h3 id="toc_15">Code Highlighting</h3>
+
+<p>A simple code highlighting example with <a href="http://pygments.org/">Pygments</a> and <a href="http://python-houdini.61924.nl/">Houdini.py</a>.</p>
+<pre class="highlight"><code><span class="kn">import</span> <span class="nn">houdini</span> <span class="kn">as</span> <span class="nn">h</span>
+<span class="kn">from</span> <span class="nn">pygments</span> <span class="kn">import</span> <span class="n">highlight</span>
+<span class="kn">from</span> <span class="nn">pygments.lexers</span> <span class="kn">import</span> <span class="n">get_lexer_by_name</span>
+<span class="kn">from</span> <span class="nn">pygments.formatters</span> <span class="kn">import</span> <span class="n">HtmlFormatter</span>
+
+<span class="c"># Create a custom renderer</span>
+<span class="k">class</span> <span class="nc">BleepRenderer</span><span class="p">(</span><span class="n">HtmlRenderer</span><span class="p">,</span> <span class="n">SmartyPants</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">block_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">lang</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">lang</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&lt;pre&gt;&lt;code&gt;</span><span class="si">%s</span><span class="s">&lt;/code&gt;&lt;/pre&gt;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> \
+                <span class="n">h</span><span class="o">.</span><span class="n">escape_html</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">lexer</span> <span class="o">=</span> <span class="n">get_lexer_by_name</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">stripall</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">formatter</span> <span class="o">=</span> <span class="n">HtmlFormatter</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">highlight</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">lexer</span><span class="p">,</span> <span class="n">formatter</span><span class="p">)</span>
+
+<span class="c"># And use the renderer</span>
+<span class="n">renderer</span> <span class="o">=</span> <span class="n">BleepRenderer</span><span class="p">()</span>
+<span class="n">md</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span>
+    <span class="n">extensions</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">EXT_FENCED_CODE</span> <span class="o">|</span> <span class="n">m</span><span class="o">.</span><span class="n">EXT_NO_INTRA_EMPHASIS</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="n">md</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="s">&#39;Some Markdown text.&#39;</span><span class="p">)</span>
+</code></pre>
+<h2 id="toc_16">Pre- &amp; Postprocessors</h2>
+
+<p>Pre- and postprocessors are classes that implement <code>preprocess</code> and/or <code>postprocess</code>
+methods. Both accept one argument. The source text is passed to <code>preprocess</code> and
+the rendered text (e.g. HTML) is passed to <code>postprocess</code>.</p>
+
+<p>Pre- and postprocessors are intended to be used as mixins as you can see in the
+code highlighting example. <code>HtmlRenderer</code> and <code>SmartyPants</code> are both subclassed
+by <code>BleepRenderer</code> and <code>SmartyPants</code> is mixin.</p>
+
+<p>Here&#39;s a useless example:</p>
+<pre class="highlight"><code><span class="k">class</span> <span class="nc">ExamplePreprocessor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">BleepRenderer</span><span class="p">(</span><span class="n">HtmlRenderer</span><span class="p">,</span> <span class="n">ExamplePreprocessor</span><span class="p">):</span>
+    <span class="k">pass</span>
+</code></pre>
+<p>But you can also add a <code>preprocess</code> and/or <code>postprocess</code> to the renderer instead
+of using a mixin class.</p>
+<pre class="highlight"><code><span class="k">class</span> <span class="nc">BleepRenderer</span><span class="p">(</span><span class="n">HtmlRenderer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">preprocess</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">)</span>
+</code></pre>
+<h3 id="toc_17">Smartypants</h3>
+
+<p>Smartypants is a post-processor for (X)HTML renderers and can be used standalone
+or as a mixin. It adds a methode named <code>postprocess</code> to the renderer. It converts
+the charachter sequences in the left column to the sequences in the right column.</p>
+
+<table><thead>
+<tr>
+<th>Source</th>
+<th>Result</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>&#39;s</code> (s, t, m, d, re, ll, ve) <sup>1</sup></td>
+<td>&rsquo;s</td>
+</tr>
+<tr>
+<td><code>--</code></td>
+<td>&mdash;</td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>&ndash;</td>
+</tr>
+<tr>
+<td><code>...</code></td>
+<td>&hellip;</td>
+</tr>
+<tr>
+<td><code>. . .</code></td>
+<td>&hellip;</td>
+</tr>
+<tr>
+<td><code>(c)</code></td>
+<td>&copy;</td>
+</tr>
+<tr>
+<td><code>(r)</code></td>
+<td>&reg;</td>
+</tr>
+<tr>
+<td><code>(tm)</code></td>
+<td>&trade;</td>
+</tr>
+<tr>
+<td><code>3/4</code></td>
+<td>&frac34;</td>
+</tr>
+<tr>
+<td><code>1/2</code></td>
+<td>&frac12;</td>
+</tr>
+<tr>
+<td><code>1/4</code></td>
+<td>&frac14;</td>
+</tr>
+</tbody></table>
+
+<ol>
+<li>A <code>&#39;</code> followed by a <code>s</code>, <code>t</code>, <code>m</code>, <code>d</code>, <code>re</code>, <code>ll</code> or <code>ve</code> will be turned
+into <code>&amp;rsquo;s</code>, <code>&amp;rsquo;t</code>, and so on.</li>
+</ol>
+
+</article>
+
+</section>
+<footer id="bottom">
+<p>&copy; 2011-2012. <a href="https://github.com/FSX">Frank Smit</a>.</p>
+</footer>
+</body>
+</html>
