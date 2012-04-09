@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+# Most unit tests are based on the tests from Redcarpet.
+
 import re
 import codecs
 from os import path
@@ -129,7 +131,7 @@ and other *things*.''')
         ok(markdown).contains('<br>')
 
 
-class MarkdownTest(TestCase):
+class MarkdownParserTest(TestCase):
     name = 'Markdown Parser'
 
     def setup(self):
@@ -307,11 +309,30 @@ class MarkdownConformanceTest_103(MarkdownConformanceTest_10):
     suite = 'MarkdownTest_1.0.3'
 
 
+class UnicodeTest(TestCase):
+    name = 'Unicode'
+
+    def setup(self):
+        self.r = Markdown(HtmlRenderer()).render
+
+    def test_unicode(self):
+        tests_dir = path.dirname(__file__)
+
+        with codecs.open(path.join(tests_dir, 'unicode.txt'), 'r', encoding='utf-8') as fd:
+            text = fd.read()
+        with codecs.open(path.join(tests_dir, 'unicode.html'), 'r', encoding='utf-8') as fd:
+            html = fd.read()
+
+        markdown = self.r(text)
+        ok(markdown).diff(html)
+
+
 if __name__ == '__main__':
     runner([
         SmartyPantsTest,
         HtmlRenderTest,
-        MarkdownTest,
+        MarkdownParserTest,
         MarkdownConformanceTest_10,
-        MarkdownConformanceTest_103
+        MarkdownConformanceTest_103,
+        UnicodeTest
     ])
