@@ -2,7 +2,7 @@
 
 import sys
 from os import path
-from misaka import html as to_html, \
+from misaka import Markdown, HtmlRenderer, SmartyPants, \
     EXT_NO_INTRA_EMPHASIS, EXT_TABLES, EXT_FENCED_CODE, EXT_AUTOLINK, \
     EXT_STRIKETHROUGH, EXT_LAX_HTML_BLOCKS, EXT_SPACE_HEADERS, \
     EXT_SUPERSCRIPT, \
@@ -70,12 +70,18 @@ if __name__ == '__main__':
             # then it must be a file, right?
             files.append(arg)
 
+    if flags & HTML_SMARTYPANTS:
+        class HtmlRenderer(HtmlRenderer, SmartyPants):
+            pass
+
+    renderer = HtmlRenderer(flags)
+    to_html = Markdown(renderer, extensions).render
+
     for fn in files:
         fn = path.abspath(fn)
         if not path.exists(fn):
-            print('Does not exists: %s' % fn)
-
-        with open(fn, 'r') as fd:
-            source = fd.read()
-
-        print(to_html(source, extensions, flags))
+            print('Does not exist: %s' % fn)
+        else:
+            with open(fn, 'r') as fd:
+                source = fd.read()
+            print(to_html(source))

@@ -40,12 +40,6 @@ TABLE_ALIGNMASK = 3 # MKD_TABLE_ALIGNMASK
 TABLE_HEADER = 4 # MKD_TABLE_HEADER
 
 
-cdef char* _unicode_to_bytes(unicode text):
-    cdef bytes py_string = text.encode('UTF-8', 'strict')
-    cdef char *c_string = py_string
-    return c_string
-
-
 def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
     """Convert markdown text to (X)HTML.
 
@@ -102,11 +96,12 @@ cdef class SmartyPants:
         :param text: A byte or unicode string.
         """
         # Convert string
-        cdef char *c_string
-        if isinstance(text, unicode):
-            c_string = _unicode_to_bytes(text)
+        cdef bytes py_string
+        if hasattr(text, 'encode'):
+            py_string = text.encode('UTF-8', 'strict')
         else:
-            c_string = text
+            py_string = text
+        cdef char *c_string = py_string
 
         cdef sundown.buf *ob = sundown.bufnew(128)
         sundown.sdhtml_smartypants(ob,
@@ -218,11 +213,12 @@ cdef class Markdown:
             text = self.renderer.preprocess(text)
 
         # Convert string
-        cdef char *c_string
-        if isinstance(text, unicode):
-            c_string = _unicode_to_bytes(text)
+        cdef bytes py_string
+        if hasattr(text, 'encode'):
+            py_string = text.encode('UTF-8', 'strict')
         else:
-            c_string = text
+            py_string = text
+        cdef char *c_string = py_string
 
         # Buffers
         cdef sundown.buf *ib = sundown.bufnew(128)
