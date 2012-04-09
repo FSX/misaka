@@ -25,6 +25,11 @@ Or get the most recent version from [Github][]:
 % python setup.py install
 ~~~
 
+Visual Studio's support for C is not optimal and most VS compilers are missing
+`stdint.h`, which is needed to compile Misaka. This file can be downloaded
+from [msinttypes][] and put into `C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\include`
+for example.
+
 `setup.py` has been extended with some extra commands:
 
     clean          - cleanup directories created by packaging and build processes
@@ -61,6 +66,7 @@ python misaka_test.py
   [PyPi]: http://pypi.python.org/pypi/misaka
   [Github]: https://github.com/FSX/misaka
   [Git]: http://git-scm.com/
+  [msinttypes]: http://msinttypes.googlecode.com/svn/trunk/stdint.h
 
 
 ## Basic Usage
