@@ -24,7 +24,7 @@ td{border-bottom:1px solid #ddd;}
 hr{display:block;height:1px;border:0;border-top:1px solid #cccccc;margin:1em 0;padding:0;}
 input,select{vertical-align:middle;}
 h1,h2,h3,h4,h5,h6{font-family:"Gentium Book Basic","Cambo","Bitstream Charter","URW Palladio L",Palatino,"Palatino Linotype","Book Antiqua",serif;}
-p{margin:1.5em 0;}p img{max-width:100%;outline:2px solid #ddd;}
+p{margin:1.5em 0;}p img{max-width:100%;}
 ol,ul{margin:1.5em 0;padding-left:2em;}ol ol,ul ol,ol ul,ul ul{margin-top:0;margin-bottom:0;padding-left:1.3em;}
 ol p,ul p{margin-top:0;}
 ul{list-style:none;padding-left:.5em;}ul ul{padding-left:0.3em;}
