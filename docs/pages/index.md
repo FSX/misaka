@@ -21,3 +21,4 @@ Projects that use Misaka:
  - [mynt](https://github.com/Anomareh/mynt)
  - [Composer](https://github.com/shazow/composer)
  - [Socrates](https://github.com/honza/socrates)
+ - [Pagewise](https://bitbucket.org/ainm/pagewise/overview)
