@@ -77,11 +77,14 @@ if __name__ == '__main__':
     renderer = HtmlRenderer(flags)
     to_html = Markdown(renderer, extensions).render
 
-    for fn in files:
-        fn = path.abspath(fn)
-        if not path.exists(fn):
-            print('Does not exist: %s' % fn)
-        else:
-            with open(fn, 'r') as fd:
-                source = fd.read()
-            print(to_html(source))
+    if files:
+        for fn in files:
+            fn = path.abspath(fn)
+            if not path.exists(fn):
+                print('Does not exist: %s' % fn)
+            else:
+                with open(fn, 'r') as fd:
+                    source = fd.read()
+                print(to_html(source))
+    else:
+        print(to_html(sys.stdin.read()))
