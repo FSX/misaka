@@ -6,7 +6,7 @@
   <!--[if IE]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-  <link rel="stylesheet" type="text/css" href="{{ get_asset('/all.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('/all.css') }}">
   {% block head %}{% end %}
 </head>
 <body id="{% block location %}index-section{% end %}">
@@ -16,7 +16,7 @@
 
   <div>
     {% for link, name in site.links %}
-      <a id="nav-{{ name }}" href="{{ get_url(link) }}">{{ name }}</a>
+      <a id="nav-{{ name }}" href="{{ url(link) }}">{{ name }}</a>
     {% end %}
   </div>
 </nav>

@@ -1,5 +1,4 @@
 import os
-import sys
 import glob
 import shutil
 import os.path
@@ -60,7 +59,7 @@ class VendorCommand(BaseCommand):
 
 setup(
     name='misaka',
-    version='1.0.2',
+    version='1.0.3',
     description='The Python binding for Sundown, a markdown parsing library.',
     author='Frank Smit',
     author_email='frank@61924.nl',

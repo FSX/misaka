@@ -1,6 +1,15 @@
 News/Changelog
 ==============
 
+### 1.0.3 (2012-07-??)
+
+ - `scripts/misaka`: Read stdin when no file is specified. ([#22][])
+ - Updated Sundown files; See commits from Mar 29, 2012 to May 02, 2012:
+   https://github.com/tanoku/sundown/commits/master/
+
+[#22]: https://github.com/FSX/misaka/pull/22
+
+
 ### 1.0.2 (2012-04-09)
 
  - Added `clean`, `compile_cython` and `update_vendor` commands to `setup.py`.
@@ -22,8 +31,8 @@ News/Changelog
    This includes fixes for Visual Studio on Windows:
    https://github.com/tanoku/sundown/commits/master/
 
- [#12]: https://github.com/FSX/misaka/pull/12
- [#13]: https://github.com/FSX/misaka/pull/13
+[#12]: https://github.com/FSX/misaka/pull/12
+[#13]: https://github.com/FSX/misaka/pull/13
 
 
 ### 1.0.1 (2012-02-07)
@@ -34,10 +43,9 @@ News/Changelog
    dependency. The `.pyx` file can be compiled with the `--cython` option.
    ([#6][], [#8][])
 
-
-  [#6]: https://github.com/FSX/misaka/issues/6
-  [#7]: https://github.com/FSX/misaka/issues/7
-  [#8]: https://github.com/FSX/misaka/issues/8
+[#6]: https://github.com/FSX/misaka/issues/6
+[#7]: https://github.com/FSX/misaka/issues/7
+[#8]: https://github.com/FSX/misaka/issues/8
 
 
 ### 1.0.0 (2012-02-04)

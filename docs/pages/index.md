@@ -9,10 +9,10 @@ implemented in C. Misaka is written in [Cython][] and C. And it features a set
 of Markdown extensions and customizable renderers. Just like the Sundown binding
 for Ruby, [Redcarpet][].
 
-  [Sundown]: https://github.com/tanoku/sundown
-  [Markdown]: http://en.wikipedia.org/wiki/Markdown
-  [Cython]: http://cython.org/
-  [Redcarpet]: https://github.com/tanoku/redcarpet
+[Sundown]: https://github.com/tanoku/sundown
+[Markdown]: http://en.wikipedia.org/wiki/Markdown
+[Cython]: http://cython.org/
+[Redcarpet]: https://github.com/tanoku/redcarpet
 
 
 Projects that use Misaka:
@@ -22,3 +22,4 @@ Projects that use Misaka:
  - [Composer](https://github.com/shazow/composer)
  - [Socrates](https://github.com/honza/socrates)
  - [Pagewise](https://bitbucket.org/ainm/pagewise/overview)
+ - [StrangeCase](https://github.com/colinta/StrangeCase)

@@ -13,7 +13,7 @@ Documentation can be found at: http://misaka.61924.nl/
 Installation
 ------------
 
-Cython is needed to compile Misaka.
+Cython is only needed to compile .pyx file.
 
 With pip::
 
@@ -35,3 +35,8 @@ Very simple example::
     md = Markdown(rndr)
 
     print md.render('some text')
+
+Or::
+
+    import misaka as m
+    print m.html('some other text')

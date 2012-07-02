@@ -1,17 +1,28 @@
-# minitest is inspired by Oktest, http://www.kuwata-lab.com/oktest/
+"""
+    minitest
+    ~~~~~~~~
 
-import re
+    minitest is a really simple unit testing module. Inspired by
+    Oktest, http://www.kuwata-lab.com/oktest/
+"""
+
 import sys
+import time
+import traceback
+import contextlib
 from difflib import unified_diff
 from collections import namedtuple
 
 
-_RE_TEST_NAME = re.compile(r'test_[a-zA-Z0-9_]+')
-Result = namedtuple('Result', ('func', 'name', 'error'))
+Result = namedtuple('Result', ('func', 'name', 'failure'))
 
 
 def msg(message):
     return '{0}\n{1}\n{0}'.format('-' * 80, message)
+
+
+class TimeOutException(Exception):
+    pass
 
 
 class ExtendedDict(dict):
@@ -79,19 +90,26 @@ class TestCase(object):
         self.config = config
         self._tests = []
         for t in dir(self):
-            if _RE_TEST_NAME.match(t):
+            if t.startswith('test_'):
                 self.add_test(getattr(self, t))
 
     def add_test(self, func):
         def catch_exception():
             try:
                 func()
-                error = None
+                failure = None
             except AssertionError as e:
-                error = str(e)
-            return Result(func.__name__, func.__doc__, error)
+                failure = str(e)
+            except Exception as e:
+                failure = msg(''.join(
+                    traceback.format_exception(*sys.exc_info())).strip())
+            return Result(func.__name__, func.__doc__, failure)
+
         self._tests.append(catch_exception)
         return catch_exception
+
+    def pre_setup(self):
+        pass
 
     def setup(self):
         pass
@@ -99,11 +117,16 @@ class TestCase(object):
     def teardown(self):
         pass
 
+    def post_teardown(self):
+        pass
+
     def run(self):
+        self.pre_setup()
         self.setup()
         for test in self._tests:
             yield test()
         self.teardown()
+        self.post_teardown()
 
 
 def runner(testcases, config={}):
@@ -118,11 +141,13 @@ def runner(testcases, config={}):
 
         for result in tests.run():
             name = result.name or result.func
-            if result.error is not None:
+            if result.failure is not None:
                 failed += 1
-                print('%s ... FAILED\n\n%s\n' % (name, result.error))
+                print('%s ... FAILED\n\n%s\n' % (name, result.failure))
             else:
                 passed += 1
                 print('%s ... PASSED' % name)
 
     print('\n\n%s passed; %s failed.' % (passed, failed))
+    if failed > 0:
+        sys.exit(1)

@@ -53,7 +53,7 @@ You have to manually run `git submodule foreach git pull` before running the
 To run the unit tests [HTML Tidy][] must be installed first.
 
     pacman -S tidyhtml # on Arch Linux
-    sudo apt-get install tidy # on Ubuntu
+    apt-get install tidy # on Ubuntu
 
 And then:
 
@@ -62,11 +62,11 @@ cd tests
 python misaka_test.py
 ~~~
 
-
-  [PyPi]: http://pypi.python.org/pypi/misaka
-  [Github]: https://github.com/FSX/misaka
-  [Git]: http://git-scm.com/
-  [msinttypes]: http://msinttypes.googlecode.com/svn/trunk/stdint.h
+[PyPi]: http://pypi.python.org/pypi/misaka
+[Github]: https://github.com/FSX/misaka
+[Git]: http://git-scm.com/
+[msinttypes]: http://msinttypes.googlecode.com/svn/trunk/stdint.h
+[HTML Tidy]: http://tidy.sourceforge.net/
 
 
 ## Basic Usage
@@ -101,8 +101,8 @@ print m.html('The 3^(nd) ~~complex~~ <i>simple</i> example.',
 
 The `<i>`'s from `<i>simple</i>` are not in the output.
 
-  [bitwise]: http://docs.python.org/library/stdtypes.html#bitwise-operations-on-integer-types
-  [API]: {{ get_url('/api') }}
+[bitwise]: http://docs.python.org/library/stdtypes.html#bitwise-operations-on-integer-types
+[API]: {{ url('api') }}
 
 
 ## Custom Renderers
@@ -226,8 +226,8 @@ md = m.Markdown(renderer,
 print md.render('Some Markdown text.')
 ~~~
 
-  [Pygments]: http://pygments.org/
-  [Houdini.py]: http://python-houdini.61924.nl/
+[Pygments]: http://pygments.org/
+[Houdini.py]: http://python-houdini.61924.nl/
 
 
 ## Pre- & Postprocessors
