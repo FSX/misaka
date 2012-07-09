@@ -179,7 +179,7 @@ class MarkdownParserTest(TestCase):
 
     def test_html_block_not_wrapped_in_p(self):
         markdown = self.render_with(
-            'Things to watch out for\n' \
+            'Things to watch out for\n\n' \
             '<ul>\n<li>Blah</li>\n</ul>\n',
             extensions=EXT_LAX_HTML_BLOCKS)
         ok(markdown).diff(
