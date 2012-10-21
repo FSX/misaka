@@ -12,7 +12,7 @@ import misaka
 
 from misaka import Markdown, BaseRenderer, HtmlRenderer, SmartyPants, \
     EXT_NO_INTRA_EMPHASIS, EXT_TABLES, EXT_FENCED_CODE, EXT_AUTOLINK, \
-    EXT_STRIKETHROUGH, EXT_LAX_HTML_BLOCKS, EXT_SPACE_HEADERS, \
+    EXT_STRIKETHROUGH, EXT_LAX_SPACING, EXT_SPACE_HEADERS, \
     EXT_SUPERSCRIPT, \
     HTML_SKIP_HTML, HTML_SKIP_STYLE, HTML_SKIP_IMAGES, HTML_SKIP_LINKS, \
     HTML_EXPAND_TABS, HTML_SAFELINK, HTML_TOC, HTML_HARD_WRAP, \
@@ -181,7 +181,7 @@ class MarkdownParserTest(TestCase):
         markdown = self.render_with(
             'Things to watch out for\n\n' \
             '<ul>\n<li>Blah</li>\n</ul>\n',
-            extensions=EXT_LAX_HTML_BLOCKS)
+            extensions=EXT_LAX_SPACING)
         ok(markdown).diff(
             '<p>Things to watch out for</p>\n\n' \
             '<ul>\n<li>Blah</li>\n</ul>\n')
@@ -191,8 +191,7 @@ class MarkdownParserTest(TestCase):
         markdown = self.render_with(
             'The Ant-Sugar Tales \n' \
             '=================== \n\n' \
-            'By Candice Yellowflower   \n',
-            extensions=EXT_LAX_HTML_BLOCKS)
+            'By Candice Yellowflower   \n')
         ok(markdown).diff('<h1>The Ant-Sugar Tales </h1>\n\n<p>By Candice Yellowflower   </p>\n')
 
     def test_intra_emphasis(self):
@@ -223,8 +222,7 @@ class MarkdownParserTest(TestCase):
         markdown = self.render_with(
             '######\n' \
             '#Body#\n' \
-            '######\n',
-            extensions=EXT_LAX_HTML_BLOCKS)
+            '######\n')
         ok(markdown).diff('<h1>Body</h1>\n')
 
     def test_tables(self):
@@ -253,6 +251,12 @@ This is some awesome code
 
         ok(self.render_with(text)).not_contains('<code')
         ok(self.render_with(text, extensions=EXT_FENCED_CODE)).contains('<code')
+
+    def test_fenced_code_blocks_without_space(self):
+        text = 'foo\nbar\n```\nsome\ncode\n```\nbaz'
+
+        ok(self.render_with(text)).not_contains('<pre><code>')
+        ok(self.render_with(text, extensions=EXT_FENCED_CODE | EXT_LAX_SPACING)).contains('<pre><code>')
 
     def test_linkable_headers(self):
         markdown = self.r('### Hello [GitHub](http://github.com)')

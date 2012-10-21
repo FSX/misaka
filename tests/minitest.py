@@ -21,10 +21,6 @@ def msg(message):
     return '{0}\n{1}\n{0}'.format('-' * 80, message)
 
 
-class TimeOutException(Exception):
-    pass
-
-
 class ExtendedDict(dict):
     def __getattr__(self, name):
         if name in self:
