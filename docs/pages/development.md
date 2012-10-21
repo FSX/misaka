@@ -17,7 +17,9 @@ And issues can be reported on the [Issues][] page.
 The only two dependencies for development are [Sundown][] and [Cython][]. Sundown
 is already included, but can be updated with:
 
-    git submodule foreach git pull
+    git submodule init
+    git submodule update
+    git submodule foreach git pull origin master
     python setup.py update_vendor
 
 Cython can be installed with pip, easy_install or other methods described in the
