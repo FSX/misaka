@@ -4,7 +4,8 @@ cimport wrapper
 from libc.stdint cimport uint8_t
 
 
-__version__ = '1.0.2'
+__version__ = '1.0.3'
+
 
 # Markdown extensions
 EXT_NO_INTRA_EMPHASIS = (1 << 0)
@@ -12,9 +13,9 @@ EXT_TABLES = (1 << 1)
 EXT_FENCED_CODE = (1 << 2)
 EXT_AUTOLINK = (1 << 3)
 EXT_STRIKETHROUGH = (1 << 4)
-EXT_LAX_HTML_BLOCKS = (1 << 5)
 EXT_SPACE_HEADERS = (1 << 6)
 EXT_SUPERSCRIPT = (1 << 7)
+EXT_LAX_SPACING = (1 << 8)
 
 # HTML Render flags
 HTML_SKIP_HTML = (1 << 0)
@@ -55,11 +56,11 @@ def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
     else:
         renderer = HtmlRenderer(render_flags)
 
+    if render_flags & HTML_SMARTYPANTS:
+        text = SmartyPants().preprocess(text)
+
     markdown = Markdown(renderer, extensions)
     result = markdown.render(text)
-
-    if render_flags & HTML_SMARTYPANTS:
-        result = SmartyPants().postprocess(result)
 
     return result
 
@@ -88,7 +89,7 @@ cdef class SmartyPants:
     .. [1] A ``'`` followed by a ``s``, ``t``, ``m``, ``d``, ``re``, ``ll`` or
            ``ve`` will be turned into ``&rsquo;s``, ``&rsquo;t``, and so on.
     """
-    def postprocess(self, object text):
+    def preprocess(self, object text):
         """Process the input text.
 
         Returns a unicode string.
@@ -217,7 +218,7 @@ cdef class Markdown:
         if hasattr(text, 'encode'):
             py_string = text.encode('UTF-8', 'strict')
         else:
-            py_string = text
+            py_string = text  # If it's a byte string it's assumed it's UTF-8
         cdef char *c_string = py_string
 
         # Buffers
