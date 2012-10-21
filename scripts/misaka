@@ -4,7 +4,7 @@ import sys
 from os import path
 from misaka import Markdown, HtmlRenderer, SmartyPants, \
     EXT_NO_INTRA_EMPHASIS, EXT_TABLES, EXT_FENCED_CODE, EXT_AUTOLINK, \
-    EXT_STRIKETHROUGH, EXT_LAX_HTML_BLOCKS, EXT_SPACE_HEADERS, \
+    EXT_STRIKETHROUGH, EXT_LAX_SPACING, EXT_SPACE_HEADERS, \
     EXT_SUPERSCRIPT, \
     HTML_SKIP_HTML, HTML_SKIP_STYLE, HTML_SKIP_IMAGES, HTML_SKIP_LINKS, \
     HTML_EXPAND_TABS, HTML_SAFELINK, HTML_TOC, HTML_HARD_WRAP, \
@@ -18,7 +18,7 @@ misaka_extensions = {
     '--parse-fenced-code': EXT_FENCED_CODE,
     '--parse-autolink': EXT_AUTOLINK,
     '--parse-strikethrough': EXT_STRIKETHROUGH,
-    '--parse-lax-html-blocks': EXT_LAX_HTML_BLOCKS,
+    '--parse-lax-spacing': EXT_LAX_SPACING,
     '--parse-space-headers': EXT_SPACE_HEADERS,
     '--parse-superscript': EXT_SUPERSCRIPT
 }
