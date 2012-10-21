@@ -30,8 +30,8 @@ HTML_USE_XHTML = (1 << 8)
 HTML_ESCAPE = (1 << 9)
 
 # Extra HTML render flags - these are not from Sundown
-HTML_SMARTYPANTS = (1 << 10)  # An extra flag to enable Smartypants
-HTML_TOC_TREE = (1 << 11)  # Only render a table of contents tree
+HTML_SMARTYPANTS = (1 << 0x3)  # An extra flag to enable Smartypants
+HTML_TOC_TREE = (1 << 0x15)  # Only render a table of contents tree
 
 # Other flags
 TABLE_ALIGN_L = 1 # MKD_TABLE_ALIGN_L
@@ -56,11 +56,11 @@ def html(object text, unsigned int extensions=0, unsigned int render_flags=0):
     else:
         renderer = HtmlRenderer(render_flags)
 
-    if render_flags & HTML_SMARTYPANTS:
-        text = SmartyPants().preprocess(text)
-
     markdown = Markdown(renderer, extensions)
     result = markdown.render(text)
+
+    if render_flags & HTML_SMARTYPANTS:
+        result = SmartyPants().postprocess(result)
 
     return result
 
@@ -89,7 +89,7 @@ cdef class SmartyPants:
     .. [1] A ``'`` followed by a ``s``, ``t``, ``m``, ``d``, ``re``, ``ll`` or
            ``ve`` will be turned into ``&rsquo;s``, ``&rsquo;t``, and so on.
     """
-    def preprocess(self, object text):
+    def postprocess(self, object text):
         """Process the input text.
 
         Returns a unicode string.

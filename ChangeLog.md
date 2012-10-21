@@ -1,16 +1,18 @@
 News/Changelog
 ==============
 
-### 1.0.3 (2012-11-??)
+## 1.0.3 (2012-11-??)
 
  - `scripts/misaka`: Read stdin when no file is specified. ([#22][])
+ - SmartyPants is now a preprocessor. This fixes [#19][].
  - Updated Sundown files; See commits from Mar 29, 2012 to Oct 19, 2012:
    https://github.com/vmg/sundown/commits/master/
 
+[#19]: https://github.com/FSX/misaka/issues/19
 [#22]: https://github.com/FSX/misaka/pull/22
 
 
-### 1.0.2 (2012-04-09)
+## 1.0.2 (2012-04-09)
 
  - Added `clean`, `compile_cython` and `update_vendor` commands to `setup.py`.
    See `setup.py --help-commands` for more information.
@@ -35,7 +37,7 @@ News/Changelog
 [#13]: https://github.com/FSX/misaka/pull/13
 
 
-### 1.0.1 (2012-02-07)
+## 1.0.1 (2012-02-07)
 
  - `PyInt_FromLong` was renamed to `PyLong_FromLong` in Python 3. A macro
    has been added to fix this. ([#7][])
@@ -48,7 +50,7 @@ News/Changelog
 [#8]: https://github.com/FSX/misaka/issues/8
 
 
-### 1.0.0 (2012-02-04)
+## 1.0.0 (2012-02-04)
 
  - Reimplemented existing functionality in Cython.
  - Added renderer classes for customized Markdown rendering (like Redcarpet has).
@@ -56,20 +58,20 @@ News/Changelog
    https://github.com/tanoku/sundown/commits/master/
 
 
-### 0.4.2 (2011-08-25)
+## 0.4.2 (2011-08-25)
 
  - Updated Sundown files; See commits from 2011-08-03 to 2011-08-09:
    https://github.com/tanoku/sundown/commits/master/
 
 
-### 0.4.1 (2011-08-01)
+## 0.4.1 (2011-08-01)
 
  - Fixed buffer management. It was broken and leaked memory. (tanoku)
  - Updated Sundown files; See commits from 2011-07-29 to 2011-08-01:
    https://github.com/tanoku/sundown/commits/master/
 
 
-### 0.4.0 (2011-07-25)
+## 0.4.0 (2011-07-25)
 
  - API change: `misaka.toc` has been removed. Instead `HTML_TOC_TREE` has to be
    passed with `misaka.html` to get a TOC tree. When `HTML_TOC` is used the
@@ -80,7 +82,7 @@ News/Changelog
  - Added support for the Superscript extension.
 
 
-### 0.3.3 (2011-07-22)
+## 0.3.3 (2011-07-22)
 
  - Fix a typo in `README.txt`. (heintz)
  - Fix non-NULL-terminated `kwlist` in `misaka_html`. (heintz)
@@ -89,32 +91,32 @@ News/Changelog
    to 2011-07-19: https://github.com/tanoku/sundown/commits/master
 
 
-### 0.3.2 (2011-07-03)
+## 0.3.2 (2011-07-03)
 
  - Fixed minor error in `setup.py`.
 
 
-### 0.3.1 (2011-07-03)
+## 0.3.1 (2011-07-03)
 
  - Renamed Pantyshot to Misaka.
  - Updated Upskirt files; See commits from 2011-06-06 to 2011-06-23:
    https://github.com/tanoku/upskirt/commits/master/
 
 
-### 0.3.0 (2011-06-16)
+## 0.3.0 (2011-06-16)
 
  - Added Python 3 support.
  - Updated Upskirt files; See commits from 2011-06-05 to 2011-06-09:
    https://github.com/tanoku/upskirt/commits/master/
 
 
-### 0.2.1 (2011-06-05)
+## 0.2.1 (2011-06-05)
 
  - Updated Upskirt files; See commits from 2011-05-18 to 2011-06-02:
    https://github.com/tanoku/upskirt/commits/master/
 
 
-### 0.2.0 (2011-05-17)
+## 0.2.0 (2011-05-17)
 
  - Added Smartypants render flag.
  - Added a `toc` function that outputs a table of contents.
@@ -123,11 +125,11 @@ News/Changelog
    https://github.com/tanoku/upskirt/commits/master/
 
 
-### 0.1.1 (2011-05-01)
+## 0.1.1 (2011-05-01)
 
  - Updated Upskirt files; a HTML escaping bug in the XHTML renderer was fixed.
 
 
-### 0.1.0 (2011-05-01)
+## 0.1.0 (2011-05-01)
 
  - Initial release.
