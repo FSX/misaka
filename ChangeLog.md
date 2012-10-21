@@ -1,11 +1,11 @@
 News/Changelog
 ==============
 
-### 1.0.3 (2012-07-??)
+### 1.0.3 (2012-11-??)
 
  - `scripts/misaka`: Read stdin when no file is specified. ([#22][])
- - Updated Sundown files; See commits from Mar 29, 2012 to May 02, 2012:
-   https://github.com/tanoku/sundown/commits/master/
+ - Updated Sundown files; See commits from Mar 29, 2012 to Oct 19, 2012:
+   https://github.com/vmg/sundown/commits/master/
 
 [#22]: https://github.com/FSX/misaka/pull/22
 

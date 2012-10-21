@@ -7,7 +7,7 @@ The Python binding for Sundown_, a markdown parsing library.
 
 Documentation can be found at: http://misaka.61924.nl/
 
-.. _Sundown: https://github.com/tanoku/sundown
+.. _Sundown: https://github.com/vmg/sundown
 
 
 Installation

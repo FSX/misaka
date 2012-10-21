@@ -15,6 +15,7 @@
  */
 
 #include "buffer.h"
+#include "autolink.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -48,7 +49,7 @@ sd_autolink_issafe(const uint8_t *link, size_t link_len)
 }
 
 static size_t
-autolink_delim(uint8_t *data, size_t link_end, size_t offset, size_t size)
+autolink_delim(uint8_t *data, size_t link_end, size_t max_rewind, size_t size)
 {
 	uint8_t cclose, copen = 0;
 	size_t i;
@@ -132,7 +133,7 @@ autolink_delim(uint8_t *data, size_t link_end, size_t offset, size_t size)
 }
 
 static size_t
-check_domain(uint8_t *data, size_t size)
+check_domain(uint8_t *data, size_t size, int allow_short)
 {
 	size_t i, np = 0;
 
@@ -144,23 +145,37 @@ check_domain(uint8_t *data, size_t size)
 		else if (!isalnum(data[i]) && data[i] != '-') break;
 	}
 
-	/* a valid domain needs to have at least a dot.
-	 * that's as far as we get */
-	return np ? i : 0;
+	if (allow_short) {
+		/* We don't need a valid domain in the strict sense (with
+		 * least one dot; so just make sure it's composed of valid
+		 * domain characters and return the length of the the valid
+		 * sequence. */
+		return i;
+	} else {
+		/* a valid domain needs to have at least a dot.
+		 * that's as far as we get */
+		return np ? i : 0;
+	}
 }
 
 size_t
-sd_autolink__www(size_t *rewind_p, struct buf *link, uint8_t *data, size_t offset, size_t size)
+sd_autolink__www(
+	size_t *rewind_p,
+	struct buf *link,
+	uint8_t *data,
+	size_t max_rewind,
+	size_t size,
+	unsigned int flags)
 {
 	size_t link_end;
 
-	if (offset > 0 && !ispunct(data[-1]) && !isspace(data[-1]))
+	if (max_rewind > 0 && !ispunct(data[-1]) && !isspace(data[-1]))
 		return 0;
 
 	if (size < 4 || memcmp(data, "www.", strlen("www.")) != 0)
 		return 0;
 
-	link_end = check_domain(data, size);
+	link_end = check_domain(data, size, 0);
 
 	if (link_end == 0)
 		return 0;
@@ -168,7 +183,7 @@ sd_autolink__www(size_t *rewind_p, struct buf *link, uint8_t *data, size_t offse
 	while (link_end < size && !isspace(data[link_end]))
 		link_end++;
 
-	link_end = autolink_delim(data, link_end, offset, size);
+	link_end = autolink_delim(data, link_end, max_rewind, size);
 
 	if (link_end == 0)
 		return 0;
@@ -180,12 +195,18 @@ sd_autolink__www(size_t *rewind_p, struct buf *link, uint8_t *data, size_t offse
 }
 
 size_t
-sd_autolink__email(size_t *rewind_p, struct buf *link, uint8_t *data, size_t offset, size_t size)
+sd_autolink__email(
+	size_t *rewind_p,
+	struct buf *link,
+	uint8_t *data,
+	size_t max_rewind,
+	size_t size,
+	unsigned int flags)
 {
 	size_t link_end, rewind;
 	int nb = 0, np = 0;
 
-	for (rewind = 0; rewind < offset; ++rewind) {
+	for (rewind = 0; rewind < max_rewind; ++rewind) {
 		uint8_t c = data[-rewind - 1];
 
 		if (isalnum(c))
@@ -217,7 +238,7 @@ sd_autolink__email(size_t *rewind_p, struct buf *link, uint8_t *data, size_t off
 	if (link_end < 2 || nb != 1 || np == 0)
 		return 0;
 
-	link_end = autolink_delim(data, link_end, offset, size);
+	link_end = autolink_delim(data, link_end, max_rewind, size);
 
 	if (link_end == 0)
 		return 0;
@@ -229,21 +250,32 @@ sd_autolink__email(size_t *rewind_p, struct buf *link, uint8_t *data, size_t off
 }
 
 size_t
-sd_autolink__url(size_t *rewind_p, struct buf *link, uint8_t *data, size_t offset, size_t size)
+sd_autolink__url(
+	size_t *rewind_p,
+	struct buf *link,
+	uint8_t *data,
+	size_t max_rewind,
+	size_t size,
+	unsigned int flags)
 {
 	size_t link_end, rewind = 0, domain_len;
 
 	if (size < 4 || data[1] != '/' || data[2] != '/')
 		return 0;
 
-	while (rewind < offset && isalpha(data[-rewind - 1]))
+	while (rewind < max_rewind && isalpha(data[-rewind - 1]))
 		rewind++;
 
 	if (!sd_autolink_issafe(data - rewind, size + rewind))
 		return 0;
+
 	link_end = strlen("://");
 
-	domain_len = check_domain(data + link_end, size - link_end);
+	domain_len = check_domain(
+		data + link_end,
+		size - link_end,
+		flags & SD_AUTOLINK_SHORT_DOMAINS);
+
 	if (domain_len == 0)
 		return 0;
 
@@ -251,7 +283,7 @@ sd_autolink__url(size_t *rewind_p, struct buf *link, uint8_t *data, size_t offse
 	while (link_end < size && !isspace(data[link_end]))
 		link_end++;
 
-	link_end = autolink_delim(data, link_end, offset, size);
+	link_end = autolink_delim(data, link_end, max_rewind, size);
 
 	if (link_end == 0)
 		return 0;
