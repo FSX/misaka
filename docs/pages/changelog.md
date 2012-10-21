@@ -5,12 +5,14 @@ title: Changelog
 toc: True
 ---
 
-## 1.0.3 (2012-07-??)
+## 1.0.3 (2012-11-??)
 
  - `scripts/misaka`: Read stdin when no file is specified. ([#22][])
- - Updated Sundown files; See commits from Mar 29, 2012 to May 02, 2012:
-   https://github.com/tanoku/sundown/commits/master/
+ - SmartyPants is now a preprocessor. This fixes [#19][].
+ - Updated Sundown files; See commits from Mar 29, 2012 to Oct 19, 2012:
+   https://github.com/vmg/sundown/commits/master/
 
+[#19]: https://github.com/FSX/misaka/issues/19
 [#22]: https://github.com/FSX/misaka/pull/22
 
 
@@ -33,7 +35,7 @@ toc: True
  - Added unit tests.
  - Updated Sundown files; See commits from Feb 05, 2012 to Mar 29, 2012.
    This includes fixes for Visual Studio on Windows:
-   https://github.com/tanoku/sundown/commits/master/
+   https://github.com/vmg/sundown/commits/master/
 
 [#12]: https://github.com/FSX/misaka/pull/12
 [#13]: https://github.com/FSX/misaka/pull/13
@@ -57,20 +59,20 @@ toc: True
  - Reimplemented existing functionality in Cython.
  - Added renderer classes for customized Markdown rendering (like Redcarpet has).
  - Updated Sundown files; See commits from Aug 20, 2011 to Jan 27, 2012:
-   https://github.com/tanoku/sundown/commits/master/
+   https://github.com/vmg/sundown/commits/master/
 
 
 ## 0.4.2 (2011-08-25)
 
  - Updated Sundown files; See commits from 2011-08-03 to 2011-08-09:
-   https://github.com/tanoku/sundown/commits/master/
+   https://github.com/vmg/sundown/commits/master/
 
 
 ## 0.4.1 (2011-08-01)
 
- - Fixed buffer management. It was broken and leaked memory. (tanoku)
+ - Fixed buffer management. It was broken and leaked memory. (vmg)
  - Updated Sundown files; See commits from 2011-07-29 to 2011-08-01:
-   https://github.com/tanoku/sundown/commits/master/
+   https://github.com/vmg/sundown/commits/master/
 
 
 ## 0.4.0 (2011-07-25)
@@ -80,7 +82,7 @@ toc: True
    text will be rendered as usual, but the header HTML will be adjusted for the
    TOC.
  - Updated Sundown files; See commits from 2011-07-22 to 2011-07-24:
-   https://github.com/tanoku/sundown/commits/master/
+   https://github.com/vmg/sundown/commits/master/
  - Added support for the Superscript extension.
 
 
@@ -90,7 +92,7 @@ toc: True
  - Fix non-NULL-terminated `kwlist` in `misaka_html`. (heintz)
  - Rename pantyshot to misaka in benchmark.py. (honza)
  - Renamed Upskirt to Sundown and updated the source files from 2011-07-04
-   to 2011-07-19: https://github.com/tanoku/sundown/commits/master
+   to 2011-07-19: https://github.com/vmg/sundown/commits/master
 
 
 ## 0.3.2 (2011-07-03)
@@ -102,20 +104,20 @@ toc: True
 
  - Renamed Pantyshot to Misaka.
  - Updated Upskirt files; See commits from 2011-06-06 to 2011-06-23:
-   https://github.com/tanoku/upskirt/commits/master/
+   https://github.com/vmg/upskirt/commits/master/
 
 
 ## 0.3.0 (2011-06-16)
 
  - Added Python 3 support.
  - Updated Upskirt files; See commits from 2011-06-05 to 2011-06-09:
-   https://github.com/tanoku/upskirt/commits/master/
+   https://github.com/vmg/upskirt/commits/master/
 
 
 ## 0.2.1 (2011-06-05)
 
  - Updated Upskirt files; See commits from 2011-05-18 to 2011-06-02:
-   https://github.com/tanoku/upskirt/commits/master/
+   https://github.com/vmg/upskirt/commits/master/
 
 
 ## 0.2.0 (2011-05-17)
@@ -124,7 +126,7 @@ toc: True
  - Added a `toc` function that outputs a table of contents.
  - Renamed `markdown` function to `html`.
  - Updated Upskirt files; See commits from 2011-05-02 to 2011-05-17:
-   https://github.com/tanoku/upskirt/commits/master/
+   https://github.com/vmg/upskirt/commits/master/
 
 
 ## 0.1.1 (2011-05-01)

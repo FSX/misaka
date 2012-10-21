@@ -32,9 +32,6 @@ or method returns it does not accept or return anything.
  - **EXT_STRIKETHROUGH** --- Parse strikethrough, PHP-Markdown style Two `~`
    characters mark the start of a strikethrough, e.g. `this is ~~good~~ bad`.
 
- - **EXT_LAX_HTML_BLOCKS** --- HTML blocks do not require to be surrounded by an empty
-   line as in the Markdown standard.
-
  - **EXT_SPACE_HEADERS** --- A space is always required between the hash at the
    beginning of a header and its name, e.g. `#this is my header` would not be a
    valid header.
@@ -42,6 +39,8 @@ or method returns it does not accept or return anything.
  - **EXT_SUPERSCRIPT** --- Parse superscripts after the `^` character; contiguous
    superscripts are nested together, and complex values can be enclosed in
    parenthesis, e.g. `this is the 2^(nd) time`.
+
+ - **EXT_LAX_SPACING** --- ???
 
 [PHP-Markdown tables]: http://michelf.com/projects/php-markdown/extra/#table
 

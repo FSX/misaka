@@ -34,7 +34,9 @@ for example.
 
     clean          - cleanup directories created by packaging and build processes
     compile_cython - compile Cython files(s) into C file(s)
-    update_vendor  - update Sundown files. Use `git submodule foreach git pull` to the most recent files
+    update_vendor  - update Sundown files. Use `git submodule init`,
+                     `git submodule update` and `git submodule foreach git pull
+                     origin master` to the most recent files
 
 For example:
 
@@ -47,8 +49,15 @@ compiling /home/frank/Code/misaka/src/misaka.pyx
 For the `compile_cython` command you need to have Cython installed. And [Git][] needs to
 be installed to make the `update_vendor` command effective.
 
-You have to manually run `git submodule foreach git pull` before running the
-`update_vendor` command so the most recent files are downloaded first.
+You have to run the following commands before running the `update_vendor` command
+so the most recent files are downloaded first. Beware that the C API of Sundown
+can be changed in newer version. Don't run this command unless you know what you're
+doing.
+
+    git submodule init
+    git submodule update
+    git submodule foreach git pull origin master
+    python setup.py update_vendor
 
 To run the unit tests [HTML Tidy][] must be installed first.
 
@@ -57,10 +66,8 @@ To run the unit tests [HTML Tidy][] must be installed first.
 
 And then:
 
-~~~ console
-cd tests
-python misaka_test.py
-~~~
+    cd tests
+    python misaka_test.py
 
 [PyPi]: http://pypi.python.org/pypi/misaka
 [Github]: https://github.com/FSX/misaka
@@ -264,7 +271,7 @@ class BleepRenderer(HtmlRenderer):
 ### Smartypants
 
 Smartypants is a post-processor for (X)HTML renderers and can be used standalone
-or as a mixin. It adds a methode named `postprocess` to the renderer. It converts
+or as a mixin. It adds a method named `preprocess` to the renderer. It converts
 the charachter sequences in the left column to the sequences in the right column.
 
 Source                           | Result
