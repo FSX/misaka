@@ -43,7 +43,9 @@ class CythonCommand(BaseCommand):
 
 
 class VendorCommand(BaseCommand):
-    description = 'update Sundown files. Use `git submodule init;git submodule update` to the most recent files'
+    description = 'update Sundown files. Use `git submodule init`, '
+        '`git submodule update` and `git submodule foreach git pull origin master`'
+        ' to the most recent files'
     def run(self):
         files = []
         dest = os.path.join(dirname, 'src/sundown')
