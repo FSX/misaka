@@ -271,6 +271,9 @@ This is some awesome code
         text = '#123 a header yes\n'
         ok(self.render_with(text, extensions=EXT_SPACE_HEADERS)).not_contains('<h1>')
 
+    def test_no_smartypants(self):
+        text = """These "quotes" aren't 'curly'"""
+        ok(self.render_with(text)).not_contains("&#39;").not_contains("&quot;")
 
 class MarkdownConformanceTest_10(TestCase):
     name = 'Markdown Conformance 1.0'
@@ -330,9 +333,8 @@ class UnicodeTest(TestCase):
         markdown = self.r(text)
         ok(markdown).diff(html)
 
-
-if __name__ == '__main__':
-    runner([
+def run_tests():
+    return runner([
         SmartyPantsTest,
         HtmlRenderTest,
         MarkdownParserTest,
@@ -340,3 +342,7 @@ if __name__ == '__main__':
         MarkdownConformanceTest_103,
         UnicodeTest
     ])
+
+
+if __name__ == '__main__':
+    run_tests()
