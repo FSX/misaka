@@ -331,7 +331,7 @@ class UnicodeTest(TestCase):
         ok(markdown).diff(html)
 
 
-if __name__ == '__main__':
+def run_tests():
     runner([
         SmartyPantsTest,
         HtmlRenderTest,
@@ -340,3 +340,7 @@ if __name__ == '__main__':
         MarkdownConformanceTest_103,
         UnicodeTest
     ])
+
+
+if __name__ == '__main__':
+    run_tests()

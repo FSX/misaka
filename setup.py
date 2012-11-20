@@ -60,6 +60,12 @@ class VendorCommand(BaseCommand):
                 shutil.copy(path, dest)
 
 
+class TestCommand(BaseCommand):
+    description = 'run unit tests'
+    def run(self):
+        os.system('python tests/misaka_test.py')
+
+
 setup(
     name='misaka',
     version='1.0.3',
@@ -73,7 +79,8 @@ setup(
     cmdclass={
         'clean': CleanCommand,
         'compile_cython': CythonCommand,
-        'update_vendor': VendorCommand
+        'update_vendor': VendorCommand,
+        'test': TestCommand
     },
     ext_modules=[Extension('misaka', [
         'src/misaka.c',
