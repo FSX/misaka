@@ -28,6 +28,7 @@ HTML_TOC = (1 << 6)
 HTML_HARD_WRAP = (1 << 7)
 HTML_USE_XHTML = (1 << 8)
 HTML_ESCAPE = (1 << 9)
+HTML_SKIP_SCRIPT = (1 << 10)
 
 # Extra HTML render flags - these are not from Sundown
 HTML_SMARTYPANTS = (1 << 0x3)  # An extra flag to enable Smartypants

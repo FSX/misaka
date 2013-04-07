@@ -51,6 +51,8 @@ or method returns it does not accept or return anything.
 
  - **HTML_SKIP_STYLE** --- Do not generate any `<style>` tags.
 
+ - **HTML_SKIP_SCRIPT** --- Do not generate any `<script>` tags.
+
  - **HTML_SKIP_IMAGES** --- Do not generate any `<img>` tags.
 
  - **HTML_SKIP_LINKS** --- Do not generate any `<a>` tags.
