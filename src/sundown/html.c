@@ -399,6 +399,10 @@ rndr_raw_html(struct buf *ob, const struct buf *text, void *opaque)
 		sdhtml_is_tag(text->data, text->size, "style"))
 		return 1;
 
+	if ((options->flags & HTML_SKIP_SCRIPT) != 0 &&
+		sdhtml_is_tag(text->data, text->size, "script"))
+		return 1;
+
 	if ((options->flags & HTML_SKIP_LINKS) != 0 &&
 		sdhtml_is_tag(text->data, text->size, "a"))
 		return 1;
