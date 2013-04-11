@@ -51,7 +51,7 @@ The file organization is as follows (directories end for a forward slash, `/`):
 
 Files that are nor critical for development or speak for themselves have been omitted.
 
-[Sundown]: https://github.com/tanoku/sundown
+[Sundown]: https://github.com/FSX/sundown
 [Cython]: http://cython.org/
 [Travis CI]: http://about.travis-ci.org/docs/user/languages/python/
 [Issues]: https://github.com/FSX/misaka/issues

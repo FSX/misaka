@@ -10,7 +10,7 @@ toc: True
  - `scripts/misaka`: Read stdin when no file is specified. ([#22][])
  - SmartyPants is now a preprocessor. This fixes [#19][].
  - Updated Sundown files; See commits from Mar 29, 2012 to Oct 19, 2012:
-   https://github.com/vmg/sundown/commits/master/
+   https://github.com/FSX/sundown/commits/master/
 
 [#19]: https://github.com/FSX/misaka/issues/19
 [#22]: https://github.com/FSX/misaka/pull/22
