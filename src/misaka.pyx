@@ -30,8 +30,8 @@ HTML_USE_XHTML = (1 << 8)
 HTML_ESCAPE = (1 << 9)
 
 # Extra HTML render flags - these are not from Sundown
-HTML_SMARTYPANTS = (1 << 0x3)  # An extra flag to enable Smartypants
-HTML_TOC_TREE = (1 << 0x15)  # Only render a table of contents tree
+HTML_SMARTYPANTS = (1 << 10)  # An extra flag to enable Smartypants
+HTML_TOC_TREE = (1 << 11)  # Only render a table of contents tree
 
 # Other flags
 TABLE_ALIGN_L = 1 # MKD_TABLE_ALIGN_L
