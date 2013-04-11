@@ -1,6 +1,7 @@
-env*
-*.sublime-*
+__pycache__
 _build
 build
 dist
 *.egg-info
+*.sublime-*
+*.pyc
