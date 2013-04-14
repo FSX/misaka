@@ -15,6 +15,7 @@ from misaka import Markdown, BaseRenderer, HtmlRenderer, SmartyPants, \
     EXT_STRIKETHROUGH, EXT_LAX_SPACING, EXT_SPACE_HEADERS, \
     EXT_SUPERSCRIPT, \
     HTML_SKIP_HTML, HTML_SKIP_STYLE, HTML_SKIP_IMAGES, HTML_SKIP_LINKS, \
+    HTML_SKIP_SCRIPT, \
     HTML_EXPAND_TABS, HTML_SAFELINK, HTML_TOC, HTML_HARD_WRAP, \
     HTML_USE_XHTML, HTML_ESCAPE, \
     HTML_SMARTYPANTS
@@ -104,6 +105,10 @@ Through <em>NO</em> <script>DOUBLE NO</script>
     def test_skip_html(self):
         markdown = self.render_with(HTML_SKIP_HTML, 'Through <em>NO</em> <script>DOUBLE NO</script>')
         ok(markdown).diff('<p>Through NO DOUBLE NO</p>\n')
+
+    def test_skip_script(self):
+        markdown = self.render_with(HTML_SKIP_SCRIPT, 'Through <em>NO</em> <script>DOUBLE NO</script>')
+        ok(markdown).diff('<p>Through <em>NO</em> DOUBLE NO</p>\n')
 
     def test_skip_html_two_space_hard_break(self):
         markdown = self.render_with(HTML_SKIP_HTML, 'Lorem,  \nipsum\n')
