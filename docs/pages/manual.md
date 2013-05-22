@@ -216,7 +216,7 @@ from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
 
 # Create a custom renderer
-class BleepRenderer(HtmlRenderer, SmartyPants):
+class BleepRenderer(md.HtmlRenderer, md.SmartyPants):
     def block_code(self, text, lang):
         if not lang:
             return '\n<pre><code>%s</code></pre>\n' % \
