@@ -127,7 +127,7 @@ cdef class BaseRenderer:
     #: Read-only render flags
     cdef readonly int flags
 
-    def __cinit__(self, int flags=0):
+    def __init__(self, int flags=0):
         self.options.self = <void *> self
         self.flags = flags
         self.setup()
