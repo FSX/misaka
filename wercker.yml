@@ -1,0 +1,20 @@
+box: wercker/python
+build:
+  steps:
+    - virtualenv:
+        name: setup virtual environment
+        install_wheel: false
+
+    - script:
+        name: Echo python information
+        code: |
+          echo "python version $(python --version) running"
+          echo "pip version $(pip --version) running"
+
+    - script:
+        name: Install Misaka!
+        code: python setup.py install
+        
+    - script:
+        name: Run tests!
+        code: tests/misaka_test.py
