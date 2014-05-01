@@ -6,7 +6,11 @@ build:
         install_wheel: false
 
     - script:
-        name: Echo python information
+        name: Install tidyhtml
+        code: sudo apt-get install tidy
+
+    - script:
+        name: Python & pip version
         code: |
           echo "python version $(python --version) running"
           echo "pip version $(pip --version) running"
