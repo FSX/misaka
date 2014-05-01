@@ -17,4 +17,4 @@ build:
         
     - script:
         name: Run tests!
-        code: tests/misaka_test.py
+        code: python tests/misaka_test.py
