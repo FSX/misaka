@@ -7,7 +7,9 @@ build:
 
     - script:
         name: Install tidyhtml
-        code: sudo apt-get install tidy
+        code: |
+          sudo apt-get update -y
+          sudo apt-get install tidy -y
 
     - script:
         name: Python & pip version
