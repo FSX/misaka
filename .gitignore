@@ -2,6 +2,7 @@ __pycache__
 _build
 build
 dist
+.eggs
 *.egg-info
 *.sublime-*
 *.pyc

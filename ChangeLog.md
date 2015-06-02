@@ -1,6 +1,11 @@
 News/Changelog
 ==============
 
+## 2.0.0 (????-??-??)
+
+ - Use CFFI instead of Cython.
+
+
 ## 1.0.3 (2012-11-??)
 
  - `scripts/misaka`: Read stdin when no file is specified. ([#22][])

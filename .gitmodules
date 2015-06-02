@@ -1,3 +1,0 @@
-[submodule "vendor/sundown"]
-	path = vendor/sundown
-	url = git://github.com/FSX/sundown.git

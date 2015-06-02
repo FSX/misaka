@@ -3,17 +3,15 @@ Misaka
 
 .. image:: https://secure.travis-ci.org/FSX/misaka.png?branch=master
 
-The Python binding for Sundown_, a markdown parsing library.
+A CFFI binding for Hoedown_, a markdown parsing library.
 
 Documentation can be found at: http://misaka.61924.nl/
 
-.. _Sundown: https://github.com/vmg/sundown
+.. _Hoedown: https://github.com/hoedown/hoedown
 
 
 Installation
 ------------
-
-Cython is only needed to compile .pyx file.
 
 With pip::
 
