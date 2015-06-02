@@ -10,14 +10,13 @@ from subprocess import Popen, PIPE, STDOUT
 
 import misaka
 
-from misaka import Markdown, BaseRenderer, HtmlRenderer, SmartyPants, \
+from misaka import Markdown, BaseRenderer, HtmlRenderer, \
     EXT_NO_INTRA_EMPHASIS, EXT_TABLES, EXT_FENCED_CODE, EXT_AUTOLINK, \
-    EXT_STRIKETHROUGH, EXT_LAX_SPACING, EXT_SPACE_HEADERS, \
+    EXT_STRIKETHROUGH, EXT_SPACE_HEADERS, \
     EXT_SUPERSCRIPT, \
-    HTML_SKIP_HTML, HTML_SKIP_STYLE, HTML_SKIP_IMAGES, HTML_SKIP_LINKS, \
-    HTML_EXPAND_TABS, HTML_SAFELINK, HTML_TOC, HTML_HARD_WRAP, \
-    HTML_USE_XHTML, HTML_ESCAPE, \
-    HTML_SMARTYPANTS
+    HTML_SKIP_HTML, \
+    HTML_HARD_WRAP, \
+    HTML_USE_XHTML, HTML_ESCAPE
 
 from minitest import TestCase, ok, runner
 
@@ -31,48 +30,48 @@ def clean_html(dirty_html):
     return stdout.decode('utf-8')
 
 
-class SmartyPantsTest(TestCase):
-    name = 'SmartyPants'
+# class SmartyPantsTest(TestCase):
+#     name = 'SmartyPants'
 
-    def setup(self):
-        self.r = lambda html: misaka.html(html, render_flags=HTML_SMARTYPANTS)
+#     def setup(self):
+#         self.r = lambda html: misaka.html(html, render_flags=HTML_SMARTYPANTS)
 
-    def test_single_quotes_re(self):
-        html = self.r('<p>They\'re not for sale.</p>\n')
-        ok(html).diff('<p>They&rsquo;re not for sale.</p>\n')
+#     def test_single_quotes_re(self):
+#         html = self.r('<p>They\'re not for sale.</p>\n')
+#         ok(html).diff('<p>They&rsquo;re not for sale.</p>\n')
 
-    def test_single_quotes_ll(self):
-        html = self.r('<p>Well that\'ll be the day</p>\n')
-        ok(html).diff('<p>Well that&rsquo;ll be the day</p>\n')
+#     def test_single_quotes_ll(self):
+#         html = self.r('<p>Well that\'ll be the day</p>\n')
+#         ok(html).diff('<p>Well that&rsquo;ll be the day</p>\n')
 
-    def test_double_quotes_to_curly_quotes(self):
-        html = self.r('<p>"Quoted text"</p>\n')
-        ok(html).diff('<p>&ldquo;Quoted text&rdquo;</p>\n')
+#     def test_double_quotes_to_curly_quotes(self):
+#         html = self.r('<p>"Quoted text"</p>\n')
+#         ok(html).diff('<p>&ldquo;Quoted text&rdquo;</p>\n')
 
-    def test_single_quotes_ve(self):
-        html = self.r('<p>I\'ve been meaning to tell you ..</p>\n')
-        ok(html).diff('<p>I&rsquo;ve been meaning to tell you ..</p>\n')
+#     def test_single_quotes_ve(self):
+#         html = self.r('<p>I\'ve been meaning to tell you ..</p>\n')
+#         ok(html).diff('<p>I&rsquo;ve been meaning to tell you ..</p>\n')
 
-    def test_single_quotes_m(self):
-        html = self.r('<p>I\'m not kidding</p>\n')
-        ok(html).diff('<p>I&rsquo;m not kidding</p>\n')
+#     def test_single_quotes_m(self):
+#         html = self.r('<p>I\'m not kidding</p>\n')
+#         ok(html).diff('<p>I&rsquo;m not kidding</p>\n')
 
-    def test_single_quotes_d(self):
-        html = self.r('<p>what\'d you say?</p>\n')
-        ok(html).diff('<p>what&rsquo;d you say?</p>\n')
+#     def test_single_quotes_d(self):
+#         html = self.r('<p>what\'d you say?</p>\n')
+#         ok(html).diff('<p>what&rsquo;d you say?</p>\n')
 
 
 class HtmlRenderTest(TestCase):
     name = 'Html Renderer'
 
     def setup(self):
-        pants = SmartyPants()
+        # pants = SmartyPants()
 
         self.r = {
             HTML_SKIP_HTML: HtmlRenderer(HTML_SKIP_HTML),
-            HTML_SKIP_IMAGES: HtmlRenderer(HTML_SKIP_IMAGES),
-            HTML_SKIP_LINKS: HtmlRenderer(HTML_SKIP_LINKS),
-            HTML_SAFELINK: HtmlRenderer(HTML_SAFELINK),
+            # HTML_SKIP_IMAGES: HtmlRenderer(HTML_SKIP_IMAGES),
+            # HTML_SKIP_LINKS: HtmlRenderer(HTML_SKIP_LINKS),
+            # HTML_SAFELINK: HtmlRenderer(HTML_SAFELINK),
             HTML_ESCAPE: HtmlRenderer(HTML_ESCAPE),
             HTML_HARD_WRAP: HtmlRenderer(HTML_HARD_WRAP)
         }
@@ -109,17 +108,17 @@ Through <em>NO</em> <script>DOUBLE NO</script>
         markdown = self.render_with(HTML_SKIP_HTML, 'Lorem,  \nipsum\n')
         ok(markdown).diff('<p>Lorem,<br>\nipsum</p>\n')
 
-    def test_skip_image(self):
-        markdown = self.render_with(HTML_SKIP_IMAGES, '![dust mite](http://dust.mite/image.png) <img src="image.png" />')
-        ok(markdown).not_contains('<img')
+    # def test_skip_image(self):
+    #     markdown = self.render_with(HTML_SKIP_IMAGES, '![dust mite](http://dust.mite/image.png) <img src="image.png" />')
+    #     ok(markdown).not_contains('<img')
 
-    def test_skip_links(self):
-        markdown = self.render_with(HTML_SKIP_LINKS, '[This link](http://example.net/) <a href="links.html">links</a>')
-        ok(markdown).not_contains('<a ')
+    # def test_skip_links(self):
+    #     markdown = self.render_with(HTML_SKIP_LINKS, '[This link](http://example.net/) <a href="links.html">links</a>')
+    #     ok(markdown).not_contains('<a ')
 
-    def test_safelink(self):
-        markdown = self.render_with(HTML_SAFELINK, '[IRC](irc://chat.freenode.org/#freenode)')
-        ok(markdown).diff('<p>[IRC](irc://chat.freenode.org/#freenode)</p>\n')
+    # def test_safelink(self):
+    #     markdown = self.render_with(HTML_SAFELINK, '[IRC](irc://chat.freenode.org/#freenode)')
+    #     ok(markdown).diff('<p>[IRC](irc://chat.freenode.org/#freenode)</p>\n')
 
     def test_hard_wrap(self):
         markdown = self.render_with(HTML_HARD_WRAP, '''
@@ -177,14 +176,14 @@ class MarkdownParserTest(TestCase):
             '<p>A wise man once said:</p>\n\n' \
             '<blockquote>\n<p>Isn&#39;t it wonderful just to be alive.</p>\n</blockquote>\n')
 
-    def test_html_block_not_wrapped_in_p(self):
-        markdown = self.render_with(
-            'Things to watch out for\n\n' \
-            '<ul>\n<li>Blah</li>\n</ul>\n',
-            extensions=EXT_LAX_SPACING)
-        ok(markdown).diff(
-            '<p>Things to watch out for</p>\n\n' \
-            '<ul>\n<li>Blah</li>\n</ul>\n')
+    # def test_html_block_not_wrapped_in_p(self):
+    #     markdown = self.render_with(
+    #         'Things to watch out for\n\n' \
+    #         '<ul>\n<li>Blah</li>\n</ul>\n',
+    #         extensions=EXT_LAX_SPACING)
+    #     ok(markdown).diff(
+    #         '<p>Things to watch out for</p>\n\n' \
+    #         '<ul>\n<li>Blah</li>\n</ul>\n')
 
     # http://github.com/rtomayko/rdiscount/issues/#issue/13
     def test_headings_with_trailing_space(self):
@@ -252,11 +251,11 @@ This is some awesome code
         ok(self.render_with(text)).not_contains('<code')
         ok(self.render_with(text, extensions=EXT_FENCED_CODE)).contains('<code')
 
-    def test_fenced_code_blocks_without_space(self):
-        text = 'foo\nbar\n```\nsome\ncode\n```\nbaz'
+    # def test_fenced_code_blocks_without_space(self):
+    #     text = 'foo\nbar\n```\nsome\ncode\n```\nbaz'
 
-        ok(self.render_with(text)).not_contains('<pre><code>')
-        ok(self.render_with(text, extensions=EXT_FENCED_CODE | EXT_LAX_SPACING)).contains('<pre><code>')
+    #     ok(self.render_with(text)).not_contains('<pre><code>')
+    #     ok(self.render_with(text, extensions=EXT_FENCED_CODE | EXT_LAX_SPACING)).contains('<pre><code>')
 
     def test_linkable_headers(self):
         markdown = self.r('### Hello [GitHub](http://github.com)')
@@ -333,7 +332,7 @@ class UnicodeTest(TestCase):
 
 def run_tests():
     runner([
-        SmartyPantsTest,
+        # SmartyPantsTest,
         HtmlRenderTest,
         MarkdownParserTest,
         MarkdownConformanceTest_10,

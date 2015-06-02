@@ -11,9 +11,14 @@ __all__ = [
 ]
 
 
+IUNIT = 1024
+OUNIT = 64
+MAX_NESTING = 16
+
+
 def html(text, extensions=0, render_flags=0):
-    ib = lib.hoedown_buffer_new(1024)
-    ob = lib.hoedown_buffer_new(64)
+    ib = lib.hoedown_buffer_new(IUNIT)
+    ob = lib.hoedown_buffer_new(OUNIT)
     renderer = lib.hoedown_html_renderer_new(0, 0)
     document = lib.hoedown_document_new(renderer, 0, 16);
 
@@ -30,16 +35,17 @@ def html(text, extensions=0, render_flags=0):
 
 
 class Markdown:
-    def __init__(self, renderer):
+    def __init__(self, renderer, extensions=0):
         # NOTE: Prevent the renderer from being garbage collected
         self.renderer = renderer
+        self.extensions = extensions
 
     def render(self, text):
-        ib = lib.hoedown_buffer_new(1024)
+        ib = lib.hoedown_buffer_new(IUNIT)
         lib.hoedown_buffer_puts(ib, text.encode('utf-8'))
 
-        ob = lib.hoedown_buffer_new(64)
-        document = lib.hoedown_document_new(self.renderer.renderer, 0, 16);
+        ob = lib.hoedown_buffer_new(OUNIT)
+        document = lib.hoedown_document_new(self.renderer.renderer, self.extensions, MAX_NESTING);
         lib.hoedown_document_render(document, ob, ib.data, ib.size);
 
         lib.hoedown_buffer_free(ib);
@@ -51,7 +57,7 @@ class Markdown:
             lib.hoedown_buffer_free(ob);
 
 
-callback_signatures = {
+_callback_signatures = {
     # block level callbacks - NULL skips the block
     'blockcode':    'void (*blockcode)(hoedown_buffer *ob, const hoedown_buffer *text, const hoedown_buffer *lang, const hoedown_renderer_data *data)',
     'blockquote':   'void (*blockquote)(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data)',
@@ -97,33 +103,19 @@ callback_signatures = {
 }
 
 
-# TODO: Do this in Python:
-# static hoedown_renderer *
-# null_renderer_new()
-# {
-#     hoedown_renderer *renderer;
-#     renderer = hoedown_malloc(sizeof(hoedown_renderer));
-#     memset(renderer, 0x0, sizeof(hoedown_renderer));
-
-#     return renderer;
-# }
-
-# static void
-# null_renderer_free(hoedown_renderer *renderer)
-# {
-#     free(renderer);
-# }
 class BaseRenderer:
     def __init__(self):
-        # TODO: Make a null renderer.
-        self.renderer = None
+        self.renderer = lib.null_renderer_new()
         self.set_callbacks()
+
+    def __del__(self):
+        lib.null_renderer_free(self.renderer)
 
     def set_callbacks(self):
         callbacks = []
 
         for name, func in getmembers(self, predicate=ismethod):
-            signature = callback_signatures.get(name)
+            signature = _callback_signatures.get(name)
             if signature is None:
                 continue
 
@@ -232,6 +224,31 @@ class BaseRenderer:
         if result:
             lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
 
+    def _w_autolink(self, ob, link, type, data):
+        link = ffi.string(link.data, link.size).decode('utf-8')
+        type = int(type)
+        result = self.autolink(link, type)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_codespan(self, ob, text, data):
+        text = ffi.string(text.data, text.size).decode('utf-8')
+        result = self.codespan(text)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_double_emphasis(self, ob, content, data):
+        content = ffi.string(content.data, content.size).decode('utf-8')
+        result = self.double_emphasis(content)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
     def _w_emphasis(self, ob, content, data):
         content = ffi.string(content.data, content.size).decode('utf-8')
         result = self.emphasis(content)
@@ -240,10 +257,142 @@ class BaseRenderer:
             return 1
         return 0
 
+    def _w_underline(self, ob, content, data):
+        content = ffi.string(content.data, content.size).decode('utf-8')
+        result = self.underline(content)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_highlight(self, ob, content, data):
+        content = ffi.string(content.data, content.size).decode('utf-8')
+        result = self.highlight(content)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_quote(self, ob, content, data):
+        content = ffi.string(content.data, content.size).decode('utf-8')
+        result = self.quote(content)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_image(self, ob, link, title, alt, data):
+        link = ffi.string(link.data, link.size).decode('utf-8')
+        title = ffi.string(title.data, title.size).decode('utf-8')
+        alt = ffi.string(alt.data, alt.size).decode('utf-8')
+        result = self.image(link, title, alt)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_quote(self, ob, content, data):
+        content = ffi.string(content.data, content.size).decode('utf-8')
+        result = self.quote(content)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_linebreak(self, ob, data):
+        result = self.linebreak()
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_link(self, ob, content, link, title, data):
+        content = ffi.string(content.data, content.size).decode('utf-8')
+        link = ffi.string(link.data, link.size).decode('utf-8')
+        title = ffi.string(title.data, title.size).decode('utf-8')
+        result = self.link(content, link, title)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_triple_emphasis(self, ob, content, data):
+        content = ffi.string(content.data, content.size).decode('utf-8')
+        result = self.triple_emphasis(content)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_strikethrough(self, ob, content, data):
+        content = ffi.string(content.data, content.size).decode('utf-8')
+        result = self.strikethrough(content)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_superscript(self, ob, content, data):
+        content = ffi.string(content.data, content.size).decode('utf-8')
+        result = self.superscript(content)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_footnote_ref(self, ob, num, data):
+        num = int(num)
+        result = self.footnote_ref(num)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_math(self, ob, text, displaymode, data):
+        text = ffi.string(text.data, text.size).decode('utf-8')
+        displaymode = int(displaymode)
+        result = self.math(text, displaymode)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_raw_html(self, ob, text, data):
+        text = ffi.string(text.data, text.size).decode('utf-8')
+        result = self.raw_html(text)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+            return 1
+        return 0
+
+    def _w_entity(self, ob, text, data):
+        text = ffi.string(text.data, text.size).decode('utf-8')
+        result = self.entity(text)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+
+    def _w_normal_text(self, ob, text, data):
+        text = ffi.string(text.data, text.size).decode('utf-8')
+        result = self.normal_text(text)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+
+    def _w_doc_header(self, ob, inline_render, data):
+        inline_render = int(inline_render)
+        result = self.doc_header(inline_render)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+
+    def _w_doc_footer(self, ob, inline_render, data):
+        inline_render = int(inline_render)
+        result = self.doc_footer(inline_render)
+        if result:
+            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
+
 
 class HtmlRenderer(BaseRenderer):
-    def __init__(self):
-        self.renderer = lib.hoedown_html_renderer_new(0, 0)
+    def __init__(self, flags=0):
+        self.renderer = lib.hoedown_html_renderer_new(flags, 0)
         self.set_callbacks()
 
     def __del__(self):
