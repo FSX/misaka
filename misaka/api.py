@@ -19,8 +19,8 @@ MAX_NESTING = 16
 def html(text, extensions=0, render_flags=0):
     ib = lib.hoedown_buffer_new(IUNIT)
     ob = lib.hoedown_buffer_new(OUNIT)
-    renderer = lib.hoedown_html_renderer_new(0, 0)
-    document = lib.hoedown_document_new(renderer, 0, 16);
+    renderer = lib.hoedown_html_renderer_new(render_flags, 0)
+    document = lib.hoedown_document_new(renderer, extensions, 16);
 
     lib.hoedown_buffer_puts(ib, text.encode('utf-8'))
     lib.hoedown_document_render(document, ob, ib.data, ib.size);

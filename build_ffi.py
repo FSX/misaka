@@ -57,18 +57,18 @@ ffi.set_source(
 #include "hoedown/html.h"
 """,
     sources=(
-        'src/extra.c',
-        'src/hoedown/version.c',
-        'src/hoedown/stack.c',
-        'src/hoedown/html_smartypants.c',
-        'src/hoedown/html_blocks.c',
-        'src/hoedown/html.c',
-        'src/hoedown/escape.c',
-        'src/hoedown/document.c',
-        'src/hoedown/buffer.c',
-        'src/hoedown/autolink.c',
+        'misaka/extra.c',
+        'misaka/hoedown/version.c',
+        'misaka/hoedown/stack.c',
+        'misaka/hoedown/html_smartypants.c',
+        'misaka/hoedown/html_blocks.c',
+        'misaka/hoedown/html.c',
+        'misaka/hoedown/escape.c',
+        'misaka/hoedown/document.c',
+        'misaka/hoedown/buffer.c',
+        'misaka/hoedown/autolink.c',
     ),
-    include_dirs=('src',))
+    include_dirs=('misaka',))
 
 
 # NOTE: The constants are refined here, because CFFI
