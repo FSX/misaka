@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from inspect import getmembers, ismethod
 
 from ._hoedown import lib, ffi
