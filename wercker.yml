@@ -20,7 +20,7 @@ build:
     - script:
         name: Install Misaka!
         code: python setup.py install
-        
+
     - script:
         name: Run tests!
-        code: python tests/misaka_test.py
+        code: python setup.py test

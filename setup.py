@@ -28,7 +28,7 @@ class CleanCommand(BaseCommand):
 class TestCommand(BaseCommand):
     description = 'run unit tests'
     def run(self):
-        os.system('python tests/misaka_test.py')
+        os.system('python tests/runner.py')
 
 
 setup(
