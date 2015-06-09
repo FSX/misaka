@@ -1,6 +1,8 @@
 import os
-import shutil
 import os.path
+import shutil
+import subprocess
+import sys
 from setuptools import setup, Command
 
 
@@ -28,7 +30,8 @@ class CleanCommand(BaseCommand):
 class TestCommand(BaseCommand):
     description = 'run unit tests'
     def run(self):
-        os.system('python tests/runner.py')
+        errno = subprocess.call([sys.executable, 'tests/runner.py'])
+        sys.exit(errno)
 
 
 setup(

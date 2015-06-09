@@ -2,7 +2,7 @@
 chibitest
 ~~~~~~~~
 
-chibitest is a really simple unit testing module. Less code is less bugs.
+chibitest is a simple unit testing module. Less code is less bugs.
 Inspired by Oktest, http://www.kuwata-lab.com/oktest/.
 """
 
