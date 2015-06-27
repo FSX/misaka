@@ -8,6 +8,8 @@ chibitest is a simple unit testing module. Less code is less bugs.
 Inspired by Oktest, http://www.kuwata-lab.com/oktest/.
 """
 
+from __future__ import print_function
+
 import sys
 import inspect
 import traceback
