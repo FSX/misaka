@@ -2,52 +2,50 @@
 
 import sys
 from os import path
-from misaka import Markdown, HtmlRenderer, SmartyPants, \
-    EXT_NO_INTRA_EMPHASIS, EXT_TABLES, EXT_FENCED_CODE, EXT_AUTOLINK, \
-    EXT_STRIKETHROUGH, EXT_LAX_SPACING, EXT_SPACE_HEADERS, \
-    EXT_SUPERSCRIPT, \
-    HTML_SKIP_HTML, HTML_SKIP_STYLE, HTML_SKIP_IMAGES, HTML_SKIP_LINKS, \
-    HTML_EXPAND_TABS, HTML_SAFELINK, HTML_TOC, HTML_HARD_WRAP, \
-    HTML_USE_XHTML, HTML_ESCAPE, \
-    HTML_SMARTYPANTS
+
+from misaka import *
 
 
-misaka_extensions = {
-    '--parse-no-intra-emphasis': EXT_NO_INTRA_EMPHASIS,
-    '--parse-tables': EXT_TABLES,
-    '--parse-fenced-code': EXT_FENCED_CODE,
-    '--parse-autolink': EXT_AUTOLINK,
-    '--parse-strikethrough': EXT_STRIKETHROUGH,
-    '--parse-lax-spacing': EXT_LAX_SPACING,
-    '--parse-space-headers': EXT_SPACE_HEADERS,
-    '--parse-superscript': EXT_SUPERSCRIPT
+extensions = {
+    '--ext-tables': EXT_TABLES,
+    '--ext-fenced-code': EXT_FENCED_CODE,
+    '--ext-footnotes': EXT_FOOTNOTES,
+    '--ext-autolink': EXT_AUTOLINK,
+    '--ext-strikethrough': EXT_STRIKETHROUGH,
+    '--ext-underline': EXT_UNDERLINE,
+    '--ext-highlight': EXT_HIGHLIGHT,
+    '--ext-quote': EXT_QUOTE,
+    '--ext-superscript': EXT_SUPERSCRIPT,
+    '--ext-math': EXT_MATH,
+    '--ext-no-intra-emphasis': EXT_NO_INTRA_EMPHASIS,
+    '--ext-space-headers': EXT_SPACE_HEADERS,
+    '--ext-math-explicit': EXT_MATH_EXPLICIT,
+    '--ext-disable-indented-code': EXT_DISABLE_INDENTED_CODE
 }
 
-misaka_html_flags = {
-    '--render-skip-html': HTML_SKIP_HTML,
-    '--render-skip-style': HTML_SKIP_STYLE,
-    '--render-skip-images': HTML_SKIP_IMAGES,
-    '--render-skip-links': HTML_SKIP_LINKS,
-    '--render-expand-tabs': HTML_EXPAND_TABS,
-    '--render-safelink': HTML_SAFELINK,
-    '--render-toc': HTML_TOC,
-    '--render-hard_wrap': HTML_HARD_WRAP,
-    '--render-use-xhtml': HTML_USE_XHTML,
-    '--render-escape': HTML_ESCAPE,
-    '--smarty': HTML_SMARTYPANTS
+html_flags = {
+    '--html-skip-html': HTML_SKIP_HTML,
+    '--html-escape': HTML_ESCAPE,
+    '--html-hard-wrap': HTML_HARD_WRAP,
+    '--html-use-xhtml': HTML_USE_XHTML
 }
 
 
-help = '''Usage: misaka [--parse-<extension>...] [--render-<flag>...] [--smarty] [<file>...]
+help = '''\
+Usage: misaka [--ext-<extension>...] [--html-<flag>...] [--smartypants] [<file>...]
 
 Parser extensions:
-%s
+{}
 
 Render flags:
-%s
-''' % (
-    '\n'.join(['  %s' % a for a in misaka_extensions]),
-    '\n'.join(['  %s' % a for a in misaka_html_flags]))
+{}
+
+Other options:
+  --smartypants
+  -h | --help
+'''.format(
+    '\n'.join(['  ' + a for a in extensions]),
+    '\n'.join(['  ' + a for a in html_flags]))
 
 
 if __name__ == '__main__':
@@ -55,27 +53,29 @@ if __name__ == '__main__':
 
     files = []
     flags = 0
-    extensions = 0
+    ext = 0
+    pants_enabled = False
 
     for arg in args:
         if arg in ('-h', '--help'):
             print(help)
             sys.exit(0)
-        elif arg in misaka_html_flags:
-            flags |= misaka_html_flags[arg]
-        elif arg in misaka_extensions:
-            extensions |= misaka_extensions[arg]
+        elif arg == '--smartypants':
+            pants_enabled = True
+        elif arg in html_flags:
+            flags |= html_flags[arg]
+        elif arg in extensions:
+            ext |= extensions[arg]
         else:
             # If it's not a extension or HTML flag,
             # then it must be a file, right?
             files.append(arg)
 
-    if flags & HTML_SMARTYPANTS:
-        class HtmlRenderer(HtmlRenderer, SmartyPants):
-            pass
-
     renderer = HtmlRenderer(flags)
-    to_html = Markdown(renderer, extensions).render
+    if pants_enabled:
+        to_html = lambda n: smartypants(Markdown(renderer, ext).render(n))
+    else:
+        to_html = Markdown(renderer, ext).render
 
     if files:
         for fn in files:

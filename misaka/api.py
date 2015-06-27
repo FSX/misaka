@@ -71,7 +71,7 @@ class Markdown:
         lib.hoedown_document_free(document)
 
         try:
-            return ffi.string(ob.data, ob.size).decode('utf-8')
+            return to_string(ob)
         finally:
             lib.hoedown_buffer_free(ob);
 
