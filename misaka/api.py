@@ -44,7 +44,6 @@ def html(text, extensions=0, render_flags=0):
 
 class Markdown:
     def __init__(self, renderer, extensions=0):
-        # NOTE: Prevent the renderer from being garbage collected.
         self.renderer = renderer
         self.extensions = extensions
 
