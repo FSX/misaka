@@ -36,8 +36,6 @@ def get_tests():
 def run_tests(include=[], exclude=[]):
     tests = get_tests()
 
-    print(tests)
-
     if include:
         tests = filter(lambda n: n[0] in include, tests)
     if exclude:
