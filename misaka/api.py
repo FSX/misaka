@@ -7,6 +7,7 @@ from ._hoedown import lib, ffi
 
 __all__ = [
     'html',
+    'smartypants',
     'Markdown',
     'BaseRenderer',
     'HtmlRenderer'
@@ -37,7 +38,18 @@ def html(text, extensions=0, render_flags=0):
     lib.hoedown_html_renderer_free(renderer);
 
     try:
-        return ffi.string(ob.data, ob.size).decode('utf-8')
+        return to_string(ob)
+    finally:
+        lib.hoedown_buffer_free(ob);
+
+
+def smartypants(text):
+    byte_str = text.encode('utf-8')
+    ob = lib.hoedown_buffer_new(OUNIT)
+    lib.hoedown_html_smartypants(ob, byte_str, len(byte_str))
+
+    try:
+        return to_string(ob)
     finally:
         lib.hoedown_buffer_free(ob);
 

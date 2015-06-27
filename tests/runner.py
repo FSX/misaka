@@ -7,6 +7,7 @@ from chibitest import runner, TestCase
 
 from test_markdown import MarkdownConformanceTest_10, MarkdownConformanceTest_103
 from test_renderer import CustomRendererTest
+from test_smartypants import SmartypantsTest
 
 
 help_message = """\

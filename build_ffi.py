@@ -272,6 +272,7 @@ hoedown_renderer *hoedown_html_renderer_new(
     int nesting_level
 );
 void hoedown_html_renderer_free(hoedown_renderer *renderer);
+void hoedown_html_smartypants(hoedown_buffer *ob, const uint8_t *data, size_t size);
 
 // ---------------
 // --- extra.h ---

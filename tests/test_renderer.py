@@ -1,13 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import re
-import codecs
-from os import path
-from glob import glob
-
 import misaka as m
 from chibitest import TestCase, ok
-from test_utils import clean_html
 
 
 class TestRenderer(m.BaseRenderer):
@@ -27,9 +21,6 @@ class CustomRendererTest(TestCase):
     def setup(self):
         self.renderer = TestRenderer()
         self.render = m.Markdown(TestRenderer(), m.EXT_FENCED_CODE).render
-
-    def md(self, md, renderer):
-        return m.Markdown(getattr(self, renderer)).render(md)
 
     def test_block_code(self):
         supplied = '```bash\n$ :(){ :|:& };:\n```'
