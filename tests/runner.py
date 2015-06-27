@@ -36,6 +36,8 @@ def get_tests():
 def run_tests(include=[], exclude=[]):
     tests = get_tests()
 
+    print(tests)
+
     if include:
         tests = filter(lambda n: n[0] in include, tests)
     if exclude:
@@ -52,8 +54,10 @@ if __name__ == '__main__':
         if sys.argv[1] == '--list':
             for name, testcase in get_tests():
                 print(name)
+            sys.exit(0)
         elif sys.argv[1] == '--help':
             print(help_message)
+            sys.exit(0)
         else:
             last_arg = '--include'
 
@@ -66,4 +70,4 @@ if __name__ == '__main__':
                     elif last_arg == '--exclude':
                         exclude.append(arg)
 
-            run_tests(include, exclude)
+    run_tests(include, exclude)
