@@ -1,7 +1,7 @@
 Misaka
 ======
 
-.. image:: https://img.shields.io/pypi/v/misaka.svgo
+.. image:: https://img.shields.io/pypi/v/misaka.svg
     :target: https://pypi.python.org/pypi/misaka
 
 .. image:: https://img.shields.io/pypi/dm/misaka.svg
