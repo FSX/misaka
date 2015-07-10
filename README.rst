@@ -1,9 +1,16 @@
 Misaka
 ======
 
-.. image:: https://secure.travis-ci.org/FSX/misaka.png?branch=master
+.. image:: https://img.shields.io/pypi/v/misaka.svgo
+    :target: https://pypi.python.org/pypi/misaka
 
-A CFFI binding for Hoedown_, a markdown parsing library.
+.. image:: https://img.shields.io/pypi/dm/misaka.svg
+    :target: https://pypi.python.org/pypi/misaka
+
+.. image:: https://img.shields.io/travis/FSX/misaka.svg
+    :target: https://travis-ci.org/FSX/misaka
+
+A CFFI binding for Hoedown_ (version 3), a markdown parsing library.
 
 Documentation can be found at: http://misaka.61924.nl/
 
@@ -12,6 +19,9 @@ Documentation can be found at: http://misaka.61924.nl/
 
 Installation
 ------------
+
+Misaka has been tested on CPython 2.7, 3.2, 3.3, 3.4 and PyPy 2.6. It needs
+CFFI 1.0 or newer, because of this it will not work on PyPy 2.5 and older.
 
 With pip::
 
