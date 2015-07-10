@@ -2,7 +2,7 @@
 
 """
 chibitest
-~~~~~~~~
+~~~~~~~~~
 
 chibitest is a simple unit testing module. Less code is less bugs.
 Inspired by Oktest, http://www.kuwata-lab.com/oktest/.
@@ -125,8 +125,8 @@ class AssertionObject(object):
                                  .format(name, _exc_name(e), e))
 
 
-def ok(target):
-    return AssertionObject(target)
+# A nicer alias.
+ok = AssertionObject
 
 
 class TestCase(object):
