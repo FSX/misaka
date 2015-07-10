@@ -210,10 +210,12 @@ class BaseRenderer:
         if result:
             lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
 
+    # flags: TABLE_ALIGNMASK, TABLE_ALIGN_LEFT, TABLE_ALIGN_RIGHT,
+    #        TABLE_ALIGN_CENTER, TABLE_HEADER
     def _w_table_cell(self, ob, content, flags, data):
         content = to_string(content)
         flags = int(flags)
-        result = self.table_row(content, flags)
+        result = self.table_cell(content, flags)
         if result:
             lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
 
