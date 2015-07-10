@@ -305,14 +305,6 @@ class BaseRenderer:
             return 1
         return 0
 
-    def _w_quote(self, ob, content, data):
-        content = to_string(content)
-        result = self.quote(content)
-        if result:
-            lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
-            return 1
-        return 0
-
     def _w_linebreak(self, ob, data):
         result = self.linebreak()
         if result:
