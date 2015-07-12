@@ -17,16 +17,6 @@ class BaseCommand(Command):
         pass
 
 
-class CleanCommand(BaseCommand):
-    description = 'cleanup directories created by packaging and build processes'
-    def run(self):
-        for path in ('build', 'dist', 'misaka.egg-info', 'docs/_build'):
-            if os.path.exists(path):
-                path = os.path.join(dirname, path)
-                print('removing %s' % path)
-                shutil.rmtree(path)
-
-
 class TestCommand(BaseCommand):
     description = 'run unit tests'
     def run(self):
@@ -45,7 +35,6 @@ setup(
     long_description=open(os.path.join(dirname, 'README.rst')).read(),
     scripts=['scripts/misaka'],
     cmdclass={
-        'clean': CleanCommand,
         'test': TestCommand
     },
     classifiers = [
