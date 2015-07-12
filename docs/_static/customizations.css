@@ -1,0 +1,28 @@
+body {
+	font-family: 'Liberation Sans', 'Nimbus Sans L', FreeSans,
+		'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+div.body h1, div.body h2, div.body h3, div.body h4, div.body h5, div.body h6 {
+	font-family: 'PT Serif', 'Droid Serif', 'DejaVu Serif', serif;
+}
+
+ul, div.sphinxsidebar ul ul, div.sphinxsidebar ul.want-points {
+	list-style-type: none;
+	margin-left: 1em;
+}
+ul li:before {
+	content: '-';
+	position: relative;
+	left: -5px;
+}
+ul li {
+	text-indent: -5px;
+}
+
+pre {
+	padding: 7px 10px;
+}
+pre, code {
+	font-family: 'M+ 1m', 'Droid Sans Mono', 'DejaVu Sans Mono', monospace;
+}
