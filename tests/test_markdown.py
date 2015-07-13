@@ -7,7 +7,7 @@ from glob import glob
 
 from chibitest import TestCase, ok
 from misaka import Markdown, HtmlRenderer
-from test_utils import clean_html
+from utils import clean_html
 
 
 class MarkdownConformanceTest_10(TestCase):
