@@ -40,9 +40,9 @@ def run_tests(include=[], exclude=[]):
     tests = get_tests()
 
     if include:
-        tests = filter(lambda n: n[0] in include, tests)
+        tests = [n for n in tests if n[0] in exclude]
     if exclude:
-        tests = filter(lambda n: not n[0] in exclude, tests)
+        tests = [n for n in tests if not n[0] in exclude]
 
     runner([n[1] for n in tests])
 
