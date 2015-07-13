@@ -1,3 +1,5 @@
+:orphan:
+
 Changelog
 =========
 
@@ -39,7 +41,7 @@ Date format is year-month-day.
   script execution will not stop. Only the render method will stop and return
   nothing.
 - Removed trailing forward slashes from ``MANIFEST.in``. These cause trouble on
-  Windows. (`#12`_/`#13]`_)
+  Windows. (`#12`_/`#13`_)
 - Input text now be a byte or unicode string. Callback method arguments are
   always unicode. The returned text in a callback method can be a byte or unicode
   string.

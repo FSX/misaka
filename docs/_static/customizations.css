@@ -19,6 +19,17 @@ ul li:before {
 ul li {
 	text-indent: -5px;
 }
+.field-list ul {
+	padding-left: 0;
+}
+.field-list li:before {
+	content: '';
+	position: inherit;
+	left: 0;
+}
+.field-list li {
+	text-indent: 0;
+}
 
 pre {
 	padding: 7px 10px;

@@ -26,6 +26,9 @@ def to_string(buffer):
 
 
 def html(text, extensions=0, render_flags=0):
+    """
+    Convert markdown text to HTML.
+    """
     ib = lib.hoedown_buffer_new(IUNIT)
     ob = lib.hoedown_buffer_new(OUNIT)
     renderer = lib.hoedown_html_renderer_new(render_flags, 0)
@@ -44,6 +47,26 @@ def html(text, extensions=0, render_flags=0):
 
 
 def smartypants(text):
+    """
+    Transforms sequences of characters into HTML entities.
+
+    ===================================  =====================  =========
+    Markdown                             HTML                   Result
+    ===================================  =====================  =========
+    ``'s`` (s, t, m, d, re, ll, ve)      &rsquo;s               ’s
+    ``"Quotes"``                         &ldquo;Quotes&rdquo;   “Quotes”
+    ``---``                              &mdash;                —
+    ``--``                               &ndash;                –
+    ``...``                              &hellip;               …
+    ``. . .``                            &hellip;               …
+    ``(c)``                              &copy;                 ©
+    ``(r)``                              &reg;                  ®
+    ``(tm)``                             &trade;                ™
+    ``3/4``                              &frac34;               ¾
+    ``1/2``                              &frac12;               ½
+    ``1/4``                              &frac14;               ¼
+    ===================================  =====================  =========
+    """
     byte_str = text.encode('utf-8')
     ob = lib.hoedown_buffer_new(OUNIT)
     lib.hoedown_html_smartypants(ob, byte_str, len(byte_str))
@@ -55,11 +78,17 @@ def smartypants(text):
 
 
 class Markdown:
+    """
+    The Markdown parser.
+    """
     def __init__(self, renderer, extensions=0):
         self.renderer = renderer
         self.extensions = extensions
 
     def render(self, text):
+        """
+        Parse and render markdown text.
+        """
         ib = lib.hoedown_buffer_new(IUNIT)
         lib.hoedown_buffer_puts(ib, text.encode('utf-8'))
 
@@ -397,6 +426,9 @@ class BaseRenderer:
 
 
 class HtmlRenderer(BaseRenderer):
+    """
+    A wrapper for the HTML renderer that's included in Hoedown.
+    """
     def __init__(self, flags=0):
         self.renderer = lib.hoedown_html_renderer_new(flags, 0)
         callbacks = []
