@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
 
+import importlib
 import inspect
+import os
 import sys
-from os.path import dirname, join as jp
+from itertools import chain
+from os.path import dirname, join as jp, splitext
 
-sys.path.insert(0, jp(dirname(sys.modules[__name__].__file__), '..'))
+CWD = dirname(sys.modules[__name__].__file__)
+sys.path.insert(0, jp(CWD, '..'))
 
 from chibitest import runner, TestCase
-from test_markdown import MarkdownConformanceTest_10, MarkdownConformanceTest_103
-from test_renderer import CustomRendererTest
-from test_smartypants import SmartypantsTest
 
 
 help_message = """\
@@ -28,17 +29,26 @@ Arguments:
 """
 
 
+def get_test_modules():
+    modules = []
+
+    for n in os.listdir(CWD):
+        if n.startswith('test_') and n.endswith('.py'):
+            n, _ = splitext(n)
+            modules.append(importlib.import_module(n))
+
+    return modules
+
+
 def is_test(n):
     return inspect.isclass(n) and issubclass(n, TestCase) and not n is TestCase
 
 
-def get_tests():
-    return inspect.getmembers(sys.modules[__name__], is_test)
+def get_tests(module):
+    return inspect.getmembers(module, is_test)
 
 
-def run_tests(include=[], exclude=[]):
-    tests = get_tests()
-
+def run_tests(tests, include=[], exclude=[]):
     if include:
         tests = [n for n in tests if n[0] in exclude]
     if exclude:
@@ -48,12 +58,13 @@ def run_tests(include=[], exclude=[]):
 
 
 if __name__ == '__main__':
+    tests = list(chain(*map(get_tests, get_test_modules())))
     include = []
     exclude = []
 
     if len(sys.argv) >= 2:
         if sys.argv[1] == '--list':
-            for name, testcase in get_tests():
+            for name, testcase in tests:
                 print(name)
             sys.exit(0)
         elif sys.argv[1] == '--help':
@@ -71,4 +82,4 @@ if __name__ == '__main__':
                     elif last_arg == '--exclude':
                         exclude.append(arg)
 
-    run_tests(include, exclude)
+    run_tests(tests, include, exclude)
