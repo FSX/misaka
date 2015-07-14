@@ -12,11 +12,13 @@ Date format is year-month-day.
 - Rewrite. CFFI_ and Hoedown_ instead of Cython_ and Sundown_.
 - Remove pre- and postprocessor support.
 - Smartypants is a normal function instead of a postprocessor.
+- Documentation now uses Sphinx_.
 
 .. _Hoedown: https://github.com/hoedown/hoedown
 .. _Sundown: https://github.com/vmg/sundown
 .. _CFFI: https://cffi.readthedocs.org
 .. _Cython: http://cython.org/
+.. _Sphinx: http://sphinx-doc.org
 
 
 1.0.3 (not released)

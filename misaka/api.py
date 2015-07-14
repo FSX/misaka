@@ -79,7 +79,7 @@ def smartypants(text):
 
 class Markdown:
     """
-    The Markdown parser.
+    Parses markdown text and renders it using the given renderer.
     """
     def __init__(self, renderer, extensions=0):
         self.renderer = renderer
@@ -87,7 +87,7 @@ class Markdown:
 
     def render(self, text):
         """
-        Parse and render markdown text.
+        Parses and renders markdown text.
         """
         ib = lib.hoedown_buffer_new(IUNIT)
         lib.hoedown_buffer_puts(ib, text.encode('utf-8'))
@@ -428,6 +428,10 @@ class BaseRenderer:
 class HtmlRenderer(BaseRenderer):
     """
     A wrapper for the HTML renderer that's included in Hoedown.
+
+    An instance of the ``HtmlRenderer`` can not be shared with multiple
+    :py:class:`Markdown` instances, because it carries state that's changed
+    by the ``Markdown`` instance.
     """
     def __init__(self, flags=0):
         self.renderer = lib.hoedown_html_renderer_new(flags, 0)
