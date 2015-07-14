@@ -10,7 +10,8 @@ __all__ = [
     'smartypants',
     'Markdown',
     'BaseRenderer',
-    'HtmlRenderer'
+    'HtmlRenderer',
+    'HtmlTocRenderer',
 ]
 
 
@@ -429,12 +430,15 @@ class HtmlRenderer(BaseRenderer):
     """
     A wrapper for the HTML renderer that's included in Hoedown.
 
+    ``nesting_level`` limits what's included in the table of contents.
+    The default value is 0, no headers.
+
     An instance of the ``HtmlRenderer`` can not be shared with multiple
     :py:class:`Markdown` instances, because it carries state that's changed
     by the ``Markdown`` instance.
     """
-    def __init__(self, flags=0):
-        self.renderer = lib.hoedown_html_renderer_new(flags, 0)
+    def __init__(self, flags=0, nesting_level=0):
+        self.renderer = self._new_renderer(flags, nesting_level)
         callbacks = []
 
         for name, signature in _callback_signatures.items():
@@ -449,5 +453,26 @@ class HtmlRenderer(BaseRenderer):
         # Prevent garbage collection of callbacks.
         self._callbacks = callbacks
 
+    def _new_renderer(self, flags, nesting_level):
+        return lib.hoedown_html_renderer_new(flags, nesting_level)
+
     def __del__(self):
         lib.hoedown_html_renderer_free(self.renderer)
+
+
+class HtmlTocRenderer(HtmlRenderer):
+    """
+    A wrapper for the HTML table of contents renderer that's included in Hoedown.
+
+    ``nesting_level`` limits what's included in the table of contents.
+    The default value is 6, all headers.
+
+    An instance of the ``HtmlTocRenderer`` can not be shared with multiple
+    :py:class:`Markdown` instances, because it carries state that's changed
+    by the ``Markdown`` instance.
+    """
+    def __init__(self, nesting_level=6):
+        HtmlRenderer.__init__(self, 0, nesting_level)
+
+    def _new_renderer(self, flags, nesting_level):
+        return lib.hoedown_html_toc_renderer_new(nesting_level)

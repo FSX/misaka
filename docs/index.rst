@@ -318,6 +318,10 @@ Classes
     :members:
 
 
+.. autoclass:: HtmlTocRenderer
+    :members:
+
+
 .. autoclass:: Markdown
     :members:
 
