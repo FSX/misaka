@@ -50,7 +50,7 @@ def get_tests(module):
 
 def run_tests(tests, include=[], exclude=[]):
     if include:
-        tests = [n for n in tests if n[0] in exclude]
+        tests = [n for n in tests if n[0] in include]
     if exclude:
         tests = [n for n in tests if not n[0] in exclude]
 
