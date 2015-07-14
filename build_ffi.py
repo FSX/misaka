@@ -53,13 +53,11 @@ ffi = cffi.FFI()
 ffi.set_source(
     'misaka._hoedown',
     """\
-#include "extra.h"
 #include "hoedown/buffer.h"
 #include "hoedown/document.h"
 #include "hoedown/html.h"
 """,
     sources=(
-        'misaka/extra.c',
         'misaka/hoedown/version.c',
         'misaka/hoedown/stack.c',
         'misaka/hoedown/html_smartypants.c',
@@ -276,13 +274,6 @@ hoedown_renderer *hoedown_html_toc_renderer_new(
 );
 void hoedown_html_renderer_free(hoedown_renderer *renderer);
 void hoedown_html_smartypants(hoedown_buffer *ob, const uint8_t *data, size_t size);
-
-// ---------------
-// --- extra.h ---
-// ---------------
-
-hoedown_renderer *null_renderer_new();
-void null_renderer_free(hoedown_renderer *renderer);
 """)
 
 
