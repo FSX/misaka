@@ -1,4 +1,5 @@
 include README.rst setup.py THANKS
-recursive-include src *
+recursive-include misaka *
 recursive-include docs *
+recursive-include tests *
 recursive-include benchmark *
