@@ -1,4 +1,4 @@
-include README.rst setup.py THANKS
+include README.rst setup.py build_ffi.py THANKS LICENSE.txt
 recursive-include misaka *
 recursive-include docs *
 recursive-include tests *

@@ -26,7 +26,7 @@ class TestCommand(BaseCommand):
 
 setup(
     name='misaka',
-    version='2.0.0b1',
+    version='2.0.0b1.post2',
     description='A CFFI binding for Hoedown, a markdown parsing library.',
     author='Frank Smit',
     author_email='frank@61924.nl',
@@ -34,6 +34,7 @@ setup(
     license='MIT',
     long_description=open(os.path.join(dirname, 'README.rst')).read(),
     scripts=['scripts/misaka'],
+    packages=['misaka'],
     cmdclass={
         'test': TestCommand
     },
