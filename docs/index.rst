@@ -1,7 +1,7 @@
 .. py:currentmodule:: misaka
 
-Misaka
-======
+Documentation
+=============
 
 Misaka is a CFFI-based binding for Hoedown_, a fast markdown processing library
 written in C. It features a fast HTML renderer and functionality to make custom
@@ -144,8 +144,6 @@ Render method flags
 ^^^^^^^^^^^^^^^^^^^
 
 These constants are passed to individual render methods as flags.
-
-TODO: How to check flags?
 
 .. py:data:: LIST_ORDERED
 .. py:data:: LI_BLOCK
@@ -332,11 +330,3 @@ Functions
 .. autofunction:: html
 
 .. autofunction:: smartypants
-
-
-Indices and tables
-------------------
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`

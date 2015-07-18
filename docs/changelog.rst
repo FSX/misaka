@@ -107,54 +107,54 @@ Date format is year-month-day.
 0.3.3 (2011-07-22)
 ^^^^^^^^^^^^^^^^^^
 
- - Fix a typo in ``README.txt``. (heintz)
- - Fix non-NULL-terminated ``kwlist`` in ``misaka_html``. (heintz)
- - Rename module to misaka in benchmark.py. (honza)
- - Renamed Upskirt to Sundown and updated the source files from 2011-07-04.
+- Fix a typo in ``README.txt``. (heintz)
+- Fix non-NULL-terminated ``kwlist`` in ``misaka_html``. (heintz)
+- Rename module to misaka in benchmark.py. (honza)
+- Renamed Upskirt to Sundown and updated the source files from 2011-07-04.
 
 
 0.3.2 (2011-07-03)
 ^^^^^^^^^^^^^^^^^^
 
- - Fixed minor error in ``setup.py``.
+- Fixed minor error in ``setup.py``.
 
 
 0.3.1 (2011-07-03)
 ^^^^^^^^^^^^^^^^^^
 
- - Renamed project to Misaka.
- - Updated Upskirt files; See commits from 2011-06-06 to 2011-06-23.
+- Renamed project to Misaka.
+- Updated Upskirt files; See commits from 2011-06-06 to 2011-06-23.
 
 
 0.3.0 (2011-06-16)
 ^^^^^^^^^^^^^^^^^^
 
- - Added Python 3 support.
- - Updated Upskirt files; See commits from 2011-06-05 to 2011-06-09.
+- Added Python 3 support.
+- Updated Upskirt files; See commits from 2011-06-05 to 2011-06-09.
 
 
 0.2.1 (2011-06-05)
 ^^^^^^^^^^^^^^^^^^
 
- - Updated Upskirt files; See commits from 2011-05-18 to 2011-06-02.
+- Updated Upskirt files; See commits from 2011-05-18 to 2011-06-02.
 
 
 0.2.0 (2011-05-17)
 ^^^^^^^^^^^^^^^^^^
 
- - Added Smartypants render flag.
- - Added a ``toc`` function that outputs a table of contents.
- - Renamed ``markdown`` function to ``html``.
- - Updated Upskirt files; See commits from 2011-05-02 to 2011-05-17.
+- Added Smartypants render flag.
+- Added a ``toc`` function that outputs a table of contents.
+- Renamed ``markdown`` function to ``html``.
+- Updated Upskirt files; See commits from 2011-05-02 to 2011-05-17.
 
 
 0.1.1 (2011-05-01)
 ^^^^^^^^^^^^^^^^^^
 
- - Updated Upskirt files; a HTML escaping bug in the XHTML renderer was fixed.
+- Updated Upskirt files; a HTML escaping bug in the XHTML renderer was fixed.
 
 
 0.1.0 (2011-05-01)
 ^^^^^^^^^^^^^^^^^^
 
- - Initial release.
+- Initial release.

@@ -7,7 +7,7 @@ div.body h1, div.body h2, div.body h3, div.body h4, div.body h5, div.body h6 {
 	font-family: 'PT Serif', 'Droid Serif', 'DejaVu Serif', serif;
 }
 
-ul, div.sphinxsidebar ul ul, div.sphinxsidebar ul.want-points {
+ul, div.sphinxsidebar ul, div.sphinxsidebar ul ul, div.sphinxsidebar ul.want-points {
 	list-style-type: none;
 	margin-left: 1em;
 }
