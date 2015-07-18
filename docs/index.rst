@@ -11,7 +11,7 @@ renderers (e.g. man pages or LaTeX).
 Changelog
 ---------
 
-**2.0.0 (2015-07-??)**
+**2.0.0b1 (2015-07-18)**
 
 - Rewrite. CFFI_ and Hoedown_ instead of Cython_ and Sundown_.
 - Remove pre- and postprocessor support.
