@@ -347,17 +347,16 @@ class CustomRendererTest(TestCase):
 
     def setup(self):
         render_default = m.Markdown(
-            TestRenderer(),
-                m.EXT_FENCED_CODE |
-                m.EXT_TABLES |
-                m.EXT_FOOTNOTES |
-                m.EXT_AUTOLINK |
-                m.EXT_HIGHLIGHT |
-                m.EXT_QUOTE |
-                m.EXT_STRIKETHROUGH |
-                m.EXT_SUPERSCRIPT |
-                m.EXT_MATH
-        )
+            TestRenderer(), (
+                'fenced-code',
+                'tables',
+                'footnotes',
+                'autolink',
+                'highlight',
+                'quote',
+                'strikethrough',
+                'superscript',
+                'math'))
 
         # EXT_UNDERLINE Clashes with emphasis.
         render_underline = m.Markdown(TestRenderer(), m.EXT_UNDERLINE)

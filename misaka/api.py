@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 
+import sys
+import operator as op
 from inspect import getmembers, ismethod
 
 from ._hoedown import lib, ffi
+
+try:
+    reduce
+except NameError:
+    from functools import reduce
 
 
 __all__ = [
@@ -12,7 +19,81 @@ __all__ = [
     'BaseRenderer',
     'HtmlRenderer',
     'HtmlTocRenderer',
+
+    'dict_to_int',
+    'extension_map',
+    'html_flag_map',
+
+    'EXT_TABLES',
+    'EXT_FENCED_CODE',
+    'EXT_FOOTNOTES',
+    'EXT_AUTOLINK',
+    'EXT_STRIKETHROUGH',
+    'EXT_UNDERLINE',
+    'EXT_HIGHLIGHT',
+    'EXT_QUOTE',
+    'EXT_SUPERSCRIPT',
+    'EXT_MATH',
+    'EXT_NO_INTRA_EMPHASIS',
+    'EXT_SPACE_HEADERS',
+    'EXT_MATH_EXPLICIT',
+    'EXT_DISABLE_INDENTED_CODE',
+
+    'HTML_SKIP_HTML',
+    'HTML_ESCAPE',
+    'HTML_HARD_WRAP',
+    'HTML_USE_XHTML',
+
+    'LIST_ORDERED',
+    'LI_BLOCK',
+
+    'TABLE_ALIGN_LEFT',
+    'TABLE_ALIGN_RIGHT',
+    'TABLE_ALIGN_CENTER',
+    'TABLE_ALIGNMASK',
+    'TABLE_HEADER',
+
+    'AUTOLINK_NORMAL',
+    'AUTOLINK_EMAIL',
 ]
+
+
+def _set_constants():
+    is_int = lambda n: isinstance(n, int)
+
+    for name, value in getmembers(lib, is_int):
+        if not name.startswith('HOEDOWN_'):
+            continue
+        setattr(sys.modules[__name__], name[8:], value)
+
+
+if not hasattr(sys.modules[__name__], 'EXT_TABLES'):
+    _set_constants()
+
+
+extension_map = {
+    'tables': EXT_TABLES,
+    'fenced-code': EXT_FENCED_CODE,
+    'footnotes': EXT_FOOTNOTES,
+    'autolink': EXT_AUTOLINK,
+    'strikethrough': EXT_STRIKETHROUGH,
+    'underline': EXT_UNDERLINE,
+    'highlight': EXT_HIGHLIGHT,
+    'quote': EXT_QUOTE,
+    'superscript': EXT_SUPERSCRIPT,
+    'math': EXT_MATH,
+    'no-intra-emphasis': EXT_NO_INTRA_EMPHASIS,
+    'space-headers': EXT_SPACE_HEADERS,
+    'math-explicit': EXT_MATH_EXPLICIT,
+    'disable-indented-code': EXT_DISABLE_INDENTED_CODE,
+}
+
+html_flag_map = {
+    'skip-html': HTML_SKIP_HTML,
+    'escape': HTML_ESCAPE,
+    'hard-wrap': HTML_HARD_WRAP,
+    'use-xhtml': HTML_USE_XHTML,
+}
 
 
 IUNIT = 1024
@@ -26,10 +107,27 @@ def to_string(buffer):
     return ffi.string(buffer.data, buffer.size).decode('utf-8')
 
 
+def dict_to_int(mapping, argument):
+    """
+    Reduce a dictionary to an integer.
+
+    This function is used to reduce a dictionary (e.g. Markdown extensions,
+    HTML render flags.) to an integer by OR'ing the values with eachother.
+    """
+    if isinstance(argument, int):
+        return argument
+    elif isinstance(argument, (tuple, list)):
+        return reduce(op.or_, [mapping[n] for n in argument if n in mapping])
+
+    raise TypeError('argument must be a list of strings or an int')
+
+
 def html(text, extensions=0, render_flags=0):
     """
     Convert markdown text to HTML.
     """
+    render_flags = dict_to_int(html_flag_map, render_flags)
+
     ib = lib.hoedown_buffer_new(IUNIT)
     ob = lib.hoedown_buffer_new(OUNIT)
     renderer = lib.hoedown_html_renderer_new(render_flags, 0)
@@ -84,7 +182,7 @@ class Markdown:
     """
     def __init__(self, renderer, extensions=0):
         self.renderer = renderer
-        self.extensions = extensions
+        self.extensions = dict_to_int(extension_map, extensions)
 
     def __call__(self, text):
         """
@@ -438,6 +536,7 @@ class HtmlRenderer(BaseRenderer):
     by the ``Markdown`` instance.
     """
     def __init__(self, flags=0, nesting_level=0):
+        flags = dict_to_int(html_flag_map, flags)
         self.renderer = self._new_renderer(flags, nesting_level)
         callbacks = []
 
