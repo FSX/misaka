@@ -15,7 +15,7 @@ class MarkdownConformanceTest_10(TestCase):
     suite = 'MarkdownTest_1.0'
 
     def setup(self):
-        self.r = Markdown(HtmlRenderer()).render
+        self.r = Markdown(HtmlRenderer())
 
         tests_dir = path.dirname(__file__)
         for text_path in glob(path.join(tests_dir, self.suite, '*.text')):

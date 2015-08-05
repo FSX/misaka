@@ -357,12 +357,12 @@ class CustomRendererTest(TestCase):
                 m.EXT_STRIKETHROUGH |
                 m.EXT_SUPERSCRIPT |
                 m.EXT_MATH
-        ).render
+        )
 
         # EXT_UNDERLINE Clashes with emphasis.
-        render_underline = m.Markdown(TestRenderer(), m.EXT_UNDERLINE).render
-        render_lowlevel = m.Markdown(TestRendererLowlevel()).render
-        render_hf = m.Markdown(TestRendererHeaderFooter()).render
+        render_underline = m.Markdown(TestRenderer(), m.EXT_UNDERLINE)
+        render_lowlevel = m.Markdown(TestRendererLowlevel())
+        render_hf = m.Markdown(TestRendererHeaderFooter())
 
         self.md = {
             'default': render_default,

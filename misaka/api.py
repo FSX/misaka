@@ -86,7 +86,7 @@ class Markdown:
         self.renderer = renderer
         self.extensions = extensions
 
-    def render(self, text):
+    def __call__(self, text):
         """
         Parses and renders markdown text.
         """

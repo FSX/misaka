@@ -11,6 +11,10 @@ renderers (e.g. man pages or LaTeX).
 Changelog
 ---------
 
+**2.0.0b2 (2015-08-??)**
+
+- Rename ``Markdown.render`` to ``Markdown.__call__``.
+
 **2.0.0b1 (2015-07-18)**
 
 - Rewrite. CFFI_ and Hoedown_ instead of Cython_ and Sundown_.
@@ -89,7 +93,7 @@ used to escape the HTML)::
     renderer = HighlighterRenderer()
     md = m.Markdown(renderer, extensions=m.EXT_FENCED_CODE)
 
-    print(md.render("""
+    print(md("""
     Here is some code:
 
     ```python

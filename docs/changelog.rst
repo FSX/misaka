@@ -6,6 +6,12 @@ Changelog
 Date format is year-month-day.
 
 
+2.0.0b2 (2015-08-??)
+^^^^^^^^^^^^^^^^^^^^
+
+- Rename ``Markdown.render`` to ``Markdown.__call__``.
+
+
 2.0.0b1 (2015-07-18)
 ^^^^^^^^^^^^^^^^^^^^
 
