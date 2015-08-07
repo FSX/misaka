@@ -35,7 +35,9 @@ Or manually::
 Example
 -------
 
-Very simple example::
+Very simple example:
+
+.. code:: python
 
     from misaka import Markdown, HtmlRenderer
 
@@ -44,7 +46,9 @@ Very simple example::
 
     print md.render('some text')
 
-Or::
+Or:
+
+.. code:: python
 
     import misaka as m
     print m.html('some other text')
