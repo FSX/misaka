@@ -44,7 +44,7 @@ Very simple example:
     rndr = HtmlRenderer()
     md = Markdown(rndr)
 
-    print md.render('some text')
+    print md('some text')
 
 Or:
 

@@ -56,22 +56,28 @@ And run the tests::
 Usage
 -----
 
-Just HTML::
+Very simple example:
 
-    import misaka as m
-    print m.html('some other text')
-
-Or::
+.. code:: python
 
     from misaka import Markdown, HtmlRenderer
 
     rndr = HtmlRenderer()
     md = Markdown(rndr)
 
-    print md.render('some text')
+    print md('some text')
+
+Or:
+
+.. code:: python
+
+    import misaka as m
+    print m.html('some other text')
 
 Here's a simple example that uses Pygments_ to highlight code (houdini_ is
-used to escape the HTML)::
+used to escape the HTML):
+
+.. code:: python
 
     import houdini as h
     import misaka as m
@@ -225,7 +231,9 @@ Classes
         - :py:const:`TABLE_HEADER`: Table cell is located in the table header.
 
         ``TABLE_ALIGNMASK`` can be used to check what the alignment of the
-        cell is. Here's an example::
+        cell is. Here's an example:
+
+        .. code:: python
 
             align_bit = flags & misaka.TABLE_ALIGNMASK
 
@@ -298,7 +306,9 @@ Classes
         Depends on :py:const:`EXT_MATH`.
 
         ``displaymode`` can be ``0`` or ``1``. This is how
-        :py:class:`HtmlRenderer` handles it::
+        :py:class:`HtmlRenderer` handles it:
+
+        .. code:: python
 
             if displaymode == 1:
                 return '\\[{}\\]'.format(text)
