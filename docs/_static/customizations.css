@@ -34,6 +34,25 @@ ul li {
 pre {
 	padding: 7px 10px;
 }
+code {
+	background: transparent;
+}
 pre, code {
 	font-family: 'M+ 1m', 'Droid Sans Mono', 'DejaVu Sans Mono', monospace;
 }
+
+table.docutils {
+	border: 0;
+	box-shadow: none;
+}
+
+table.docutils th {
+	border-width: 0 0 2px;
+}
+
+table.docutils td {
+	border-width: 0;
+}
+
+table.docutils tbody tr.row-odd { background: transparent }
+table.docutils tbody tr.row-even { background: #ecf0f3 }
