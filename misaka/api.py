@@ -20,7 +20,7 @@ __all__ = [
     'HtmlRenderer',
     'HtmlTocRenderer',
 
-    'dict_to_int',
+    'reduce_dict',
     'extension_map',
     'html_flag_map',
 
@@ -107,7 +107,7 @@ def to_string(buffer):
     return ffi.string(buffer.data, buffer.size).decode('utf-8')
 
 
-def dict_to_int(mapping, argument):
+def reduce_dict(mapping, argument):
     """
     Reduce a dictionary to an integer.
 
@@ -126,7 +126,7 @@ def html(text, extensions=0, render_flags=0):
     """
     Convert markdown text to HTML.
     """
-    render_flags = dict_to_int(html_flag_map, render_flags)
+    render_flags = reduce_dict(html_flag_map, render_flags)
 
     ib = lib.hoedown_buffer_new(IUNIT)
     ob = lib.hoedown_buffer_new(OUNIT)
@@ -182,7 +182,7 @@ class Markdown:
     """
     def __init__(self, renderer, extensions=0):
         self.renderer = renderer
-        self.extensions = dict_to_int(extension_map, extensions)
+        self.extensions = reduce_dict(extension_map, extensions)
 
     def __call__(self, text):
         """
@@ -536,7 +536,7 @@ class HtmlRenderer(BaseRenderer):
     by the ``Markdown`` instance.
     """
     def __init__(self, flags=0, nesting_level=0):
-        flags = dict_to_int(html_flag_map, flags)
+        flags = reduce_dict(html_flag_map, flags)
         self.renderer = self._new_renderer(flags, nesting_level)
         callbacks = []
 
