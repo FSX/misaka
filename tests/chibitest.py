@@ -20,6 +20,17 @@ from collections import namedtuple, defaultdict
 Result = namedtuple('Result', ('func', 'name', 'failure'))
 
 
+def _get_doc_line(obj):
+    doc = ''
+    if obj.__doc__:
+        doc = obj.__doc__.lstrip()
+        idx = doc.find('\n')
+        if idx > 0:
+            doc = doc[:idx]
+
+    return doc
+
+
 def _exc_name(exception_class):
     if not inspect.isclass(exception_class):
         exception_class = exception_class.__class__
@@ -61,10 +72,12 @@ class AssertionObject(object):
         target_length = len(self._target)
 
         if target_length > other:
-            raise AssertionError('Higher than desired length: {!r} > {!r}'
+            raise AssertionError(
+                'Higher than desired length: {!r} > {!r}'
                 .format(target_length, other))
         elif target_length < other:
-            raise AssertionError('Lower than desired length: {!r} < {!r}'
+            raise AssertionError(
+                'Lower than desired length: {!r} < {!r}'
                 .format(target_length, other))
 
     def diff(self, other):
@@ -114,7 +127,6 @@ class AssertionObject(object):
                                  .format(name, _exc_name(e), e))
 
 
-# A nicer alias.
 ok = AssertionObject
 
 
@@ -127,6 +139,14 @@ class TestCase(object):
             if t.startswith('test_'):
                 self._tests.append(self._wrap_test(getattr(self, t)))
 
+    @classmethod
+    def name(cls):
+        name = _get_doc_line(cls)
+        if name:
+            return '{} ({})'.format(name, cls.__name__)
+        else:
+            return cls.__name__
+
     def add_test(self, func):
         self._tests.append(self._wrap_test(func))
 
@@ -136,20 +156,13 @@ class TestCase(object):
 
             try:
                 func()
-            except AssertionError as e:
+            except AssertionError as e:  # Expected exception
                 failure = str(e)
-            except Exception as e:
+            except Exception as e:  # Unexpected exception
                 failure = ''.join(traceback.format_exception(
                     *sys.exc_info())).strip()
 
-            doc = ''
-            if func.__doc__:
-                doc = func.__doc__.lstrip()
-                idx = doc.find('\n')
-                if idx > 0:
-                    doc = doc[:idx]
-
-            return Result(func.__name__, doc or None, failure)
+            return Result(func.__name__, _get_doc_line(func) or None, failure)
 
         return catch_exception
 
@@ -177,8 +190,7 @@ def runner(testcases, setup_func=None, teardown_func=None, config={}):
     for testcase in testcases:
         tests = testcase(config)
 
-        print('>> {}'.format(tests.name if hasattr(tests, 'name')
-              else testcase.__name__))
+        print('>> {}'.format(testcase.name()))
 
         for result in tests.run():
             name = result.name or result.func

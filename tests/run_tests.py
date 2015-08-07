@@ -45,7 +45,8 @@ def is_test(n):
 
 
 def get_tests(module):
-    return inspect.getmembers(module, is_test)
+    return [(testcase.name(), testcase) \
+        for _, testcase in inspect.getmembers(module, is_test)]
 
 
 def run_tests(tests, include=[], exclude=[]):

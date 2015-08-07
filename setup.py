@@ -20,7 +20,7 @@ class BaseCommand(Command):
 class TestCommand(BaseCommand):
     description = 'run unit tests'
     def run(self):
-        errno = subprocess.call([sys.executable, 'tests/runner.py'])
+        errno = subprocess.call([sys.executable, 'tests/run_tests.py'])
         sys.exit(errno)
 
 

@@ -11,7 +11,7 @@ from utils import clean_html
 
 
 class MarkdownConformanceTest_10(TestCase):
-    name = 'Markdown Conformance 1.0'
+    """Markdown Conformance 1.0"""
     suite = 'MarkdownTest_1.0'
 
     def setup(self):
@@ -47,5 +47,5 @@ class MarkdownConformanceTest_10(TestCase):
 
 
 class MarkdownConformanceTest_103(MarkdownConformanceTest_10):
-    name = 'Markdown Conformance 1.0.3'
+    """Markdown Conformance 1.0.3"""
     suite = 'MarkdownTest_1.0.3'

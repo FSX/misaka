@@ -5,8 +5,6 @@ from misaka import smartypants
 
 
 class SmartypantsTest(TestCase):
-    name = 'Smartypants'
-
     def test_apostrophes(self):
         ok(smartypants('\'s')) == '&rsquo;s'
         ok(smartypants('\'t')) == '&rsquo;t'

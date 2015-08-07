@@ -6,8 +6,6 @@ from misaka import reduce_dict, extension_map, \
 
 
 class ReduceDictTest(TestCase):
-    name = 'Reduce Dict'
-
     def test_from_dict(self):
         expected = EXT_TABLES | EXT_FENCED_CODE | EXT_FOOTNOTES
         result = reduce_dict(

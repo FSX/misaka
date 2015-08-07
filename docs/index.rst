@@ -50,7 +50,7 @@ Or the lastest development version from Github::
 And run the tests::
 
     python setup.py test  # or...
-    python tests/runner.py
+    python tests/run_tests.py
 
 
 Usage

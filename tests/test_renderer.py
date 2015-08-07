@@ -343,8 +343,6 @@ class TestRendererLowlevel(m.BaseRenderer):
 
 
 class CustomRendererTest(TestCase):
-    name = 'Custom Renderer'
-
     def setup(self):
         render_default = m.Markdown(
             TestRenderer(), (
