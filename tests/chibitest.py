@@ -14,7 +14,7 @@ import sys
 import inspect
 import traceback
 from difflib import unified_diff
-from collections import namedtuple
+from collections import namedtuple, defaultdict
 
 
 Result = namedtuple('Result', ('func', 'name', 'failure'))
@@ -27,17 +27,6 @@ def _exc_name(exception_class):
     return '<{}.{}>'.format(
         exception_class.__module__,
         exception_class.__name__)
-
-
-class ExtendedDict(dict):
-    def __getattr__(self, name):
-        if name in self:
-            return self[name]
-        else:
-            return None
-
-    def __setattr__(self, name, value):
-        self[name] = value
 
 
 class AssertionObject(object):
@@ -180,7 +169,7 @@ class TestCase(object):
 def runner(testcases, setup_func=None, teardown_func=None, config={}):
     line = '*' * 80
     passed = failed = 0
-    config = ExtendedDict(config)
+    config = defaultdict(lambda: None, config)
 
     if setup_func:
         setup_func()
