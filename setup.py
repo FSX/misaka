@@ -26,7 +26,7 @@ class TestCommand(BaseCommand):
 
 setup(
     name='misaka',
-    version='2.0.0b1.post2',
+    version='2.0.0b2',
     description='A CFFI binding for Hoedown, a markdown parsing library.',
     author='Frank Smit',
     author_email='frank@61924.nl',
