@@ -1,11 +1,17 @@
 .. py:currentmodule:: misaka
 
-Documentation
-=============
+.. Documentation
+.. =============
 
 Misaka is a CFFI-based binding for Hoedown_, a fast markdown processing library
 written in C. It features a fast HTML renderer and functionality to make custom
 renderers (e.g. man pages or LaTeX).
+
+
+Features:
+
+- Works on CPython 2.7, 3.2, 3.3, 3.4 and PyPy 2.6+.
+- Includes Smartypants for transforming characters into HTML entities.
 
 
 Changelog
