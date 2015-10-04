@@ -117,6 +117,9 @@ def _args_to_int(mapping, argument):
     Convert list of strings to an int using a mapping.
     """
     if isinstance(argument, int):
+        if argument == 0:
+            return 0
+
         deprecation('passing extensions and flags as constants is deprecated')
         return argument
     elif isinstance(argument, (tuple, list)):

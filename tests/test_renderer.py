@@ -357,7 +357,7 @@ class CustomRendererTest(TestCase):
                 'math'))
 
         # EXT_UNDERLINE Clashes with emphasis.
-        render_underline = m.Markdown(TestRenderer(), m.EXT_UNDERLINE)
+        render_underline = m.Markdown(TestRenderer(), ('underline',))
         render_lowlevel = m.Markdown(TestRendererLowlevel())
         render_hf = m.Markdown(TestRendererHeaderFooter())
 
