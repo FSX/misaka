@@ -207,16 +207,16 @@ class TestRenderer(m.BaseRenderer):
     def hrule(self):
         return '[HRULE]'
 
-    def list(self, content, flags):
-        if flags & m.LIST_ORDERED:
+    def list(self, content, ordered):
+        if ordered:
             ordered = 'true'
         else:
             ordered = 'false'
 
         return '[LIST ordered={1}]\n{0}'.format(content, ordered)
 
-    def listitem(self, content, flags):
-        if flags & m.LIST_ORDERED:
+    def listitem(self, content, is_ordered):
+        if is_ordered:
             ordered = 'true'
         else:
             ordered = 'false'
@@ -238,19 +238,11 @@ class TestRenderer(m.BaseRenderer):
     def table_row(self, content):
         return '[TABLE_ROW]\n{0}\n'.format(content)
 
-    def table_cell(self, text, flags):
-        align_bit = flags & m.TABLE_ALIGNMASK
+    def table_cell(self, text, align, is_header):
+        if align:
+            align = 'align={} '.format(align)
 
-        if align_bit == m.TABLE_ALIGN_CENTER:
-            align = 'align=center '
-        elif align_bit == m.TABLE_ALIGN_LEFT:
-            align = 'align=left '
-        elif align_bit == m.TABLE_ALIGN_RIGHT:
-            align = 'align=right '
-        else:
-            align = ''
-
-        if flags & m.TABLE_HEADER:
+        if is_header:
             header = 'header=true '
         else:
             header = ''

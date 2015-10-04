@@ -305,16 +305,16 @@ class BaseRenderer:
     # flags: LIST_ORDERED, LI_BLOCK.
     def _w_list(self, ob, content, flags, data):
         content = to_string(content)
-        flags = int(flags)
-        result = self.list(content, flags)
+        is_ordered = int(flags) & LIST_ORDERED != 0
+        result = self.list(content, is_ordered)
         if result:
             lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
 
     # flags: LIST_ORDERED, LI_BLOCK.
     def _w_listitem(self, ob, content, flags, data):
         content = to_string(content)
-        flags = int(flags)
-        result = self.listitem(content, flags)
+        is_ordered = int(flags) & LIST_ORDERED != 0
+        result = self.listitem(content, is_ordered)
         if result:
             lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
 
@@ -353,7 +353,19 @@ class BaseRenderer:
     def _w_table_cell(self, ob, content, flags, data):
         content = to_string(content)
         flags = int(flags)
-        result = self.table_cell(content, flags)
+        is_header = flags & TABLE_HEADER != 0
+        align_bit = flags & TABLE_ALIGNMASK
+
+        if align_bit == TABLE_ALIGN_CENTER:
+            align = 'center'
+        elif align_bit == TABLE_ALIGN_LEFT:
+            align = 'left'
+        elif align_bit == TABLE_ALIGN_RIGHT:
+            align = 'right'
+        else:
+            align = ''
+
+        result = self.table_cell(content, align, is_header)
         if result:
             lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
 
