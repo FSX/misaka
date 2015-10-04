@@ -123,7 +123,7 @@ def _args_to_int(mapping, argument):
         deprecation('passing extensions and flags as constants is deprecated')
         return argument
     elif isinstance(argument, (tuple, list)):
-        return reduce(op.or_, [mapping[n] for n in argument if n in mapping])
+        return reduce(op.or_, [mapping[n] for n in argument if n in mapping], 0)
 
     raise TypeError('argument must be a list of strings or an int')
 
