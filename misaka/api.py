@@ -132,6 +132,7 @@ def html(text, extensions=0, render_flags=0):
     """
     Convert markdown text to HTML.
     """
+    extensions = _args_to_int(extension_map, extensions)
     render_flags = _args_to_int(html_flag_map, render_flags)
 
     ib = lib.hoedown_buffer_new(IUNIT)
