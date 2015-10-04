@@ -207,20 +207,12 @@ class TestRenderer(m.BaseRenderer):
     def hrule(self):
         return '[HRULE]'
 
-    def list(self, content, ordered):
-        if ordered:
-            ordered = 'true'
-        else:
-            ordered = 'false'
-
+    def list(self, content, is_ordered):
+        ordered = 'true' if is_ordered else 'false'
         return '[LIST ordered={1}]\n{0}'.format(content, ordered)
 
     def listitem(self, content, is_ordered):
-        if is_ordered:
-            ordered = 'true'
-        else:
-            ordered = 'false'
-
+        ordered = 'true' if is_ordered else 'false'
         return '[LISTITEM ordered={1}] {0}'.format(content, ordered)
 
     def paragraph(self, text):
@@ -239,14 +231,8 @@ class TestRenderer(m.BaseRenderer):
         return '[TABLE_ROW]\n{0}\n'.format(content)
 
     def table_cell(self, text, align, is_header):
-        if align:
-            align = 'align={} '.format(align)
-
-        if is_header:
-            header = 'header=true '
-        else:
-            header = ''
-
+        align = 'align={} '.format(align) if align else ''
+        header = 'header=true ' if is_header else ''
         return '[TABLE_CELL {2}{1}text={0}]'.format(text, align, header)
 
     def footnotes(self, text):
@@ -261,12 +247,8 @@ class TestRenderer(m.BaseRenderer):
     def blockhtml(self, text):
         return '[BLOCKHTML] {0}'.format(text)
 
-    def autolink(self, link, type):
-        if type == m.AUTOLINK_EMAIL:
-            email = 'true'
-        else:
-            email = 'false'
-
+    def autolink(self, link, is_email):
+        email = 'true' if is_email else 'false'
         return '[AUTOLINK email={1}] {0}'.format(link, email)
 
     def codespan(self, text):

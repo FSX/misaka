@@ -390,8 +390,8 @@ class BaseRenderer:
 
     def _w_autolink(self, ob, link, type, data):
         link = ffi.string(link.data, link.size).decode('utf-8')
-        type = int(type)
-        result = self.autolink(link, type)
+        is_email = int(type) & AUTOLINK_EMAIL != 0
+        result = self.autolink(link, is_email)
         if result:
             lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
             return 1
