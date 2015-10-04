@@ -2,6 +2,7 @@
 
 import sys
 import operator as op
+import warnings
 from inspect import getmembers, ismethod
 
 from ._hoedown import lib, ffi
@@ -101,6 +102,10 @@ OUNIT = 64
 MAX_NESTING = 16
 
 
+def deprecation(message):
+    warnings.warn(message, DeprecationWarning, stacklevel=3)
+
+
 def to_string(buffer):
     if buffer == ffi.NULL or buffer.size == 0:
         return ''
@@ -112,6 +117,7 @@ def _args_to_int(mapping, argument):
     Convert list of strings to an int using a mapping.
     """
     if isinstance(argument, int):
+        deprecation('passing extensions and flags as constants is deprecated')
         return argument
     elif isinstance(argument, (tuple, list)):
         return reduce(op.or_, [mapping[n] for n in argument if n in mapping])
@@ -189,7 +195,10 @@ class Markdown:
         lib.hoedown_buffer_puts(ib, text.encode('utf-8'))
 
         ob = lib.hoedown_buffer_new(OUNIT)
-        document = lib.hoedown_document_new(self.renderer.renderer, self.extensions, MAX_NESTING);
+        document = lib.hoedown_document_new(
+            self.renderer.renderer,
+            self.extensions,
+            MAX_NESTING);
         lib.hoedown_document_render(document, ob, ib.data, ib.size);
 
         lib.hoedown_buffer_free(ib)
