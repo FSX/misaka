@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 
 from chibitest import TestCase, ok
-from misaka import reduce_dict, extension_map, \
+from misaka import _args_to_int, extension_map, \
     EXT_TABLES, EXT_FENCED_CODE, EXT_FOOTNOTES
 
 
-class ReduceDictTest(TestCase):
-    def test_from_dict(self):
+class ArgsToIntTest(TestCase):
+    def test_args(self):
         expected = EXT_TABLES | EXT_FENCED_CODE | EXT_FOOTNOTES
-        result = reduce_dict(
+        result = _args_to_int(
             extension_map,
             ('tables', 'fenced-code', 'footnotes'))
 
         ok(result) == expected
 
-    def test_from_int(self):
+    def test_int(self):
         expected = EXT_TABLES | EXT_FENCED_CODE | EXT_FOOTNOTES
-        result = reduce_dict(extension_map, expected)
+        result = _args_to_int(extension_map, expected)
 
         ok(result) == expected

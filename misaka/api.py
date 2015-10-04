@@ -20,7 +20,7 @@ __all__ = [
     'HtmlRenderer',
     'HtmlTocRenderer',
 
-    'reduce_dict',
+    '_args_to_int',
     'extension_map',
     'html_flag_map',
 
@@ -107,12 +107,9 @@ def to_string(buffer):
     return ffi.string(buffer.data, buffer.size).decode('utf-8')
 
 
-def reduce_dict(mapping, argument):
+def _args_to_int(mapping, argument):
     """
-    Reduce a dictionary to an integer.
-
-    This function is used to reduce a dictionary (e.g. Markdown extensions,
-    HTML render flags.) to an integer by OR'ing the values with eachother.
+    Convert list of strings to an int using a mapping.
     """
     if isinstance(argument, int):
         return argument
@@ -126,7 +123,7 @@ def html(text, extensions=0, render_flags=0):
     """
     Convert markdown text to HTML.
     """
-    render_flags = reduce_dict(html_flag_map, render_flags)
+    render_flags = _args_to_int(html_flag_map, render_flags)
 
     ib = lib.hoedown_buffer_new(IUNIT)
     ob = lib.hoedown_buffer_new(OUNIT)
@@ -182,7 +179,7 @@ class Markdown:
     """
     def __init__(self, renderer, extensions=0):
         self.renderer = renderer
-        self.extensions = reduce_dict(extension_map, extensions)
+        self.extensions = _args_to_int(extension_map, extensions)
 
     def __call__(self, text):
         """
@@ -536,7 +533,7 @@ class HtmlRenderer(BaseRenderer):
     by the ``Markdown`` instance.
     """
     def __init__(self, flags=0, nesting_level=0):
-        flags = reduce_dict(html_flag_map, flags)
+        flags = _args_to_int(html_flag_map, flags)
         self.renderer = self._new_renderer(flags, nesting_level)
         callbacks = []
 
