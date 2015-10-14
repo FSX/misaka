@@ -7,7 +7,7 @@ python:
  - 3.4
  - 3.5
  - nightly
- - pypy
+ # - pypy
 
 before_install:
  - sudo apt-get install tidy
