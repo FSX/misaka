@@ -34,11 +34,11 @@ tests = (
             4. Four
             """,
         'expected': """\
-            [LIST ordered=true]
-            [LISTITEM ordered=true] One
-            [LISTITEM ordered=true] Two
-            [LISTITEM ordered=true] Three
-            [LISTITEM ordered=true] Four
+            [LIST ordered=true block=false]
+            [LISTITEM ordered=true block=false] One
+            [LISTITEM ordered=true block=false] Two
+            [LISTITEM ordered=true block=false] Three
+            [LISTITEM ordered=true block=false] Four
             """
     }),
     ('unordered_list', {
@@ -49,11 +49,11 @@ tests = (
              - Four
             """,
         'expected': """\
-            [LIST ordered=false]
-            [LISTITEM ordered=false] One
-            [LISTITEM ordered=false] Two
-            [LISTITEM ordered=false] Three
-            [LISTITEM ordered=false] Four
+            [LIST ordered=false block=false]
+            [LISTITEM ordered=false block=false] One
+            [LISTITEM ordered=false block=false] Two
+            [LISTITEM ordered=false block=false] Three
+            [LISTITEM ordered=false block=false] Four
             """
     }),
     ('unordered_list_block', {
@@ -67,11 +67,11 @@ tests = (
              - Four
              """,
         'expected': """\
-            [LIST ordered=false]
-            [LISTITEM ordered=false] [PARAGRAPH] One
-            [LISTITEM ordered=false] [PARAGRAPH] Two
-            [LISTITEM ordered=false] [PARAGRAPH] Three
-            [LISTITEM ordered=false] [PARAGRAPH] Four
+            [LIST ordered=false block=true]
+            [LISTITEM ordered=false block=true] [PARAGRAPH] One
+            [LISTITEM ordered=false block=true] [PARAGRAPH] Two
+            [LISTITEM ordered=false block=true] [PARAGRAPH] Three
+            [LISTITEM ordered=false block=true] [PARAGRAPH] Four
             """
     }),
     ('table', {
@@ -207,13 +207,15 @@ class TestRenderer(m.BaseRenderer):
     def hrule(self):
         return '[HRULE]'
 
-    def list(self, content, is_ordered):
+    def list(self, content, is_ordered, is_block):
         ordered = 'true' if is_ordered else 'false'
-        return '[LIST ordered={1}]\n{0}'.format(content, ordered)
+        block = 'true' if is_block else 'false'
+        return '[LIST ordered={1} block={2}]\n{0}'.format(content, ordered, block)
 
-    def listitem(self, content, is_ordered):
+    def listitem(self, content, is_ordered, is_block):
         ordered = 'true' if is_ordered else 'false'
-        return '[LISTITEM ordered={1}] {0}'.format(content, ordered)
+        block = 'true' if is_block else 'false'
+        return '[LISTITEM ordered={1} block={2}] {0}'.format(content, ordered, block)
 
     def paragraph(self, text):
         return '[PARAGRAPH] {0}\n'.format(text)

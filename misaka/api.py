@@ -305,16 +305,20 @@ class BaseRenderer:
     # flags: LIST_ORDERED, LI_BLOCK.
     def _w_list(self, ob, content, flags, data):
         content = to_string(content)
-        is_ordered = int(flags) & LIST_ORDERED != 0
-        result = self.list(content, is_ordered)
+        flags = int(flags)
+        is_ordered = flags & LIST_ORDERED != 0
+        is_block = flags & LI_BLOCK != 0
+        result = self.list(content, is_ordered, is_block)
         if result:
             lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
 
     # flags: LIST_ORDERED, LI_BLOCK.
     def _w_listitem(self, ob, content, flags, data):
         content = to_string(content)
-        is_ordered = int(flags) & LIST_ORDERED != 0
-        result = self.listitem(content, is_ordered)
+        flags = int(flags)
+        is_ordered = flags & LIST_ORDERED != 0
+        is_block = flags & LI_BLOCK != 0
+        result = self.listitem(content, is_ordered, is_block)
         if result:
             lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
 
