@@ -56,6 +56,7 @@ ffi.set_source(
 #include "hoedown/buffer.h"
 #include "hoedown/document.h"
 #include "hoedown/html.h"
+#include "extra.h"
 """,
     sources=(
         'misaka/hoedown/version.c',
@@ -67,6 +68,7 @@ ffi.set_source(
         'misaka/hoedown/document.c',
         'misaka/hoedown/buffer.c',
         'misaka/hoedown/autolink.c',
+        'misaka/extra.c',
     ),
     include_dirs=('misaka',))
 
@@ -274,6 +276,12 @@ hoedown_renderer *hoedown_html_toc_renderer_new(
 );
 void hoedown_html_renderer_free(hoedown_renderer *renderer);
 void hoedown_html_smartypants(hoedown_buffer *ob, const uint8_t *data, size_t size);
+
+// ---------------
+// --- extra.h ---
+// ---------------
+
+void *misaka_get_renderer(const hoedown_renderer_data *data);
 """)
 
 

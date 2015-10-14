@@ -36,24 +36,42 @@ class benchmark(object):
                 print('{0} is not available'.format(name))
 
 
-@benchmark('mistune')
-def benchmark_mistune(text):
-    import mistune
-    mistune.markdown(text)
+# @benchmark('mistune')
+# def benchmark_mistune(text):
+#     import mistune
+#     mistune.markdown(text)
 
 
 @benchmark('misaka')
 def benchmark_misaka(text):
     import misaka as m
     # mistune has all these features
-    extensions = (
-        m.EXT_NO_INTRA_EMPHASIS | m.EXT_FENCED_CODE | m.EXT_AUTOLINK |
-        m.EXT_TABLES | m.EXT_STRIKETHROUGH
-    )
+    # extensions = (
+    #     m.EXT_NO_INTRA_EMPHASIS | m.EXT_FENCED_CODE | m.EXT_AUTOLINK |
+    #     m.EXT_TABLES | m.EXT_STRIKETHROUGH
+    # )
     # md = m.Markdown(m.HtmlRenderer(), extensions=extensions)
     # md.render(text)
 
-    m.html(text, extensions)
+    m.html(text, ('no-intra-emphasis', 'fenced=code', 'autolink', 'tables', 'strikethrough'))
+
+
+@benchmark('misaka_classes')
+def benchmark_misaka_classes(text):
+    import misaka as m
+    # mistune has all these features
+    # extensions = (
+    #     m.EXT_NO_INTRA_EMPHASIS | m.EXT_FENCED_CODE | m.EXT_AUTOLINK |
+    #     m.EXT_TABLES | m.EXT_STRIKETHROUGH
+    # )
+    # # md = m.Markdown(m.HtmlRenderer(), extensions=extensions)
+    # # md.render(text)
+
+    # m.html(text, extensions)
+
+    r = m.HtmlRenderer()
+    p = m.Markdown(r, ('no-intra-emphasis', 'fenced=code', 'autolink', 'tables', 'strikethrough'))
+    p(text)
 
 
 # @benchmark('markdown2')
@@ -90,7 +108,7 @@ def benchmark_hoep(text):
         m.EXT_TABLES | m.EXT_STRIKETHROUGH | m.EXT_FOOTNOTES
     )
     md = m.Hoep(extensions=extensions)
-    md.render(text.decode('utf-8'))
+    md.render(text)
 
 
 if __name__ == '__main__':
