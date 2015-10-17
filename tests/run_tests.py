@@ -10,7 +10,7 @@ from os.path import dirname, join as jp, splitext
 CWD = dirname(sys.modules[__name__].__file__)
 sys.path.insert(0, jp(CWD, '..'))
 
-from chibitest import runner, TestCase
+from chibitest import runner, TestCase, Benchmark
 
 
 help_message = """\
@@ -40,32 +40,41 @@ def get_test_modules():
     return modules
 
 
-def is_test(n):
-    return inspect.isclass(n) and issubclass(n, TestCase) and not n is TestCase
+def is_testcase(n):
+    return inspect.isclass(n) \
+        and issubclass(n, TestCase) \
+        and not n is TestCase \
+        and not n is Benchmark
 
 
-def get_tests(module):
+def is_benchmark(n):
+    return inspect.isclass(n) \
+        and issubclass(n, Benchmark) \
+        and not n is Benchmark
+
+
+def get_testcases(module):
     return [(testcase.name(), testcase) \
-        for _, testcase in inspect.getmembers(module, is_test)]
+        for _, testcase in inspect.getmembers(module, is_testcase)]
 
 
-def run_tests(tests, include=[], exclude=[]):
+def run_testcases(testcases, include=[], exclude=[]):
     if include:
-        tests = [n for n in tests if n[0] in include]
+        testcases = [n for n in testcases if n[0] in include]
     if exclude:
-        tests = [n for n in tests if not n[0] in exclude]
+        testcases = [n for n in testcases if not n[0] in exclude]
 
-    runner([n[1] for n in tests])
+    runner([n[1] for n in testcases])
 
 
 if __name__ == '__main__':
-    tests = list(chain(*map(get_tests, get_test_modules())))
+    testcases = list(chain(*map(get_testcases, get_test_modules())))
     include = []
     exclude = []
 
     if len(sys.argv) >= 2:
         if sys.argv[1] == '--list':
-            for name, testcase in tests:
+            for name, testcase in testcases:
                 print(name)
             sys.exit(0)
         elif sys.argv[1] == '--help':
@@ -83,4 +92,9 @@ if __name__ == '__main__':
                     elif last_arg == '--exclude':
                         exclude.append(arg)
 
-    run_tests(tests, include, exclude)
+    if '--benchmark' in sys.argv[1:]:
+        testcases = list(filter(lambda n: is_benchmark(n[1]), testcases))
+    else:
+        testcases = list(filter(lambda n: not is_benchmark(n[1]), testcases))
+
+    run_testcases(testcases, include, exclude)

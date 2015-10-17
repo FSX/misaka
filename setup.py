@@ -14,12 +14,14 @@ class TestCommand(Command):
     user_options = [
         ('include=', 'i', 'comma separated list of testcases'),
         ('exclude=', 'e', 'comma separated list of testcases'),
+        ('benchmark', 'b', 'run bechmarks'),
         ('list', 'l', 'list all testcases'),
     ]
 
     def initialize_options(self):
         self.include = ''
         self.exclude = ''
+        self.benchmark = 0
         self.list = 0
 
     def finalize_options(self):
@@ -30,6 +32,8 @@ class TestCommand(Command):
         if self.list:
             args.append('--list')
         else:
+            if self.benchmark:
+                args.append('--benchmark')
             if self.include:
                 args.append('--include')
                 args.extend(self.include.split(','))

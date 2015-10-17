@@ -10,14 +10,15 @@ Inspired by Oktest, http://www.kuwata-lab.com/oktest/.
 
 from __future__ import print_function
 
-import sys
 import inspect
+import sys
 import traceback
 from difflib import unified_diff
-from collections import namedtuple, defaultdict
+from collections import defaultdict
+from timeit import default_timer
 
 
-Result = namedtuple('Result', ('func', 'name', 'failure'))
+LINE = '*' * 72
 
 
 def _get_doc_line(obj):
@@ -38,6 +39,19 @@ def _exc_name(exception_class):
     return '<{}.{}>'.format(
         exception_class.__module__,
         exception_class.__name__)
+
+
+def readable_duration(s, suffix=''):
+    if s >= 1:
+        f = '{:.2f} s'.format(s)
+    elif s < 1:
+        ms = 1000 * s
+        if ms >= 1:
+            f = '{:.2f} ms'.format(ms)
+        elif ms < 1:
+            f = '{:.2f} us'.format(ms * 1000)
+
+    return f + suffix
 
 
 class AssertionObject(object):
@@ -111,7 +125,6 @@ class AssertionObject(object):
         else:
             raise AssertionError('{} not raised'.format(name))
 
-
     def not_raises(self, exception_class=Exception):
         name = _exc_name(exception_class)
 
@@ -130,6 +143,52 @@ class AssertionObject(object):
 ok = AssertionObject
 
 
+class TestResult(object):
+    __slots__ = ('func', 'doc_name', 'passed', 'message')
+
+    def __init__(self, func, doc_name=None, passed=False, message=None):
+        self.func = func
+        self.doc_name = doc_name
+        self.passed = passed
+        self.message = message
+
+    def name(self):
+        return self.doc_name or self.func
+
+    def status(self):
+        return 'PASSED' if self.passed else 'FAILED'
+
+    def __str__(self):
+        s = '{} ... {}'.format(self.name(), self.status())
+        if self.message:
+            s += '\n{}\n{}\n{}'.format(LINE, self.message, LINE)
+
+        return s
+
+
+class BenchmarkResult(TestResult):
+    def __init__(self, func, doc_name=None, passed=False, message=None,
+            repeated=0, timing=0.0):
+        self.repeated = repeated
+        self.timing = timing
+        TestResult.__init__(self, func, doc_name, passed, message)
+
+    def __str__(self):
+        if self.passed:
+            s = '{:<25} {:>8} {:>16} {:>16}'.format(
+                self.name(),
+                self.repeated,
+                readable_duration(self.timing, suffix='/t'),
+                readable_duration(self.timing / self.repeated, suffix='/op'))
+        else:
+            s = '{} ... FAILED'.format(self.name())
+
+        if self.message:
+            s += '\n{}\n{}\n{}'.format(LINE, self.message, LINE)
+
+        return s
+
+
 class TestCase(object):
     def __init__(self, config):
         self.config = config
@@ -137,7 +196,7 @@ class TestCase(object):
 
         for t in dir(self):
             if t.startswith('test_'):
-                self._tests.append(self._wrap_test(getattr(self, t)))
+                self.add_test(getattr(self, t))
 
     @classmethod
     def name(cls):
@@ -148,21 +207,27 @@ class TestCase(object):
             return cls.__name__
 
     def add_test(self, func):
-        self._tests.append(self._wrap_test(func))
+        self._tests.append(self.wrap_test(func))
 
-    def _wrap_test(self, func):
+    def wrap_test(self, func):
         def catch_exception():
-            failure = None
+            message = None
+            passed = False
 
             try:
                 func()
+                passed = True
             except AssertionError as e:  # Expected exception
-                failure = str(e)
+                message = str(e)
             except Exception as e:  # Unexpected exception
-                failure = ''.join(traceback.format_exception(
+                message = ''.join(traceback.format_exception(
                     *sys.exc_info())).strip()
 
-            return Result(func.__name__, _get_doc_line(func) or None, failure)
+            return TestResult(
+                func.__name__,
+                _get_doc_line(func) or None,
+                passed,
+                message)
 
         return catch_exception
 
@@ -179,8 +244,52 @@ class TestCase(object):
         self.teardown()
 
 
+class Benchmark(TestCase):
+    def __init__(self, config):
+        self.duration = config.get('duration', 1.0)
+        TestCase.__init__(self, config)
+
+    def wrap_test(self, func):
+        def catch_exception():
+            message = None
+            passed = False
+            repeated = 10
+            timing = 0.0
+
+            try:
+                start = default_timer()
+                repeat = 10
+                while True:
+                    while repeat > 0:
+                        func()
+                        repeat -= 1
+
+                    if default_timer() - start >= self.duration:
+                        break
+                    else:
+                        repeat = 10
+                        repeated += 10
+
+                timing = default_timer() - start
+                passed = True
+            except AssertionError as e:  # Expected exception
+                message = str(e)
+            except Exception as e:  # Unexpected exception
+                message = ''.join(traceback.format_exception(
+                    *sys.exc_info())).strip()
+
+            return BenchmarkResult(
+                func.__name__,
+                _get_doc_line(func) or None,
+                passed,
+                message,
+                repeated,
+                timing)
+
+        return catch_exception
+
+
 def runner(testcases, setup_func=None, teardown_func=None, config={}):
-    line = '*' * 80
     passed = failed = 0
     config = defaultdict(lambda: None, config)
 
@@ -193,18 +302,11 @@ def runner(testcases, setup_func=None, teardown_func=None, config={}):
         print('>> {}'.format(testcase.name()))
 
         for result in tests.run():
-            name = result.name or result.func
-            if result.failure is not None:
-                failed += 1
-
-                if result.failure:
-                    print('{} ... FAILED\n{}\n{}\n{}'
-                        .format(name, line, result.failure, line))
-                else:
-                    print('{} ... FAILED'.format(name))
-            else:
+            if result.passed:
                 passed += 1
-                print('{} ... PASSED'.format(name))
+            else:
+                failed += 1
+            print(result)
 
         print()
 
