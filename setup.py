@@ -9,18 +9,36 @@ from setuptools import setup, Command
 dirname = os.path.dirname(os.path.abspath(__file__))
 
 
-class BaseCommand(Command):
-    user_options = []
+class TestCommand(Command):
+    description = 'run tests'
+    user_options = [
+        ('include=', 'i', 'comma separated list of testcases'),
+        ('exclude=', 'e', 'comma separated list of testcases'),
+        ('list', 'l', 'list all testcases'),
+    ]
+
     def initialize_options(self):
-        pass
+        self.include = ''
+        self.exclude = ''
+        self.list = 0
+
     def finalize_options(self):
         pass
 
-
-class TestCommand(BaseCommand):
-    description = 'run unit tests'
     def run(self):
-        errno = subprocess.call([sys.executable, 'tests/run_tests.py'])
+        args = []
+        if self.list:
+            args.append('--list')
+        else:
+            if self.include:
+                args.append('--include')
+                args.extend(self.include.split(','))
+            if self.exclude:
+                args.append('--exclude')
+                args.extend(self.exclude.split(','))
+
+        self.run_command('develop')
+        errno = subprocess.call([sys.executable, 'tests/run_tests.py'] + args)
         sys.exit(errno)
 
 
@@ -47,6 +65,7 @@ setup(
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Text Processing :: Markup',
