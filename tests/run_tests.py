@@ -58,19 +58,25 @@ def get_testcases(module):
         for _, testcase in inspect.getmembers(module, is_testcase)]
 
 
-def run_testcases(testcases, include=[], exclude=[]):
+def run_testcases(testcases, benchmark=False, include=[], exclude=[]):
     if include:
         testcases = [n for n in testcases if n[0] in include]
     if exclude:
         testcases = [n for n in testcases if not n[0] in exclude]
 
-    runner([n[1] for n in testcases])
+    if benchmark:
+        testcases = [n[1] for n in testcases if is_benchmark(n[1])]
+    else:
+        testcases = [n[1] for n in testcases if not is_benchmark(n[1])]
+
+    runner(testcases)
 
 
 if __name__ == '__main__':
     testcases = list(chain(*map(get_testcases, get_test_modules())))
     include = []
     exclude = []
+    benchmark = False
 
     if len(sys.argv) >= 2:
         if sys.argv[1] == '--list':
@@ -93,8 +99,6 @@ if __name__ == '__main__':
                         exclude.append(arg)
 
     if '--benchmark' in sys.argv[1:]:
-        testcases = list(filter(lambda n: is_benchmark(n[1]), testcases))
-    else:
-        testcases = list(filter(lambda n: not is_benchmark(n[1]), testcases))
+        benchmark = True
 
-    run_testcases(testcases, include, exclude)
+    run_testcases(testcases, benchmark, include, exclude)
