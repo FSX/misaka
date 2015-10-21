@@ -13,4 +13,4 @@ before_install:
  - sudo apt-get install tidy
 
 script:
- - "python setup.py develop && python setup.py test"
+ - python setup.py test

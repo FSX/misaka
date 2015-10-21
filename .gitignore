@@ -7,3 +7,5 @@ dist
 *.sublime-*
 *.pyc
 *.so
+.coverage
+.tox
