@@ -6,10 +6,13 @@ Changelog
 Date format is year-month-day.
 
 
-2.0.0b2 (2015-08-??)
+2.0.0b2 (2015-10-??)
 ^^^^^^^^^^^^^^^^^^^^
 
 - Rename ``Markdown.render`` to ``Markdown.__call__``.
+- Add a bechmark testcase to chibitest.
+- Simplify arguments of ``list``, ``list_item``, ``autolink`` and
+  ``table_cell`` render callbacks.
 
 
 2.0.0b1 (2015-07-18)

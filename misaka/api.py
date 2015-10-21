@@ -61,6 +61,14 @@ MAX_NESTING = 16
 def html(text, extensions=0, render_flags=0):
     """
     Convert markdown text to HTML.
+
+    ``extensions`` can be a list or tuple of extensions (e.g.
+    ``('fenced-code', 'footnotes', 'strikethrough')``) or an integer
+    (e.g. ``EXT_FENCED_CODE | EXT_FOOTNOTES | EXT_STRIKETHROUGH``).
+
+    ``render_flags`` can be a list or tuple of flags (e.g.
+    ``('skip-html', 'hard-wrap')``) or an integer
+    (e.g. ``HTML_SKIP_HTML | HTML_HARD_WRAP``).
     """
     extensions = args_to_int(extension_map, extensions)
     render_flags = args_to_int(html_flag_map, render_flags)
@@ -116,6 +124,10 @@ def smartypants(text):
 class Markdown(object):
     """
     Parses markdown text and renders it using the given renderer.
+
+    ``extensions`` can be a list or tuple of extensions (e.g.
+    ``('fenced-code', 'footnotes', 'strikethrough')``) or an integer
+    (e.g. ``EXT_FENCED_CODE | EXT_FOOTNOTES | EXT_STRIKETHROUGH``).
     """
     def __init__(self, renderer, extensions=0):
         self.renderer = renderer
@@ -165,6 +177,10 @@ class BaseRenderer(object):
 class HtmlRenderer(BaseRenderer):
     """
     A wrapper for the HTML renderer that's included in Hoedown.
+
+    ``render_flags`` can be a list or tuple of flags (e.g.
+    ``('skip-html', 'hard-wrap')``) or an integer
+    (e.g. ``HTML_SKIP_HTML | HTML_HARD_WRAP``).
 
     ``nesting_level`` limits what's included in the table of contents.
     The default value is 0, no headers.
