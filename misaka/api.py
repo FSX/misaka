@@ -147,6 +147,7 @@ class Markdown(object):
 class BaseRenderer(object):
     def __init__(self):
         self.renderer = ffi.new('hoedown_renderer *')
+        self._renderer_handle = ffi.new_handle(self)
 
         for name in python_callbacks.keys():
             if hasattr(self, name):
@@ -158,7 +159,7 @@ class BaseRenderer(object):
         self._data = ffi.new('hoedown_renderer_data *')
         self.renderer.opaque = self._data
         ffi.cast('hoedown_renderer_data *', self.renderer.opaque).opaque = \
-            ffi.new_handle(self)
+            self._renderer_handle
 
 
 class HtmlRenderer(BaseRenderer):
@@ -175,10 +176,11 @@ class HtmlRenderer(BaseRenderer):
     def __init__(self, flags=0, nesting_level=0):
         flags = args_to_int(html_flag_map, flags)
         self.renderer = self._new_renderer(flags, nesting_level)
+        self._renderer_handle = ffi.new_handle(self)
 
         # Store the render class' handle in the render state.
         state = ffi.cast('hoedown_renderer_data *', self.renderer.opaque)
-        state.opaque = ffi.new_handle(self)
+        state.opaque = self._renderer_handle
 
         for name in python_callbacks.keys():
             if hasattr(self, name):

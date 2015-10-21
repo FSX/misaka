@@ -54,7 +54,7 @@ def is_benchmark(n):
 
 
 def get_testcases(module):
-    return [(testcase.name(), testcase) \
+    return [(testcase.__name__, testcase) \
         for _, testcase in inspect.getmembers(module, is_testcase)]
 
 
