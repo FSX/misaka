@@ -1,71 +1,759 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Misaka — Misaka</title>
-<!--[if IE]>
-<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<link rel="stylesheet" type="text/css" href="http://misaka.61924.nl/assets/all.css">
 
-<script type="text/javascript">
-(function() {
-var s = document.createElement('script'), t = document.getElementsByTagName('script')[0];
-s.type = 'text/javascript';
-s.async = true;
-s.src = 'http://api.flattr.com/js/0.6/load.js?mode=auto';
-t.parentNode.insertBefore(s, t);
-})();
-</script>
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Misaka &mdash; Misaka 2.0.0b2 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/customizations.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Misaka 2.0.0b2 documentation" href="#"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
 
 </head>
-<body id="index-section">
-<nav id="navigation">
-<h1>Misaka</h1>
-<div>
 
-<a id="nav-index" href="http://misaka.61924.nl/">index</a>
+<body class="wy-body-for-nav" role="document">
 
-<a id="nav-changelog" href="http://misaka.61924.nl/changelog/">changelog</a>
+  <div class="wy-grid-for-nav">
 
-<a id="nav-manual" href="http://misaka.61924.nl/manual/">manual</a>
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-<a id="nav-api" href="http://misaka.61924.nl/api/">api</a>
+          
+            <a href="#" class="icon icon-home"> Misaka
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0.0b2
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <!-- Local TOC -->
+                <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Misaka</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#tests">Tests</a></li>
+<li><a class="reference internal" href="#api">API</a><ul>
+<li><a class="reference internal" href="#extensions">Extensions</a></li>
+<li><a class="reference internal" href="#html-render-flags">HTML render flags</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">Misaka</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="#">Docs</a> &raquo;</li>
+      
+    <li>Misaka</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="misaka">
+<h1>Misaka<a class="headerlink" href="#misaka" title="Permalink to this headline">¶</a></h1>
+<p>Misaka is a CFFI-based binding for <a class="reference external" href="https://github.com/hoedown/hoedown">Hoedown</a>, a fast markdown processing library
+written in C. It features a fast HTML renderer and functionality to make custom
+renderers (e.g. man pages or LaTeX).</p>
+<p>See the <a class="reference internal" href="changelog.html"><em>Changelog</em></a> for all changes.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Misaka has been tested on CPython 2.7, 3.2, 3.3, 3.4, 3.5 and PyPy 2.6.
+CFFI 1.0 or newer is required. This means Misaka will not work on PyPy 2.5
+and older versions.</p>
+<p>Install with pip:</p>
+<div class="highlight-python"><div class="highlight"><pre>pip install misaka
+</pre></div>
+</div>
+<p>Or grab the source from Github:</p>
+<div class="highlight-python"><div class="highlight"><pre>git clone https://github.com/FSX/misaka.git
+cd misaka
+python setup.py install
+</pre></div>
+</div>
+<p>Consult the <a class="reference external" href="https://cffi.readthedocs.org/en/latest/installation.html">CFFI documentation</a> if you experience problems installing CFFI.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>Very simple example:</p>
+<div class="code python highlight-python"><div class="highlight"><pre>import misaka as m
+print m.html(&#39;some other text&#39;)
+</pre></div>
+</div>
+<p>Or:</p>
+<div class="code python highlight-python"><div class="highlight"><pre>from misaka import Markdown, HtmlRenderer
+
+rndr = HtmlRenderer()
+md = Markdown(rndr)
+
+print md(&#39;some text&#39;)
+</pre></div>
+</div>
+<p>Here&#8217;s a simple example that uses <a class="reference external" href="http://pygments.org">Pygments</a> to highlight code (<a class="reference external" href="https://github.com/FSX/houdini.py">houdini</a> is
+used to escape the HTML):</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">houdini</span> <span class="kn">as</span> <span class="nn">h</span>
+<span class="kn">import</span> <span class="nn">misaka</span> <span class="kn">as</span> <span class="nn">m</span>
+<span class="kn">from</span> <span class="nn">pygments</span> <span class="kn">import</span> <span class="n">highlight</span>
+<span class="kn">from</span> <span class="nn">pygments.formatters</span> <span class="kn">import</span> <span class="n">HtmlFormatter</span>
+<span class="kn">from</span> <span class="nn">pygments.lexers</span> <span class="kn">import</span> <span class="n">get_lexer_by_name</span>
+
+<span class="k">class</span> <span class="nc">HighlighterRenderer</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">HtmlRenderer</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">blockcode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">lang</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">lang</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&lt;pre&gt;{}&lt;/code&gt;&lt;/pre&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">h</span><span class="o">.</span><span class="n">escape_html</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
+
+        <span class="n">lexer</span> <span class="o">=</span> <span class="n">get_lexer_by_name</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">stripall</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">formatter</span> <span class="o">=</span> <span class="n">HtmlFormatter</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">highlight</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">lexer</span><span class="p">,</span> <span class="n">formatter</span><span class="p">)</span>
+
+<span class="n">renderer</span> <span class="o">=</span> <span class="n">HighlighterRenderer</span><span class="p">()</span>
+<span class="n">md</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;fenced-code&#39;</span><span class="p">,))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">md</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">Here is some code:</span>
+
+<span class="s">```python</span>
+<span class="s">print(123)</span>
+<span class="s">```</span>
+
+<span class="s">More code:</span>
+
+<span class="s">    print(123)</span>
+<span class="s">&quot;&quot;&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>The above code listing subclasses <a class="reference internal" href="#misaka.HtmlRenderer" title="misaka.HtmlRenderer"><code class="xref py py-class docutils literal"><span class="pre">HtmlRenderer</span></code></a> and implements
+a <a class="reference internal" href="#misaka.BaseRenderer.blockcode" title="misaka.BaseRenderer.blockcode"><code class="xref py py-meth docutils literal"><span class="pre">BaseRenderer.blockcode()</span></code></a> method. See <code class="docutils literal"><span class="pre">tests/test_renderer.py</span></code>
+for a renderer with all its methods implemented.</p>
+</div>
+<div class="section" id="tests">
+<h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://tidy.sourceforge.net">tidy</a> is needed to run the tests. <a class="reference external" href="https://testrun.org/tox/">tox</a> can be used to run the tests on
+all supported Python versions with one command.</p>
+<p>Run one of the following commands to install tidy:</p>
+<div class="highlight-python"><div class="highlight"><pre>apt-get install tidy  # Debian and derivatives
+pacman -S tidyhtml    # Arch Linux
+</pre></div>
+</div>
+<p>And run the tests with:</p>
+<div class="highlight-python"><div class="highlight"><pre>python setup.py test
+</pre></div>
+</div>
+<p>It&#8217;s also possible to include or exclude tests. <code class="docutils literal"><span class="pre">-i</span></code> and <code class="docutils literal"><span class="pre">-e</span></code> accept a
+comma separated list of testcases:</p>
+<div class="highlight-python"><div class="highlight"><pre># Only run MarkdownConformanceTest_10
+python setup.py test -i MarkdownConformanceTest_10
+
+# Or everything except MarkdownConformanceTest_10
+python setup.py test -e MarkdownConformanceTest_10
+
+# Or everything except MarkdownConformanceTest_10 and MarkdownConformanceTest_103
+python setup.py test -e MarkdownConformanceTest_10,MarkdownConformanceTest_103
+</pre></div>
+</div>
+<p><code class="docutils literal"><span class="pre">-l</span></code> prints a list of all testcases:</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python setup.py test -l
+[... build output ...]
+MarkdownConformanceTest_10
+MarkdownConformanceTest_103
+BenchmarkLibraries
+ArgsToIntTest
+CustomRendererTest
+SmartypantsTest
+</pre></div>
+</div>
+<p>And <code class="docutils literal"><span class="pre">-b</span></code> runs benchmarks (<code class="docutils literal"><span class="pre">-i</span></code> and <code class="docutils literal"><span class="pre">-e</span></code> can also be used in
+combination with <code class="docutils literal"><span class="pre">-b</span></code>):</p>
+<div class="highlight-python"><div class="highlight"><pre>$ python setup.py test -b
+[... build output ...]
+&gt;&gt; BenchmarkLibraries
+test_hoep                     3270         1.00 s/t     305.91 us/op
+test_markdown                   20         1.23 s/t      61.44 ms/op
+test_markdown2                  10         3.29 s/t     329.34 ms/op
+test_misaka                   3580         1.00 s/t     280.01 us/op
+test_misaka_classes           3190         1.00 s/t     314.00 us/op
+test_mistune                    70         1.04 s/t      14.91 ms/o
+</pre></div>
+</div>
+<p>What you see in the above output are the name, repetitions, total amount of
+time (in seconds) and the time taken for an operation (one repetition).
+A benchmark tries to stay within one second and runs a test for a minimum
+of ten repetitions and tries another ten if there&#8217;s time left.</p>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="extensions">
+<h3>Extensions<a class="headerlink" href="#extensions" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="46%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Constant</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>tables</td>
+<td>EXT_TABLES</td>
+</tr>
+<tr class="row-odd"><td>fenced-code</td>
+<td>EXT_FENCED_CODE</td>
+</tr>
+<tr class="row-even"><td>footnotes</td>
+<td>EXT_FOOTNOTES</td>
+</tr>
+<tr class="row-odd"><td>autolink</td>
+<td>EXT_AUTOLINK</td>
+</tr>
+<tr class="row-even"><td>strikethrough</td>
+<td>EXT_STRIKETHROUGH</td>
+</tr>
+<tr class="row-odd"><td>underline</td>
+<td>EXT_UNDERLINE</td>
+</tr>
+<tr class="row-even"><td>highlight</td>
+<td>EXT_HIGHLIGHT</td>
+</tr>
+<tr class="row-odd"><td>quote</td>
+<td>EXT_QUOTE</td>
+</tr>
+<tr class="row-even"><td>superscript</td>
+<td>EXT_SUPERSCRIPT</td>
+</tr>
+<tr class="row-odd"><td>math</td>
+<td>EXT_MATH</td>
+</tr>
+<tr class="row-even"><td>no-intra-emphasis</td>
+<td>EXT_NO_INTRA_EMPHASIS</td>
+</tr>
+<tr class="row-odd"><td>space-headers</td>
+<td>EXT_SPACE_HEADERS</td>
+</tr>
+<tr class="row-even"><td>math-explicit</td>
+<td>EXT_MATH_EXPLICIT</td>
+</tr>
+<tr class="row-odd"><td>disable-indented-code</td>
+<td>EXT_DISABLE_INDENTED_CODE</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="html-render-flags">
+<h3>HTML render flags<a class="headerlink" href="#html-render-flags" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Constant</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>skip-html</td>
+<td>HTML_SKIP_HTML</td>
+</tr>
+<tr class="row-odd"><td>escape</td>
+<td>HTML_ESCAPE</td>
+</tr>
+<tr class="row-even"><td>hard-wrap</td>
+<td>HTML_HARD_WRAP</td>
+</tr>
+<tr class="row-odd"><td>use-xhtml</td>
+<td>HTML_USE_XHTML</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="misaka.html">
+<code class="descclassname">misaka.</code><code class="descname">html</code><span class="sig-paren">(</span><em>text</em>, <em>extensions=0</em>, <em>render_flags=0</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert markdown text to HTML.</p>
+<p><code class="docutils literal"><span class="pre">extensions</span></code> can be a list or tuple of extensions (e.g.
+<code class="docutils literal"><span class="pre">('fenced-code',</span> <span class="pre">'footnotes',</span> <span class="pre">'strikethrough')</span></code>) or an integer
+(e.g. <code class="docutils literal"><span class="pre">EXT_FENCED_CODE</span> <span class="pre">|</span> <span class="pre">EXT_FOOTNOTES</span> <span class="pre">|</span> <span class="pre">EXT_STRIKETHROUGH</span></code>).</p>
+<p><code class="docutils literal"><span class="pre">render_flags</span></code> can be a list or tuple of flags (e.g.
+<code class="docutils literal"><span class="pre">('skip-html',</span> <span class="pre">'hard-wrap')</span></code>) or an integer
+(e.g. <code class="docutils literal"><span class="pre">HTML_SKIP_HTML</span> <span class="pre">|</span> <span class="pre">HTML_HARD_WRAP</span></code>).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="misaka.smartypants">
+<code class="descclassname">misaka.</code><code class="descname">smartypants</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.smartypants" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transforms sequences of characters into HTML entities.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="54%" />
+<col width="32%" />
+<col width="14%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Markdown</th>
+<th class="head">HTML</th>
+<th class="head">Result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">'s</span></code> (s, t, m, d, re, ll, ve)</td>
+<td>&amp;rsquo;s</td>
+<td>’s</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Quotes&quot;</span></code></td>
+<td>&amp;ldquo;Quotes&amp;rdquo;</td>
+<td>“Quotes”</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">---</span></code></td>
+<td>&amp;mdash;</td>
+<td>—</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">--</span></code></td>
+<td>&amp;ndash;</td>
+<td>–</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">...</span></code></td>
+<td>&amp;hellip;</td>
+<td>…</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">.</span> <span class="pre">.</span> <span class="pre">.</span></code></td>
+<td>&amp;hellip;</td>
+<td>…</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">(c)</span></code></td>
+<td>&amp;copy;</td>
+<td>©</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">(r)</span></code></td>
+<td>&amp;reg;</td>
+<td>®</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">(tm)</span></code></td>
+<td>&amp;trade;</td>
+<td>™</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">3/4</span></code></td>
+<td>&amp;frac34;</td>
+<td>¾</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">1/2</span></code></td>
+<td>&amp;frac12;</td>
+<td>½</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">1/4</span></code></td>
+<td>&amp;frac14;</td>
+<td>¼</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </div>
-</nav>
-<section id="content">
+<div class="section" id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="misaka.Markdown">
+<em class="property">class </em><code class="descclassname">misaka.</code><code class="descname">Markdown</code><span class="sig-paren">(</span><em>renderer</em>, <em>extensions=0</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.Markdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses markdown text and renders it using the given renderer.</p>
+<p><code class="docutils literal"><span class="pre">extensions</span></code> can be a list or tuple of extensions (e.g.
+<code class="docutils literal"><span class="pre">('fenced-code',</span> <span class="pre">'footnotes',</span> <span class="pre">'strikethrough')</span></code>) or an integer
+(e.g. <code class="docutils literal"><span class="pre">EXT_FENCED_CODE</span> <span class="pre">|</span> <span class="pre">EXT_FOOTNOTES</span> <span class="pre">|</span> <span class="pre">EXT_STRIKETHROUGH</span></code>).</p>
+<dl class="method">
+<dt id="misaka.Markdown.__call__">
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.Markdown.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses and renders markdown text.</p>
+</dd></dl>
 
-<article class="page">
-<p>A Python 2 and 3 binding for <a href="https://github.com/tanoku/sundown">Sundown</a>, a really fast <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> parser
-implemented in C. Misaka is written in <a href="http://cython.org/">Cython</a> and C. And it features a set
-of Markdown extensions and customizable renderers. Just like the Sundown binding
-for Ruby, <a href="https://github.com/tanoku/redcarpet">Redcarpet</a>.</p>
+</dd></dl>
 
-<p>Projects that use Misaka:</p>
+<dl class="class">
+<dt id="misaka.HtmlRenderer">
+<em class="property">class </em><code class="descclassname">misaka.</code><code class="descname">HtmlRenderer</code><span class="sig-paren">(</span><em>flags=0</em>, <em>nesting_level=0</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.HtmlRenderer" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for the HTML renderer that&#8217;s included in Hoedown.</p>
+<p><code class="docutils literal"><span class="pre">render_flags</span></code> can be a list or tuple of flags (e.g.
+<code class="docutils literal"><span class="pre">('skip-html',</span> <span class="pre">'hard-wrap')</span></code>) or an integer
+(e.g. <code class="docutils literal"><span class="pre">HTML_SKIP_HTML</span> <span class="pre">|</span> <span class="pre">HTML_HARD_WRAP</span></code>).</p>
+<p><code class="docutils literal"><span class="pre">nesting_level</span></code> limits what&#8217;s included in the table of contents.
+The default value is 0, no headers.</p>
+<p>An instance of the <code class="docutils literal"><span class="pre">HtmlRenderer</span></code> can not be shared with multiple
+<a class="reference internal" href="#misaka.Markdown" title="misaka.Markdown"><code class="xref py py-class docutils literal"><span class="pre">Markdown</span></code></a> instances, because it carries state that&#8217;s changed
+by the <code class="docutils literal"><span class="pre">Markdown</span></code> instance.</p>
+</dd></dl>
 
-<ul>
-<li><a href="https://github.com/zynga/jasy">Jasy</a></li>
-<li><a href="https://github.com/Anomareh/mynt">mynt</a></li>
-<li><a href="https://github.com/honza/socrates">Socrates</a></li>
-<li><a href="https://bitbucket.org/ainm/pagewise/overview">Pagewise</a></li>
-<li><a href="https://github.com/colinta/StrangeCase">StrangeCase</a></li>
-</ul>
+<dl class="class">
+<dt id="misaka.HtmlTocRenderer">
+<em class="property">class </em><code class="descclassname">misaka.</code><code class="descname">HtmlTocRenderer</code><span class="sig-paren">(</span><em>nesting_level=6</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.HtmlTocRenderer" title="Permalink to this definition">¶</a></dt>
+<dd><p>A wrapper for the HTML table of contents renderer that&#8217;s included in Hoedown.</p>
+<p><code class="docutils literal"><span class="pre">nesting_level</span></code> limits what&#8217;s included in the table of contents.
+The default value is 6, all headers.</p>
+<p>An instance of the <code class="docutils literal"><span class="pre">HtmlTocRenderer</span></code> can not be shared with multiple
+<a class="reference internal" href="#misaka.Markdown" title="misaka.Markdown"><code class="xref py py-class docutils literal"><span class="pre">Markdown</span></code></a> instances, because it carries state that&#8217;s changed
+by the <code class="docutils literal"><span class="pre">Markdown</span></code> instance.</p>
+</dd></dl>
 
-<p>How about a Flattr?</p>
-<p>
-<a class="FlattrButton" style="display:none;" href="http://misaka.61924.nl/"></a>
-<noscript>
-<a href="http://flattr.com/thing/683782/Misaka" target="_blank">
-<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" />
-</a>
-</noscript>
-</p>
-</article>
+<dl class="class">
+<dt id="misaka.BaseRenderer">
+<em class="property">class </em><code class="descclassname">misaka.</code><code class="descname">BaseRenderer</code><a class="headerlink" href="#misaka.BaseRenderer" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="misaka.BaseRenderer.blockcode">
+<code class="descname">blockcode</code><span class="sig-paren">(</span><em>text</em>, <em>lang=''</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.blockcode" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">lang</span></code> contains the language when fenced code blocks
+are enabled and a language is defined in ther code block.</p>
+</dd></dl>
 
-</section>
-<footer id="bottom">
-<p>&copy; 2011-2012. <a href="https://github.com/FSX">Frank Smit</a>.</p>
+<dl class="method">
+<dt id="misaka.BaseRenderer.blockquote">
+<code class="descname">blockquote</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.blockquote" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.header">
+<code class="descname">header</code><span class="sig-paren">(</span><em>content</em>, <em>level</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.header" title="Permalink to this definition">¶</a></dt>
+<dd><p><code class="docutils literal"><span class="pre">level</span></code> can be a humber from 1 to 6.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.hrule">
+<code class="descname">hrule</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.hrule" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.list">
+<code class="descname">list</code><span class="sig-paren">(</span><em>content</em>, <em>is_ordered</em>, <em>is_block</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.listitem">
+<code class="descname">listitem</code><span class="sig-paren">(</span><em>content</em>, <em>is_ordered</em>, <em>is_block</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.listitem" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.paragraph">
+<code class="descname">paragraph</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.paragraph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.table">
+<code class="descname">table</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the tables extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.table_header">
+<code class="descname">table_header</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.table_header" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the tables extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.table_body">
+<code class="descname">table_body</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.table_body" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the tables extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.table_row">
+<code class="descname">table_row</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.table_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the tables extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.table_cell">
+<code class="descname">table_cell</code><span class="sig-paren">(</span><em>content</em>, <em>align</em>, <em>is_header</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.table_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the tables extension.</p>
+<p><code class="docutils literal"><span class="pre">align</span></code> can be empty, <code class="docutils literal"><span class="pre">center</span></code>, <code class="docutils literal"><span class="pre">left</span></code> or <code class="docutils literal"><span class="pre">right</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.footnotes">
+<code class="descname">footnotes</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.footnotes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the footnotes extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.footnote_def">
+<code class="descname">footnote_def</code><span class="sig-paren">(</span><em>content</em>, <em>num</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.footnote_def" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the footnotes extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.footnote_ref">
+<code class="descname">footnote_ref</code><span class="sig-paren">(</span><em>num</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.footnote_ref" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the footnotes extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.blockhtml">
+<code class="descname">blockhtml</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.blockhtml" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.autolink">
+<code class="descname">autolink</code><span class="sig-paren">(</span><em>link</em>, <em>is_email</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.autolink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the autolink extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.codespan">
+<code class="descname">codespan</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.codespan" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.double_emphasis">
+<code class="descname">double_emphasis</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.double_emphasis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.emphasis">
+<code class="descname">emphasis</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.emphasis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.underline">
+<code class="descname">underline</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.underline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the underline extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.highlight">
+<code class="descname">highlight</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.highlight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the highlight extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.quote">
+<code class="descname">quote</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.quote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the quote extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.image">
+<code class="descname">image</code><span class="sig-paren">(</span><em>link</em>, <em>title=''</em>, <em>alt=''</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.linebreak">
+<code class="descname">linebreak</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.linebreak" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.link">
+<code class="descname">link</code><span class="sig-paren">(</span><em>content</em>, <em>link</em>, <em>title=''</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.link" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.triple_emphasis">
+<code class="descname">triple_emphasis</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.triple_emphasis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.strikethrough">
+<code class="descname">strikethrough</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.strikethrough" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the strikethrough extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.superscript">
+<code class="descname">superscript</code><span class="sig-paren">(</span><em>content</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.superscript" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the superscript extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.math">
+<code class="descname">math</code><span class="sig-paren">(</span><em>text</em>, <em>displaymode</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.math" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depends on the math extension.</p>
+<p><code class="docutils literal"><span class="pre">displaymode</span></code> can be <code class="docutils literal"><span class="pre">0</span></code> or <code class="docutils literal"><span class="pre">1</span></code>. This is how
+<a class="reference internal" href="#misaka.HtmlRenderer" title="misaka.HtmlRenderer"><code class="xref py py-class docutils literal"><span class="pre">HtmlRenderer</span></code></a> handles it:</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">displaymode</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">[{}</span><span class="se">\\</span><span class="s">]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>  <span class="c"># displaymode == 0</span>
+    <span class="k">return</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">({}</span><span class="se">\\</span><span class="s">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.raw_html">
+<code class="descname">raw_html</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.raw_html" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.entity">
+<code class="descname">entity</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.entity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.normal_text">
+<code class="descname">normal_text</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.normal_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.doc_header">
+<code class="descname">doc_header</code><span class="sig-paren">(</span><em>inline_render</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.doc_header" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="misaka.BaseRenderer.doc_footer">
+<code class="descname">doc_footer</code><span class="sig-paren">(</span><em>inline_render</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.BaseRenderer.doc_footer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2011-2015, Frank Smit.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
 </footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2.0.0b2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
 </body>
 </html>

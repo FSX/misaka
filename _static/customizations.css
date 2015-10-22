@@ -1,0 +1,4 @@
+div[class^='highlight'] pre {
+	font-family: 'M+ 1m', 'Droid Sans Mono', 'DejaVu Sans Mono', monospace;
+	font-size: 14px;
+}
