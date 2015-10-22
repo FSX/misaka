@@ -14,18 +14,11 @@ from chibitest import runner, TestCase, Benchmark
 
 
 help_message = """\
---include and --exclude can be used multiple times and both accept a list
-of names (names of the test case classes). The order of --include and
---exclude is not significant. Everything listed in --exclude will be filtered
-out of the list of tests.
-
---list output a list of test cases.
-
-Arguments:
-    --include [[[TestCase1] TestCase2] ...]
-    --exclude [[[TestCase1] TestCase2] ...]
-    --list
-    --help
+Options:
+  --include (-i)    comma separated list of testcases
+  --exclude (-e)    comma separated list of testcases
+  --benchmark (-b)  run bechmarks
+  --list (-l)       list all testcases
 """
 
 
@@ -79,26 +72,26 @@ if __name__ == '__main__':
     benchmark = False
 
     if len(sys.argv) >= 2:
-        if sys.argv[1] == '--list':
+        if sys.argv[1] in ('-l', '--list'):
             for name, testcase in testcases:
                 print(name)
             sys.exit(0)
-        elif sys.argv[1] == '--help':
+        elif sys.argv[1] in ('-h', '--help'):
             print(help_message)
             sys.exit(0)
         else:
             last_arg = '--include'
-
             for arg in sys.argv[1:]:
-                if arg in ('--include', '--exclude'):
+                if arg in ('-i', '--include', '-e', '--exclude'):
                     last_arg = arg
-                elif not arg.startswith('--'):
-                    if last_arg == '--include':
-                        include.append(arg)
-                    elif last_arg == '--exclude':
-                        exclude.append(arg)
+                elif not arg.startswith('-'):  # - or --
+                    arg = [n for n in arg.split(',') if n]
+                    if last_arg in ('-i', '--include'):
+                        include.extend(arg)
+                    elif last_arg in ('-e', '--exclude'):
+                        exclude.extend(arg)
 
-    if '--benchmark' in sys.argv[1:]:
+    if '-b' in sys.argv[1:] or '--benchmark' in sys.argv[1:]:
         benchmark = True
 
     run_testcases(testcases, benchmark, include, exclude)

@@ -28,27 +28,14 @@ class TestCommand(Command):
         pass
 
     def run(self):
-        args = []
-        if self.list:
-            args.append('--list')
-        else:
-            if self.benchmark:
-                args.append('--benchmark')
-            if self.include:
-                args.append('--include')
-                args.extend(self.include.split(','))
-            if self.exclude:
-                args.append('--exclude')
-                args.extend(self.exclude.split(','))
-
         self.run_command('develop')
-        errno = subprocess.call([sys.executable, 'tests/run_tests.py'] + args)
+        errno = subprocess.call([sys.executable, 'tests/run_tests.py'] + sys.argv[2:])
         sys.exit(errno)
 
 
 setup(
     name='misaka',
-    version='2.0.0b2',
+    version='2.0.0',
     description='A CFFI binding for Hoedown, a markdown parsing library.',
     author='Frank Smit',
     author_email='frank@61924.nl',
