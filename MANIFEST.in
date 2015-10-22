@@ -1,5 +1,5 @@
-include README.rst setup.py build_ffi.py THANKS LICENSE.txt
+include README.rst setup.py build_ffi.py THANKS LICENSE.txt tox.ini
 recursive-include misaka *
 recursive-include docs *
 recursive-include tests *
-recursive-include benchmark *
+prune docs/_build

@@ -6,8 +6,8 @@ Changelog
 Date format is year-month-day.
 
 
-2.0.0b2 (2015-10-??)
-^^^^^^^^^^^^^^^^^^^^
+2.0.0 (2015-10-22)
+^^^^^^^^^^^^^^^^^^
 
 - Rename ``Markdown.render`` to ``Markdown.__call__``.
 - Add a bechmark testcase to chibitest.

@@ -168,8 +168,8 @@ class TestResult(object):
 
 class BenchmarkResult(TestResult):
     def __init__(self, func, doc_name=None, passed=False, message=None,
-            repeated=0, timing=0.0):
-        self.repeated = repeated
+            repetitions=0, timing=0.0):
+        self.repetitions = repetitions
         self.timing = timing
         TestResult.__init__(self, func, doc_name, passed, message)
 
@@ -177,9 +177,9 @@ class BenchmarkResult(TestResult):
         if self.passed:
             s = '{:<25} {:>8} {:>16} {:>16}'.format(
                 self.name(),
-                self.repeated,
+                self.repetitions,
                 readable_duration(self.timing, suffix='/t'),
-                readable_duration(self.timing / self.repeated, suffix='/op'))
+                readable_duration(self.timing / self.repetitions, suffix='/op'))
         else:
             s = '{} ... FAILED'.format(self.name())
 
@@ -253,7 +253,7 @@ class Benchmark(TestCase):
         def catch_exception():
             message = None
             passed = False
-            repeated = 10
+            repetitions = 10
             timing = 0.0
 
             try:
@@ -268,7 +268,7 @@ class Benchmark(TestCase):
                         break
                     else:
                         repeat = 10
-                        repeated += 10
+                        repetitions += 10
 
                 timing = default_timer() - start
                 passed = True
@@ -283,7 +283,7 @@ class Benchmark(TestCase):
                 _get_doc_line(func) or None,
                 passed,
                 message,
-                repeated,
+                repetitions,
                 timing)
 
         return catch_exception
