@@ -69,7 +69,7 @@ used to escape the HTML):
     class HighlighterRenderer(m.HtmlRenderer):
         def blockcode(self, text, lang):
             if not lang:
-                return '\n<pre>{}</code></pre>\n'.format(
+                return '\n<pre><code>{}</code></pre>\n'.format(
                     h.escape_html(text.strip()))
 
             lexer = get_lexer_by_name(lang, stripall=True)
