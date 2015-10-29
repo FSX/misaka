@@ -20,7 +20,7 @@ Documentation can be found at: http://misaka.61924.nl/
 Installation
 ------------
 
-Misaka has been tested on CPython 2.7, 3.2, 3.3, 3.4, 3.5 and PyPy 2.6. It needs
+Misaka has been tested on CPython 2.6, 2.7, 3.2, 3.3, 3.4, 3.5 and PyPy 2.6. It needs
 CFFI 1.0 or newer, because of this it will not work on PyPy 2.5 and older.
 
 With pip::

@@ -221,19 +221,19 @@ class TestRenderer(m.BaseRenderer):
         return '[PARAGRAPH] {0}\n'.format(text)
 
     def table(self, content):
-        return '[TABLE]\n{}'.format(content)
+        return '[TABLE]\n{0}'.format(content)
 
     def table_header(self, content):
-        return '[TABLE_HEADER]\n{}'.format(content)
+        return '[TABLE_HEADER]\n{0}'.format(content)
 
     def table_body(self, content):
-        return '[TABLE_BODY]\n{}'.format(content)
+        return '[TABLE_BODY]\n{0}'.format(content)
 
     def table_row(self, content):
         return '[TABLE_ROW]\n{0}\n'.format(content)
 
     def table_cell(self, text, align, is_header):
-        align = 'align={} '.format(align) if align else ''
+        align = 'align={0} '.format(align) if align else ''
         header = 'header=true ' if is_header else ''
         return '[TABLE_CELL {2}{1}text={0}]'.format(text, align, header)
 
@@ -278,7 +278,7 @@ class TestRenderer(m.BaseRenderer):
         return '[LINEBREAK]'
 
     def link(self, content, link, title):
-        return '[LINK link={} title={}] {}'.format(link, title, content)
+        return '[LINK link={0} title={1}] {2}'.format(link, title, content)
 
     def strikethrough(self, text):
         return '[STRIKETHROUGH] {0}'.format(text)
@@ -293,7 +293,7 @@ class TestRenderer(m.BaseRenderer):
         return '[TRIPLE_EMPHASIS] {0}'.format(text)
 
     def math(self, text, displaymode):
-        return '[MATH] {}'.format(text)
+        return '[MATH] {0}'.format(text)
 
     def normal_text(self, text):
         return text
@@ -312,10 +312,10 @@ class TestRendererLowlevel(m.BaseRenderer):
         return text
 
     def entity(self, text):
-        return '[ENTITY] {}'.format(text)
+        return '[ENTITY] {0}'.format(text)
 
     def normal_text(self, text):
-        return '[NORMAL_TEXT] {}'.format(text)
+        return '[NORMAL_TEXT] {0}'.format(text)
 
 
 class CustomRendererTest(TestCase):

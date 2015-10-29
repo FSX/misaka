@@ -43,7 +43,7 @@ class MarkdownConformanceTest_10(TestCase):
         name = name.replace(' - ', '_')
         name = name.replace(' ', '_')
         name = re.sub('[(),]', '', name)
-        return 'test_{}'.format(name.lower())
+        return 'test_{0}'.format(name.lower())
 
 
 class MarkdownConformanceTest_103(MarkdownConformanceTest_10):
