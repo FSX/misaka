@@ -5,6 +5,13 @@ Changelog
 
 Date format is year-month-day.
 
+2.0.1 (2015-??-??)
+^^^^^^^^^^^^^^^^^^
+
+- Add Python 2.6 support. (`#48`_)
+
+.. _#48: https://github.com/FSX/misaka/pull/48
+
 
 2.0.0 (2015-10-22)
 ^^^^^^^^^^^^^^^^^^
