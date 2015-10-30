@@ -41,13 +41,13 @@ if __name__ == '__main__':
         elif arg.startswith('--ext-'):
             arg = arg[6:]
             if not arg in extension_map:
-                print('--ext-{} is not a valid Markdown extension'.format(arg))
+                print('--ext-{0} is not a valid Markdown extension'.format(arg))
                 sys.exit(1)
             extensions.append(arg)
         elif arg.startswith('--html-'):
             arg = arg[7:]
             if not arg in html_flag_map:
-                print('--html-{} is not a valid HTML render flag'.format(arg))
+                print('--html-{0} is not a valid HTML render flag'.format(arg))
                 sys.exit(1)
             flags.append(arg)
         else:

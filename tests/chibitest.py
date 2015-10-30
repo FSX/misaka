@@ -36,20 +36,20 @@ def _exc_name(exception_class):
     if not inspect.isclass(exception_class):
         exception_class = exception_class.__class__
 
-    return '<{}.{}>'.format(
+    return '<{0}.{1}>'.format(
         exception_class.__module__,
         exception_class.__name__)
 
 
 def readable_duration(s, suffix=''):
     if s >= 1:
-        f = '{:.2f} s'.format(s)
+        f = '{0:.2f} s'.format(s)
     elif s < 1:
         ms = 1000 * s
         if ms >= 1:
-            f = '{:.2f} ms'.format(ms)
+            f = '{0:.2f} ms'.format(ms)
         elif ms < 1:
-            f = '{:.2f} us'.format(ms * 1000)
+            f = '{0:.2f} us'.format(ms * 1000)
 
     return f + suffix
 
@@ -60,38 +60,38 @@ class AssertionObject(object):
 
     def __lt__(self, other):
         if not self._target < other:
-            raise AssertionError('{!r} < {!r}'.format(self._target, other))
+            raise AssertionError('{0!r} < {1!r}'.format(self._target, other))
 
     def __le__(self, other):
         if not self._target <= other:
-            raise AssertionError('{!r} <= {!r}'.format(self._target, other))
+            raise AssertionError('{0!r} <= {1!r}'.format(self._target, other))
 
     def __eq__(self, other):
         if not self._target == other:
-            raise AssertionError('{!r} == {!r}'.format(self._target, other))
+            raise AssertionError('{0!r} == {1!r}'.format(self._target, other))
 
     def __ne__(self, other):
         if not self._target != other:
-            raise AssertionError('{!r} != {!r}'.format(self._target, other))
+            raise AssertionError('{0!r} != {1!r}'.format(self._target, other))
 
     def __gt__(self, other):
         if not self._target > other:
-            raise AssertionError('{!r} > {!r}'.format(self._target, other))
+            raise AssertionError('{0!r} > {1!r}'.format(self._target, other))
 
     def __ge__(self, other):
         if not self._target >= other:
-            raise AssertionError('{!r} >= {!r}'.format(self._target, other))
+            raise AssertionError('{0!r} >= {1!r}'.format(self._target, other))
 
     def length(self, other):
         target_length = len(self._target)
 
         if target_length > other:
             raise AssertionError(
-                'Higher than desired length: {!r} > {!r}'
+                'Higher than desired length: {0!r} > {1!r}'
                 .format(target_length, other))
         elif target_length < other:
             raise AssertionError(
-                'Lower than desired length: {!r} < {!r}'
+                'Lower than desired length: {0!r} < {1!r}'
                 .format(target_length, other))
 
     def diff(self, other):
@@ -103,11 +103,11 @@ class AssertionObject(object):
 
     def contains(self, other):
         if other not in self._target:
-            raise AssertionError('{!r} in {!r}'.format(other, self._target))
+            raise AssertionError('{0!r} in {1!r}'.format(other, self._target))
 
     def not_contains(self, other):
         if other in self._target:
-            raise AssertionError('{!r} not in {!r}'.format(other, self._target))
+            raise AssertionError('{0!r} not in {1!r}'.format(other, self._target))
 
     def raises(self, exception_class=Exception):
         name = _exc_name(exception_class)
@@ -120,10 +120,10 @@ class AssertionObject(object):
         except exception_class:
             pass
         except Exception as e:
-            raise AssertionError('Expected {}, but got {}:\n{}'
+            raise AssertionError('Expected {0}, but got {1}:\n{2}'
                                  .format(name, _exc_name(e), e))
         else:
-            raise AssertionError('{} not raised'.format(name))
+            raise AssertionError('{0} not raised'.format(name))
 
     def not_raises(self, exception_class=Exception):
         name = _exc_name(exception_class)
@@ -134,9 +134,9 @@ class AssertionObject(object):
         try:
             self._target()
         except exception_class as e:
-            raise AssertionError('{} raised:\n{}'.format(name, e))
+            raise AssertionError('{0} raised:\n{1}'.format(name, e))
         except Exception as e:
-            raise AssertionError('Expected {} when failing, but got {}:\n{}'
+            raise AssertionError('Expected {0} when failing, but got {1}:\n{2}'
                                  .format(name, _exc_name(e), e))
 
 
@@ -159,9 +159,9 @@ class TestResult(object):
         return 'PASSED' if self.passed else 'FAILED'
 
     def __str__(self):
-        s = '{} ... {}'.format(self.name(), self.status())
+        s = '{0} ... {1}'.format(self.name(), self.status())
         if self.message:
-            s += '\n{}\n{}\n{}'.format(LINE, self.message, LINE)
+            s += '\n{0}\n{1}\n{2}'.format(LINE, self.message, LINE)
 
         return s
 
@@ -175,16 +175,16 @@ class BenchmarkResult(TestResult):
 
     def __str__(self):
         if self.passed:
-            s = '{:<25} {:>8} {:>16} {:>16}'.format(
+            s = '{0:<25} {1:>8} {2:>16} {3:>16}'.format(
                 self.name(),
                 self.repetitions,
                 readable_duration(self.timing, suffix='/t'),
                 readable_duration(self.timing / self.repetitions, suffix='/op'))
         else:
-            s = '{} ... FAILED'.format(self.name())
+            s = '{0} ... FAILED'.format(self.name())
 
         if self.message:
-            s += '\n{}\n{}\n{}'.format(LINE, self.message, LINE)
+            s += '\n{0}\n{1}\n{2}'.format(LINE, self.message, LINE)
 
         return s
 
@@ -202,7 +202,7 @@ class TestCase(object):
     def name(cls):
         name = _get_doc_line(cls)
         if name:
-            return '{} ({})'.format(name, cls.__name__)
+            return '{0} ({1})'.format(name, cls.__name__)
         else:
             return cls.__name__
 
@@ -299,7 +299,7 @@ def runner(testcases, setup_func=None, teardown_func=None, config={}):
     for testcase in testcases:
         tests = testcase(config)
 
-        print('>> {}'.format(testcase.name()))
+        print('>> {0}'.format(testcase.name()))
 
         for result in tests.run():
             if result.passed:
@@ -313,6 +313,6 @@ def runner(testcases, setup_func=None, teardown_func=None, config={}):
     if teardown_func:
         teardown_func()
 
-    print('{} passed; {} failed.'.format(passed, failed))
+    print('{0} passed; {1} failed.'.format(passed, failed))
     if failed > 0:
         sys.exit(1)

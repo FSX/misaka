@@ -15,7 +15,7 @@ See the :doc:`/changelog` for all changes.
 Installation
 ------------
 
-Misaka has been tested on CPython 2.7, 3.2, 3.3, 3.4, 3.5 and PyPy 2.6.
+Misaka has been tested on CPython 2.6, 2.7, 3.2, 3.3, 3.4, 3.5 and PyPy 2.6.
 CFFI 1.0 or newer is required. This means Misaka will not work on PyPy 2.5
 and older versions.
 

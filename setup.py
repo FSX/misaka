@@ -6,6 +6,12 @@ import sys
 from setuptools import setup, Command
 
 
+install_requires=['cffi>=1.0.0']
+try:
+    import importlib
+except ImportError:
+    install_requires.append('importlib')
+
 dirname = os.path.dirname(os.path.abspath(__file__))
 
 
@@ -52,6 +58,7 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: C',
+        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.2',
         'Programming Language :: Python :: 3.3',
@@ -64,6 +71,6 @@ setup(
         'Topic :: Utilities'
     ],
     setup_requires=['cffi>=1.0.0'],
-    install_requires=['cffi>=1.0.0'],
+    install_requires=install_requires,
     cffi_modules=['build_ffi.py:ffi'],
 )
