@@ -8,6 +8,7 @@ from .utils import extension_map, html_flag_map, args_to_int, \
 
 
 __all__ = [
+    'escape_html',
     'html',
     'smartypants',
     'Markdown',
@@ -56,6 +57,32 @@ __all__ = [
 IUNIT = 1024
 OUNIT = 64
 MAX_NESTING = 16
+
+
+def escape_html(text, escape_slash=False):
+    """
+    Binding for Hoedown's HTML escaping function.
+
+    The implementation is inspired by the OWASP XSS Prevention recommendations:
+
+    .. code-block:: none
+
+        & --> &amp;
+        < --> &lt;
+        > --> &gt;
+        " --> &quot;
+        ' --> &#x27;
+        / --> &#x2F;  when escape_slash is set to True
+
+    """
+    byte_str = text.encode('utf-8')
+    ob = lib.hoedown_buffer_new(OUNIT)
+    lib.hoedown_escape_html(ob, byte_str, len(byte_str), int(escape_slash))
+
+    try:
+        return to_string(ob)
+    finally:
+        lib.hoedown_buffer_free(ob)
 
 
 def html(text, extensions=0, render_flags=0):

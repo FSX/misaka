@@ -214,6 +214,9 @@ Functions
 .. autofunction:: smartypants
 
 
+.. autofunction:: escape_html
+
+
 Classes
 ^^^^^^^
 

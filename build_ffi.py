@@ -55,6 +55,7 @@ ffi.set_source(
     """\
 #include "hoedown/buffer.h"
 #include "hoedown/document.h"
+#include "hoedown/escape.h"
 #include "hoedown/html.h"
 #include "extra.h"
 """,
@@ -254,6 +255,12 @@ hoedown_document *hoedown_document_new(
 
 void hoedown_document_render(hoedown_document *doc, hoedown_buffer *ob, const uint8_t *data, size_t size);
 void hoedown_document_free(hoedown_document *doc);
+
+// ------------------------
+// --- hoedown/escape.h ---
+// ------------------------
+
+void hoedown_escape_html(hoedown_buffer *ob, const uint8_t *data, size_t size, int secure);
 
 // ----------------------
 // --- hoedown/html.h ---
