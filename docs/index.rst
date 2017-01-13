@@ -228,6 +228,10 @@ Classes
     :members:
 
 
+.. autoclass:: SaferHtmlRenderer
+    :members:
+
+
 .. autoclass:: HtmlTocRenderer
     :members:
 
