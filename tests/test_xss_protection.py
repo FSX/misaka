@@ -14,6 +14,12 @@ class EscapeHtmlTest(TestCase):
 
 render = Markdown(SaferHtmlRenderer())
 render_escape = Markdown(SaferHtmlRenderer(sanitization_mode='escape'))
+renderer_rewrite = SaferHtmlRenderer(
+    link_rewrite='//example.com/redirect/{link}',
+    img_src_rewrite='//img_proxy/{link}',
+)
+render_rewrite = Markdown(renderer_rewrite)
+rewrite_link = renderer_rewrite.rewrite_link
 
 
 class SaferHtmlRendererTest(TestCase):
@@ -97,4 +103,26 @@ class SaferHtmlRendererTest(TestCase):
     def test_image_src_filtering_with_naughty_data(self):
         actual = render('![foo](javascript:foo)')
         expected = '<p>![foo](javascript:foo)</p>\n'
+        ok(actual).diff(expected)
+
+    def test_autolink_rewriting(self):
+        for url in ('http://a', "https://b?x&y"):
+            actual = render_rewrite('<%s>' % url)
+            expected = '<p><a href="%s">%s</a></p>\n'
+            expected %= (rewrite_link(url), escape_html(url))
+            ok(actual).diff(expected)
+
+        supplied = "<alice@example.net>"
+        expected = '<p>%s</p>\n' % escape_html(supplied)
+        ok(render_escape(supplied)).diff(expected)
+
+    def test_link_rewriting(self):
+        for url in ('http://a', 'https://b'):
+            actual = render_rewrite("['foo](%s \"bar'\")" % url)
+            expected = '<p><a href="%s" title="bar&#39;">&#39;foo</a></p>\n'
+            ok(actual).diff(expected % rewrite_link(url))
+
+    def test_image_src_rewriting(self):
+        actual = render_rewrite('![](http:"foo")')
+        expected = '<p><img src="//img_proxy/http%3A%22foo%22" /></p>\n'
         ok(actual).diff(expected)

@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import re
+try:
+    from urllib.parse import quote as urlquote
+except ImportError:
+    from urllib import quote as urlquote
 
 from ._hoedown import lib, ffi
 from .callbacks import python_callbacks, to_string
@@ -269,13 +273,29 @@ class SaferHtmlRenderer(HtmlRenderer):
        See the :meth:`check_link` method below.
     3. Optionally, the URLs can also be rewritten to counter other attacks such
        as phishing.
+
+    Enabling URL rewriting requires extra arguments:
+
+    :arg link_rewrite: the URL of a redirect page, necessary to rewrite the
+        ``href`` attributes of links
+    :arg img_src_rewrite: the URL of an image proxy, necessary to rewrite the
+        ``src`` attributes of images
+
+    Both srings should include a ``{link}`` placeholder for the URL-encoded
+    target. Examples::
+
+        link_rewrite='https://example.com/redirect?url={link}',
+        img_src_rewrite='https://img-proxy-domain/{link}'
     """
     _allowed_url_re = re.compile(r'^https?:', re.I)
 
-    def __init__(self, flags=(), sanitization_mode='skip-html', nesting_level=0):
+    def __init__(self, flags=(), sanitization_mode='skip-html', nesting_level=0,
+                 link_rewrite=None, img_src_rewrite=None):
         if not isinstance(flags, tuple):
             raise TypeError("`flags` should be a tuple of strings")
         HtmlRenderer.__init__(self, flags + (sanitization_mode,), nesting_level)
+        self.link_rewrite = link_rewrite
+        self.img_src_rewrite = img_src_rewrite
 
     def autolink(self, raw_link, is_email):
         """
@@ -340,6 +360,11 @@ class SaferHtmlRenderer(HtmlRenderer):
         """
         This method is called to rewrite URLs.
 
-        The default implementation simply returns the given link.
+        It uses either ``self.link_rewrite`` or ``self.img_src_rewrite``
+        depending on the value of ``is_image_src``. The URL is returned
+        unchanged if the corresponding attribute is :obj:`None`.
         """
+        rewrite = self.img_src_rewrite if is_image_src else self.link_rewrite
+        if rewrite:
+            return rewrite.format(link=urlquote(link))
         return link
