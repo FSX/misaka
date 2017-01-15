@@ -355,10 +355,9 @@ class SaferHtmlRenderer(HtmlRenderer):
         This method exists specifically to allow easy customization of link
         filtering through subclassing, so don't hesitate to write your own.
 
-        However using a blacklist approach is not recommended, see the
-        `OWASP XSS Filter Evasion Cheat Sheet
-        <https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet>`_ for
-        an illustration of why.
+        If you're thinking of implementing a blacklist approach, see
+        "`Which URL schemes are dangerous (XSS exploitable)?
+        <http://security.stackexchange.com/q/148428/37409>`_".
         """
         return bool(self._allowed_url_re.match(link))
 
