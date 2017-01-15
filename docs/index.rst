@@ -214,6 +214,9 @@ Functions
 .. autofunction:: smartypants
 
 
+.. autofunction:: escape_html
+
+
 Classes
 ^^^^^^^
 
@@ -222,6 +225,10 @@ Classes
 
 
 .. autoclass:: HtmlRenderer
+    :members:
+
+
+.. autoclass:: SaferHtmlRenderer
     :members:
 
 
