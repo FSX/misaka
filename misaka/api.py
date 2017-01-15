@@ -81,6 +81,7 @@ def escape_html(text, escape_slash=False):
         ' --> &#x27;
         / --> &#x2F;  when escape_slash is set to True
 
+    .. versionadded:: 2.1.0
     """
     byte_str = text.encode('utf-8')
     ob = lib.hoedown_buffer_new(OUNIT)
@@ -287,6 +288,8 @@ class SaferHtmlRenderer(HtmlRenderer):
 
         link_rewrite='https://example.com/redirect?url={url}',
         img_src_rewrite='https://img-proxy-domain/{url}'
+
+    .. versionadded:: 2.1.0
     """
     _allowed_url_re = re.compile(r'^https?:', re.I)
 

@@ -5,11 +5,13 @@ Changelog
 
 Date format is year-month-day.
 
-2.0.1 (2015-??-??)
+2.0.1 (2017-01-15)
 ^^^^^^^^^^^^^^^^^^
 
-- Add Python 2.6 support. (`#48`_)
+- Add a new renderer class with XSS protections. By Changaco. (`#60`_)
+- Add Python 2.6 support. By sprin. (`#48`_)
 
+.. _#60: https://github.com/FSX/misaka/pull/60
 .. _#48: https://github.com/FSX/misaka/pull/48
 
 
