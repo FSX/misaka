@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Misaka &mdash; Misaka 2.0.0 documentation</title>
+  <title>Misaka &mdash; Misaka 2.1.0 documentation</title>
   
 
   
@@ -32,7 +32,10 @@
   
 
   
-    <link rel="top" title="Misaka 2.0.0 documentation" href="#"/> 
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Misaka 2.1.0 documentation" href="#"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -60,7 +63,7 @@
             
             
               <div class="version">
-                2.0.0
+                2.1.0
               </div>
             
           
@@ -118,7 +121,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -130,7 +133,7 @@
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -145,73 +148,86 @@
 <p>Misaka is a CFFI-based binding for <a class="reference external" href="https://github.com/hoedown/hoedown">Hoedown</a>, a fast markdown processing library
 written in C. It features a fast HTML renderer and functionality to make custom
 renderers (e.g. man pages or LaTeX).</p>
-<p>See the <a class="reference internal" href="changelog.html"><em>Changelog</em></a> for all changes.</p>
+<p>See the <a class="reference internal" href="changelog.html"><span class="doc">Changelog</span></a> for all changes.</p>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>Misaka has been tested on CPython 2.7, 3.2, 3.3, 3.4, 3.5 and PyPy 2.6.
+<p>Misaka has been tested on CPython 2.6, 2.7, 3.2, 3.3, 3.4, 3.5, 3.6 and PyPy 2.6+.
 CFFI 1.0 or newer is required. This means Misaka will not work on PyPy 2.5
 and older versions.</p>
+<p>If you&#8217;re installing from source and are using Debian or a Debian derivative
+(e.g. Ubuntu) make sure <code class="docutils literal"><span class="pre">build-essential</span></code>, <code class="docutils literal"><span class="pre">python-dev</span></code> and <code class="docutils literal"><span class="pre">libffi-dev</span></code>
+are installed.</p>
 <p>Install with pip:</p>
-<div class="highlight-python"><div class="highlight"><pre>pip install misaka
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">misaka</span>
 </pre></div>
 </div>
 <p>Or grab the source from Github:</p>
-<div class="highlight-python"><div class="highlight"><pre>git clone https://github.com/FSX/misaka.git
-cd misaka
-python setup.py install
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">FSX</span><span class="o">/</span><span class="n">misaka</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">misaka</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
 </pre></div>
 </div>
 <p>Consult the <a class="reference external" href="https://cffi.readthedocs.org/en/latest/installation.html">CFFI documentation</a> if you experience problems installing CFFI.</p>
+<p>Use the following commands to install Misaka in <a class="reference external" href="https://termux.com/">Termux</a>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">update</span>
+<span class="n">apt</span> <span class="n">upgrade</span>
+<span class="n">apt</span> <span class="n">install</span> <span class="n">clang</span> <span class="n">python</span> <span class="n">python</span><span class="o">-</span><span class="n">dev</span> <span class="n">libffi</span> <span class="n">libffi</span><span class="o">-</span><span class="n">dev</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">misaka</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <p>Very simple example:</p>
-<div class="code python highlight-python"><div class="highlight"><pre>import misaka as m
-print m.html(&#39;some other text&#39;)
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">misaka</span> <span class="k">as</span> <span class="nn">m</span>
+<span class="nb">print</span> <span class="n">m</span><span class="o">.</span><span class="n">html</span><span class="p">(</span><span class="s1">&#39;some other text&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Or:</p>
-<div class="code python highlight-python"><div class="highlight"><pre>from misaka import Markdown, HtmlRenderer
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">misaka</span> <span class="k">import</span> <span class="n">Markdown</span><span class="p">,</span> <span class="n">HtmlRenderer</span>
 
-rndr = HtmlRenderer()
-md = Markdown(rndr)
+<span class="n">rndr</span> <span class="o">=</span> <span class="n">HtmlRenderer</span><span class="p">()</span>
+<span class="n">md</span> <span class="o">=</span> <span class="n">Markdown</span><span class="p">(</span><span class="n">rndr</span><span class="p">)</span>
 
-print md(&#39;some text&#39;)
+<span class="nb">print</span> <span class="n">md</span><span class="p">(</span><span class="s1">&#39;some text&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Here&#8217;s a simple example that uses <a class="reference external" href="http://pygments.org">Pygments</a> to highlight code (<a class="reference external" href="https://github.com/FSX/houdini.py">houdini</a> is
 used to escape the HTML):</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">houdini</span> <span class="kn">as</span> <span class="nn">h</span>
-<span class="kn">import</span> <span class="nn">misaka</span> <span class="kn">as</span> <span class="nn">m</span>
-<span class="kn">from</span> <span class="nn">pygments</span> <span class="kn">import</span> <span class="n">highlight</span>
-<span class="kn">from</span> <span class="nn">pygments.formatters</span> <span class="kn">import</span> <span class="n">HtmlFormatter</span>
-<span class="kn">from</span> <span class="nn">pygments.lexers</span> <span class="kn">import</span> <span class="n">get_lexer_by_name</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">houdini</span> <span class="k">as</span> <span class="nn">h</span>
+<span class="kn">import</span> <span class="nn">misaka</span> <span class="k">as</span> <span class="nn">m</span>
+<span class="kn">from</span> <span class="nn">pygments</span> <span class="k">import</span> <span class="n">highlight</span>
+<span class="kn">from</span> <span class="nn">pygments.formatters</span> <span class="k">import</span> <span class="n">HtmlFormatter</span><span class="p">,</span> <span class="n">ClassNotFound</span>
+<span class="kn">from</span> <span class="nn">pygments.lexers</span> <span class="k">import</span> <span class="n">get_lexer_by_name</span>
 
 <span class="k">class</span> <span class="nc">HighlighterRenderer</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">HtmlRenderer</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">blockcode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">lang</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">lang</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&lt;pre&gt;&lt;code&gt;{}&lt;/code&gt;&lt;/pre&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                <span class="n">h</span><span class="o">.</span><span class="n">escape_html</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">lexer</span> <span class="o">=</span> <span class="n">get_lexer_by_name</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">stripall</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ClassNotFound</span><span class="p">:</span>
+            <span class="n">lexer</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="n">lexer</span> <span class="o">=</span> <span class="n">get_lexer_by_name</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">stripall</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-        <span class="n">formatter</span> <span class="o">=</span> <span class="n">HtmlFormatter</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">highlight</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">lexer</span><span class="p">,</span> <span class="n">formatter</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lexer</span><span class="p">:</span>
+            <span class="n">formatter</span> <span class="o">=</span> <span class="n">HtmlFormatter</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">highlight</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">lexer</span><span class="p">,</span> <span class="n">formatter</span><span class="p">)</span>
+        <span class="c1"># default</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&lt;pre&gt;&lt;code&gt;</span><span class="si">{}</span><span class="s1">&lt;/code&gt;&lt;/pre&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">h</span><span class="o">.</span><span class="n">escape_html</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()))</span>
 
 <span class="n">renderer</span> <span class="o">=</span> <span class="n">HighlighterRenderer</span><span class="p">()</span>
-<span class="n">md</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span><span class="p">(</span><span class="s">&#39;fenced-code&#39;</span><span class="p">,))</span>
+<span class="n">md</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="n">renderer</span><span class="p">,</span> <span class="n">extensions</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;fenced-code&#39;</span><span class="p">,))</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">md</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
-<span class="s">Here is some code:</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">md</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Here is some code:</span>
 
-<span class="s">```python</span>
-<span class="s">print(123)</span>
-<span class="s">```</span>
+<span class="s2">```python</span>
+<span class="s2">print(123)</span>
+<span class="s2">```</span>
 
-<span class="s">More code:</span>
+<span class="s2">More code:</span>
 
-<span class="s">    print(123)</span>
-<span class="s">&quot;&quot;&quot;</span><span class="p">))</span>
+<span class="s2">    print(123)</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>The above code listing subclasses <a class="reference internal" href="#misaka.HtmlRenderer" title="misaka.HtmlRenderer"><code class="xref py py-class docutils literal"><span class="pre">HtmlRenderer</span></code></a> and implements
@@ -223,28 +239,28 @@ for a renderer with all its methods implemented.</p>
 <p><a class="reference external" href="http://tidy.sourceforge.net">tidy</a> is needed to run the tests. <a class="reference external" href="https://testrun.org/tox/">tox</a> can be used to run the tests on
 all supported Python versions with one command.</p>
 <p>Run one of the following commands to install tidy:</p>
-<div class="highlight-python"><div class="highlight"><pre>apt-get install tidy  # Debian and derivatives
-pacman -S tidyhtml    # Arch Linux
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">tidy</span>  <span class="c1"># Debian and derivatives</span>
+<span class="n">pacman</span> <span class="o">-</span><span class="n">S</span> <span class="n">tidyhtml</span>    <span class="c1"># Arch Linux</span>
 </pre></div>
 </div>
 <p>And run the tests with:</p>
-<div class="highlight-python"><div class="highlight"><pre>python setup.py test
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">test</span>
 </pre></div>
 </div>
 <p>It&#8217;s also possible to include or exclude tests. <code class="docutils literal"><span class="pre">-i</span></code> and <code class="docutils literal"><span class="pre">-e</span></code> accept a
 comma separated list of testcases:</p>
-<div class="highlight-python"><div class="highlight"><pre># Only run MarkdownConformanceTest_10
-python setup.py test -i MarkdownConformanceTest_10
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Only run MarkdownConformanceTest_10</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">test</span> <span class="o">-</span><span class="n">i</span> <span class="n">MarkdownConformanceTest_10</span>
 
-# Or everything except MarkdownConformanceTest_10
-python setup.py test -e MarkdownConformanceTest_10
+<span class="c1"># Or everything except MarkdownConformanceTest_10</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">test</span> <span class="o">-</span><span class="n">e</span> <span class="n">MarkdownConformanceTest_10</span>
 
-# Or everything except MarkdownConformanceTest_10 and MarkdownConformanceTest_103
-python setup.py test -e MarkdownConformanceTest_10,MarkdownConformanceTest_103
+<span class="c1"># Or everything except MarkdownConformanceTest_10 and MarkdownConformanceTest_103</span>
+<span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">test</span> <span class="o">-</span><span class="n">e</span> <span class="n">MarkdownConformanceTest_10</span><span class="p">,</span><span class="n">MarkdownConformanceTest_103</span>
 </pre></div>
 </div>
 <p><code class="docutils literal"><span class="pre">-l</span></code> prints a list of all testcases:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ python setup.py test -l
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ python setup.py test -l
 [... build output ...]
 MarkdownConformanceTest_10
 MarkdownConformanceTest_103
@@ -256,7 +272,7 @@ SmartypantsTest
 </div>
 <p>And <code class="docutils literal"><span class="pre">-b</span></code> runs benchmarks (<code class="docutils literal"><span class="pre">-i</span></code> and <code class="docutils literal"><span class="pre">-e</span></code> can also be used in
 combination with <code class="docutils literal"><span class="pre">-b</span></code>):</p>
-<div class="highlight-python"><div class="highlight"><pre>$ python setup.py test -b
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ python setup.py test -b
 [... build output ...]
 &gt;&gt; BenchmarkLibraries
 test_hoep                     3270         1.00 s/t     305.91 us/op
@@ -443,6 +459,24 @@ of ten repetitions and tries another ten if there&#8217;s time left.</p>
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="misaka.escape_html">
+<code class="descclassname">misaka.</code><code class="descname">escape_html</code><span class="sig-paren">(</span><em>text</em>, <em>escape_slash=False</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.escape_html" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binding for Hoedown&#8217;s HTML escaping function.</p>
+<p>The implementation is inspired by the OWASP XSS Prevention recommendations:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>&amp; --&gt; &amp;amp;
+&lt; --&gt; &amp;lt;
+&gt; --&gt; &amp;gt;
+&quot; --&gt; &amp;quot;
+&#39; --&gt; &amp;#x27;
+/ --&gt; &amp;#x2F;  when escape_slash is set to True
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.1.0.</span></p>
+</div>
+</dd></dl>
+
 </div>
 <div class="section" id="classes">
 <h3>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h3>
@@ -453,12 +487,6 @@ of ten repetitions and tries another ten if there&#8217;s time left.</p>
 <p><code class="docutils literal"><span class="pre">extensions</span></code> can be a list or tuple of extensions (e.g.
 <code class="docutils literal"><span class="pre">('fenced-code',</span> <span class="pre">'footnotes',</span> <span class="pre">'strikethrough')</span></code>) or an integer
 (e.g. <code class="docutils literal"><span class="pre">EXT_FENCED_CODE</span> <span class="pre">|</span> <span class="pre">EXT_FOOTNOTES</span> <span class="pre">|</span> <span class="pre">EXT_STRIKETHROUGH</span></code>).</p>
-<dl class="method">
-<dt id="misaka.Markdown.__call__">
-<code class="descname">__call__</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.Markdown.__call__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parses and renders markdown text.</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="class">
@@ -473,6 +501,93 @@ The default value is 0, no headers.</p>
 <p>An instance of the <code class="docutils literal"><span class="pre">HtmlRenderer</span></code> can not be shared with multiple
 <a class="reference internal" href="#misaka.Markdown" title="misaka.Markdown"><code class="xref py py-class docutils literal"><span class="pre">Markdown</span></code></a> instances, because it carries state that&#8217;s changed
 by the <code class="docutils literal"><span class="pre">Markdown</span></code> instance.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="misaka.SaferHtmlRenderer">
+<em class="property">class </em><code class="descclassname">misaka.</code><code class="descname">SaferHtmlRenderer</code><span class="sig-paren">(</span><em>flags=()</em>, <em>sanitization_mode='skip-html'</em>, <em>nesting_level=0</em>, <em>link_rewrite=None</em>, <em>img_src_rewrite=None</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.SaferHtmlRenderer" title="Permalink to this definition">¶</a></dt>
+<dd><p>A subclass of <a class="reference internal" href="#misaka.HtmlRenderer" title="misaka.HtmlRenderer"><code class="xref py py-class docutils literal"><span class="pre">HtmlRenderer</span></code></a> which adds protections against
+Cross-Site Scripting (XSS):</p>
+<ol class="arabic simple">
+<li>The <code class="docutils literal"><span class="pre">'skip-html'</span></code> flag is turned on by default, preventing injection of
+HTML elements. If you want to escape HTML code instead of removing it
+entirely, change <code class="docutils literal"><span class="pre">sanitization_mode</span></code> to <code class="docutils literal"><span class="pre">'escape'</span></code>.</li>
+<li>The URLs of links and images are filtered to prevent JavaScript injection.
+This also blocks the rendering of email addresses into links.
+See the <a class="reference internal" href="#misaka.SaferHtmlRenderer.check_url" title="misaka.SaferHtmlRenderer.check_url"><code class="xref py py-meth docutils literal"><span class="pre">check_url()</span></code></a> method below.</li>
+<li>Optionally, the URLs can also be rewritten to counter other attacks such
+as phishing.</li>
+</ol>
+<p>Enabling URL rewriting requires extra arguments:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>link_rewrite</strong> &#8211; the URL of a redirect page, necessary to rewrite the
+<code class="docutils literal"><span class="pre">href</span></code> attributes of links</li>
+<li><strong>img_src_rewrite</strong> &#8211; the URL of an image proxy, necessary to rewrite the
+<code class="docutils literal"><span class="pre">src</span></code> attributes of images</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Both strings should include a <code class="docutils literal"><span class="pre">{url}</span></code> placeholder for the URL-encoded
+target. Examples:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">link_rewrite</span><span class="o">=</span><span class="s1">&#39;https://example.com/redirect?url=</span><span class="si">{url}</span><span class="s1">&#39;</span><span class="p">,</span>
+<span class="n">img_src_rewrite</span><span class="o">=</span><span class="s1">&#39;https://img-proxy-domain/</span><span class="si">{url}</span><span class="s1">&#39;</span>
+</pre></div>
+</div>
+<div class="versionadded">
+<p><span class="versionmodified">New in version 2.1.0.</span></p>
+</div>
+<dl class="method">
+<dt id="misaka.SaferHtmlRenderer.autolink">
+<code class="descname">autolink</code><span class="sig-paren">(</span><em>raw_url</em>, <em>is_email</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.SaferHtmlRenderer.autolink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters links generated by the <code class="docutils literal"><span class="pre">autolink</span></code> extension.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.SaferHtmlRenderer.check_url">
+<code class="descname">check_url</code><span class="sig-paren">(</span><em>url</em>, <em>is_image_src=False</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.SaferHtmlRenderer.check_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is used to check a URL.</p>
+<p>Returns <code class="xref py py-obj docutils literal"><span class="pre">True</span></code> if the URL is &#8220;safe&#8221;, <code class="xref py py-obj docutils literal"><span class="pre">False</span></code> otherwise.</p>
+<p>The default implementation only allows HTTP and HTTPS links. That means
+no <code class="docutils literal"><span class="pre">mailto:</span></code>, no <code class="docutils literal"><span class="pre">xmpp:</span></code>, no <code class="docutils literal"><span class="pre">ftp:</span></code>, etc.</p>
+<p>This method exists specifically to allow easy customization of link
+filtering through subclassing, so don&#8217;t hesitate to write your own.</p>
+<p>If you&#8217;re thinking of implementing a blacklist approach, see
+&#8220;<a class="reference external" href="http://security.stackexchange.com/q/148428/37409">Which URL schemes are dangerous (XSS exploitable)?</a>&#8221;.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.SaferHtmlRenderer.image">
+<code class="descname">image</code><span class="sig-paren">(</span><em>raw_url</em>, <em>title=''</em>, <em>alt=''</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.SaferHtmlRenderer.image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters the <code class="docutils literal"><span class="pre">src</span></code> attribute of an image.</p>
+<p>Note that filtering the source URL of an <code class="docutils literal"><span class="pre">&lt;img&gt;</span></code> tag is only a very
+basic protection, and it&#8217;s mostly useless in modern browsers (they block
+JavaScript in there by default). An example of attack that filtering
+does not thwart is phishing based on HTTP Auth, see <a class="reference external" href="https://github.com/liberapay/liberapay.com/issues/504">this issue</a> for details.</p>
+<p>To mitigate this issue you should only allow images from trusted services,
+for example your own image store, or a proxy (see <a class="reference internal" href="#misaka.SaferHtmlRenderer.rewrite_url" title="misaka.SaferHtmlRenderer.rewrite_url"><code class="xref py py-meth docutils literal"><span class="pre">rewrite_url()</span></code></a>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.SaferHtmlRenderer.link">
+<code class="descname">link</code><span class="sig-paren">(</span><em>content</em>, <em>raw_url</em>, <em>title=''</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.SaferHtmlRenderer.link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters links.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="misaka.SaferHtmlRenderer.rewrite_url">
+<code class="descname">rewrite_url</code><span class="sig-paren">(</span><em>url</em>, <em>is_image_src=False</em><span class="sig-paren">)</span><a class="headerlink" href="#misaka.SaferHtmlRenderer.rewrite_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called to rewrite URLs.</p>
+<p>It uses either <code class="docutils literal"><span class="pre">self.link_rewrite</span></code> or <code class="docutils literal"><span class="pre">self.img_src_rewrite</span></code>
+depending on the value of <code class="docutils literal"><span class="pre">is_image_src</span></code>. The URL is returned
+unchanged if the corresponding attribute is <code class="xref py py-obj docutils literal"><span class="pre">None</span></code>.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
@@ -658,10 +773,10 @@ are enabled and a language is defined in ther code block.</p>
 <dd><p>Depends on the math extension.</p>
 <p><code class="docutils literal"><span class="pre">displaymode</span></code> can be <code class="docutils literal"><span class="pre">0</span></code> or <code class="docutils literal"><span class="pre">1</span></code>. This is how
 <a class="reference internal" href="#misaka.HtmlRenderer" title="misaka.HtmlRenderer"><code class="xref py py-class docutils literal"><span class="pre">HtmlRenderer</span></code></a> handles it:</p>
-<div class="code python highlight-python"><div class="highlight"><pre><span class="k">if</span> <span class="n">displaymode</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-    <span class="k">return</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">[{}</span><span class="se">\\</span><span class="s">]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>  <span class="c"># displaymode == 0</span>
-    <span class="k">return</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">({}</span><span class="se">\\</span><span class="s">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">displaymode</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">[</span><span class="si">{}</span><span class="se">\\</span><span class="s1">]&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>  <span class="c1"># displaymode == 0</span>
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">(</span><span class="si">{}</span><span class="se">\\</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -707,7 +822,7 @@ are enabled and a language is defined in ther code block.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2011-2015, Frank Smit.
+        &copy; Copyright 2011-2017, Frank Smit.
 
     </p>
   </div>
@@ -729,7 +844,7 @@ are enabled and a language is defined in ther code block.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.0.0',
+            VERSION:'2.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
