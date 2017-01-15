@@ -15,11 +15,11 @@ class EscapeHtmlTest(TestCase):
 render = Markdown(SaferHtmlRenderer())
 render_escape = Markdown(SaferHtmlRenderer(sanitization_mode='escape'))
 renderer_rewrite = SaferHtmlRenderer(
-    link_rewrite='//example.com/redirect/{link}',
-    img_src_rewrite='//img_proxy/{link}',
+    link_rewrite='//example.com/redirect/{url}',
+    img_src_rewrite='//img_proxy/{url}',
 )
 render_rewrite = Markdown(renderer_rewrite)
-rewrite_link = renderer_rewrite.rewrite_link
+rewrite_url = renderer_rewrite.rewrite_url
 
 
 class SaferHtmlRendererTest(TestCase):
@@ -64,10 +64,10 @@ class SaferHtmlRendererTest(TestCase):
         expected = '<p>&lt;javascript:foo&gt;</p>\n'
         ok(actual).diff(expected)
 
-        link = 'javascript:0'
-        encoded_link = ''.join('&x{0:x};'.format(ord(c)) for c in link)
-        html = render('<%s>' % encoded_link)
-        ok(html).not_contains(link)
+        url = 'javascript:0'
+        encoded_url = ''.join('&x{0:x};'.format(ord(c)) for c in url)
+        html = render('<%s>' % encoded_url)
+        ok(html).not_contains(url)
 
     def test_link_filtering_with_nice_data(self):
         for url in ('http://a', 'https://b'):
@@ -109,7 +109,7 @@ class SaferHtmlRendererTest(TestCase):
         for url in ('http://a', "https://b?x&y"):
             actual = render_rewrite('<%s>' % url)
             expected = '<p><a href="%s">%s</a></p>\n'
-            expected %= (rewrite_link(url), escape_html(url))
+            expected %= (rewrite_url(url), escape_html(url))
             ok(actual).diff(expected)
 
         supplied = "<alice@example.net>"
@@ -120,7 +120,7 @@ class SaferHtmlRendererTest(TestCase):
         for url in ('http://a', 'https://b'):
             actual = render_rewrite("['foo](%s \"bar'\")" % url)
             expected = '<p><a href="%s" title="bar&#39;">&#39;foo</a></p>\n'
-            ok(actual).diff(expected % rewrite_link(url))
+            ok(actual).diff(expected % rewrite_url(url))
 
     def test_image_src_rewriting(self):
         actual = render_rewrite('![](http:"foo")')
