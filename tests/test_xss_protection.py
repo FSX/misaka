@@ -119,8 +119,8 @@ class SaferHtmlRendererTest(TestCase):
     def test_link_rewriting(self):
         for url in ('http://a', 'https://b'):
             actual = render_rewrite("['foo](%s \"bar'\")" % url)
-            expected = '<p><a href="%s" title="bar&#39;">&#39;foo</a></p>\n'
-            ok(actual).diff(expected % rewrite_url(url))
+            expected = '<p><a href="%s" title="bar&#39;">&#39;foo</a></p>\n' % rewrite_url(url)
+            ok(actual).diff(expected)
 
     def test_image_src_rewriting(self):
         actual = render_rewrite('![](http:"foo")')
