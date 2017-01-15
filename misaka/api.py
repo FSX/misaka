@@ -270,6 +270,7 @@ class SaferHtmlRenderer(HtmlRenderer):
        HTML elements. If you want to escape HTML code instead of removing it
        entirely, change ``sanitization_mode`` to ``'escape'``.
     2. The URLs of links and images are filtered to prevent JavaScript injection.
+       This also blocks the rendering of email addresses into links.
        See the :meth:`check_link` method below.
     3. Optionally, the URLs can also be rewritten to counter other attacks such
        as phishing.
@@ -348,8 +349,13 @@ class SaferHtmlRenderer(HtmlRenderer):
 
         Returns :obj:`True` if the URL is "safe", :obj:`False` otherwise.
 
-        The default implementation only allows HTTP and HTTPS links. Using a
-        blacklist approach is not recommended, see the
+        The default implementation only allows HTTP and HTTPS links. That means
+        no ``mailto:``, no ``xmpp:``, no ``ftp:``, etc.
+
+        This method exists specifically to allow easy customization of link
+        filtering through subclassing, so don't hesitate to write your own.
+
+        However using a blacklist approach is not recommended, see the
         `OWASP XSS Filter Evasion Cheat Sheet
         <https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet>`_ for
         an illustration of why.
