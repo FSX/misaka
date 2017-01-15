@@ -35,6 +35,14 @@ Or grab the source from Github::
 
 Consult the `CFFI documentation`_ if you experience problems installing CFFI.
 
+Use the following commands to install Misaka in Termux_::
+
+    apt update
+    apt upgrade
+    apt install clang python python-dev libffi libffi-dev
+    pip install misaka
+
+.. _Termux: https://termux.com/
 .. _CFFI documentation: https://cffi.readthedocs.org/en/latest/installation.html
 
 
