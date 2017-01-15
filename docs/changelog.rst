@@ -5,7 +5,7 @@ Changelog
 
 Date format is year-month-day.
 
-2.0.1 (2017-01-15)
+2.1.0 (2017-01-15)
 ^^^^^^^^^^^^^^^^^^
 
 - Add a new renderer class with XSS protections. By Changaco. (`#60`_)
