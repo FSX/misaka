@@ -281,7 +281,7 @@ class SaferHtmlRenderer(HtmlRenderer):
     :arg img_src_rewrite: the URL of an image proxy, necessary to rewrite the
         ``src`` attributes of images
 
-    Both srings should include a ``{link}`` placeholder for the URL-encoded
+    Both strings should include a ``{link}`` placeholder for the URL-encoded
     target. Examples::
 
         link_rewrite='https://example.com/redirect?url={link}',
