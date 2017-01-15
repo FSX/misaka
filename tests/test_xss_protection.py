@@ -106,7 +106,7 @@ class SaferHtmlRendererTest(TestCase):
         ok(actual).diff(expected)
 
     def test_autolink_rewriting(self):
-        for url in ('http://a', "https://b?x&y"):
+        for url in ('http://a', 'https://b?x&y'):
             actual = render_rewrite('<%s>' % url)
             expected = '<p><a href="%s">%s</a></p>\n'
             expected %= (rewrite_url(url), escape_html(url))
