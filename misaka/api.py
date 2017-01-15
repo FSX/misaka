@@ -321,7 +321,7 @@ class SaferHtmlRenderer(HtmlRenderer):
         To mitigate this issue you should only allow images from trusted services,
         for example your own image store, or a proxy (see :meth:`rewrite_link`).
         """
-        if self.check_link(raw_link):
+        if self.check_link(raw_link, is_image_src=True):
             link = self.rewrite_link(raw_link, is_image_src=True)
             maybe_alt = ' alt="%s"' % escape_html(alt) if alt else ''
             maybe_title = ' title="%s"' % escape_html(title) if title else ''
