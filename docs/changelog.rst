@@ -11,6 +11,7 @@ Date format is year-month-day.
 - Add a new renderer class with XSS protections. By Changaco. (`#60`_)
 - Add Python 2.6 support. By sprin. (`#48`_)
 - Add Termux_ installation instructions to documentation.
+- Update Hoedown source files.
 
 .. _#60: https://github.com/FSX/misaka/pull/60
 .. _#48: https://github.com/FSX/misaka/pull/48
