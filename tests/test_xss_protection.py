@@ -126,3 +126,9 @@ class SaferHtmlRendererTest(TestCase):
         actual = render_rewrite('![](http:"foo")')
         expected = '<p><img src="//img_proxy/http%3A%22foo%22" /></p>\n'
         ok(actual).diff(expected)
+
+    def test_bug_pyformat_in_content(self):
+        # See: https://github.com/FSX/misaka/issues/66
+        actual = render('[![xxx](http://www.example.com/?v=%s)](http://www.example.com/])')
+        expected = '<p><a href="http://www.example.com/]"><img src="http://www.example.com/?v=%s" alt="xxx" /></a></p>\n'
+        ok(actual).diff(expected)

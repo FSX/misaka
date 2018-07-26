@@ -342,7 +342,7 @@ class SaferHtmlRenderer(HtmlRenderer):
             url = self.rewrite_url(raw_url)
             maybe_title = ' title="%s"' % escape_html(title) if title else ''
             url = escape_html(url)
-            return ('<a href="%s"%s>' + content + '</a>') % (url, maybe_title)
+            return ('<a href="%s"%s>'  % (url, maybe_title))  + content + '</a>'
         else:
             return escape_html("[%s](%s)" % (content, raw_url))
 
