@@ -14,5 +14,11 @@ python:
 before_install:
  - sudo apt-get install tidy
 
+install:
+- pip install codecov
+
 script:
- - python setup.py test
+ - coverage run setup.py test
+
+after_success:
+- codecov
