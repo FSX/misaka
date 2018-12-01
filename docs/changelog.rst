@@ -5,6 +5,19 @@ Changelog
 
 Date format is year-month-day.
 
+2.1.1 (2018-12-01)
+^^^^^^^^^^^^^^^^^^
+
+- Fixed segfault caused by missing NULL-check (`#67`_).
+
+
+NOTE: Misaka doesn't work in Python 2.6 anymore, because pycparser,
+a dependency of CFFI, doesn't work in Python 2.6 anymore.
+
+
+.. _#67: https://github.com/FSX/misaka/issues/67
+
+
 2.1.0 (2017-01-15)
 ^^^^^^^^^^^^^^^^^^
 
