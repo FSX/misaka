@@ -363,3 +363,24 @@ class CustomRendererTest(TestCase):
 
         test.__name__ = 'test_' + name
         self.add_test(test)
+
+
+class BugRenderer(m.BaseRenderer):
+    def __init__(self):
+        m.BaseRenderer.__init__(self)
+
+    def codespan(self, text):
+        return '(' + text + ')'
+
+    def normal_text(self, text):
+        return text
+
+    def paragraph(self, content):
+        return content
+
+
+class TestBugs(TestCase):
+    def test_empty_span(self):
+        # See: https://github.com/FSX/misaka/issues/67
+        md = m.Markdown(BugRenderer())
+        md("` `")

@@ -174,7 +174,7 @@ def cb_footnote_def(ob, content, num, data):
               '     const hoedown_renderer_data *data)')
 def cb_blockhtml(ob, text, data):
     renderer = ffi.from_handle(lib.misaka_get_renderer(data))
-    text = ffi.string(text.data, text.size).decode('utf-8')
+    text = to_string(text)
     result = renderer.blockhtml(text)
     if result:
         lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
@@ -184,7 +184,7 @@ def cb_blockhtml(ob, text, data):
               '    hoedown_autolink_type type, const hoedown_renderer_data *data)')
 def cb_autolink(ob, link, type, data):
     renderer = ffi.from_handle(lib.misaka_get_renderer(data))
-    link = ffi.string(link.data, link.size).decode('utf-8')
+    link = to_string(link)
     is_email = int(type) & AUTOLINK_EMAIL != 0
     result = renderer.autolink(link, is_email)
     if result:
@@ -197,7 +197,7 @@ def cb_autolink(ob, link, type, data):
               '    const hoedown_renderer_data *data)')
 def cb_codespan(ob, text, data):
     renderer = ffi.from_handle(lib.misaka_get_renderer(data))
-    text = ffi.string(text.data, text.size).decode('utf-8')
+    text = to_string(text)
     result = renderer.codespan(text)
     if result:
         lib.hoedown_buffer_puts(ob, result.encode('utf-8'))
