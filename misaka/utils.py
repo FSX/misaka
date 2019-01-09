@@ -58,4 +58,4 @@ def deprecation(message):
 def to_string(buffer):
     if buffer == ffi.NULL or buffer.size == 0:
         return ''
-    return ffi.string(buffer.data, buffer.size).decode('utf-8')
+    return ffi.string(buffer.data, buffer.size).decode('utf-8', 'ignore')
