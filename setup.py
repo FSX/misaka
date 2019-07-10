@@ -1,9 +1,5 @@
-import os
 import os.path
-import shutil
-import subprocess
-import sys
-from setuptools import setup, Command
+from setuptools import setup
 
 
 install_requires=['cffi>=1.0.0']
@@ -15,44 +11,16 @@ except ImportError:
 dirname = os.path.dirname(os.path.abspath(__file__))
 
 
-class TestCommand(Command):
-    description = 'run tests'
-    user_options = [
-        ('include=', 'i', 'comma separated list of testcases'),
-        ('exclude=', 'e', 'comma separated list of testcases'),
-        ('benchmark', 'b', 'run bechmarks'),
-        ('list', 'l', 'list all testcases'),
-    ]
-
-    def initialize_options(self):
-        self.include = ''
-        self.exclude = ''
-        self.benchmark = 0
-        self.list = 0
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        self.run_command('develop')
-        errno = subprocess.call([sys.executable, 'tests/run_tests.py'] + sys.argv[2:])
-        sys.exit(errno)
-
-
 setup(
     name='misaka',
-    version='2.1.1',
-    description='A CFFI binding for Hoedown, a markdown parsing library.',
+    version='3.0.0',
+    description='A CFFI binding for MD4C, a markdown parsing library.',
     author='Frank Smit',
     author_email='frank@61924.nl',
     url='https://github.com/FSX/misaka',
     license='MIT',
     long_description=open(os.path.join(dirname, 'README.rst')).read(),
-    scripts=['scripts/misaka'],
     packages=['misaka'],
-    cmdclass={
-        'test': TestCommand
-    },
     classifiers = [
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
