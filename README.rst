@@ -17,6 +17,21 @@ Documentation can be found at: http://misaka.61924.nl/
 .. _Hoedown: https://github.com/hoedown/hoedown
 
 
+Professional support
+====================
+
+Professional support for psutil is available as part of the `Tidelift
+Subscription`_. Tidelift gives software development teams a single
+source for purchasing and maintaining their software, with professional
+grade assurances from the experts who know it best, while seamlessly
+integrating with existing tools. By subscribing you will help support
+Misaka future development. Alternatively consider making a small
+`donation`_.
+
+.. _Tidelift Subscription: https://tidelift.com/subscription/pkg/pypi-misaka?utm_source=pypi-misaka&utm_medium=referral&utm_campaign=readme
+.. _`donation`: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FB6NWEJC87BJY&currency_code=EUR&source=url
+
+
 Installation
 ------------
 
