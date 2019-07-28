@@ -27,6 +27,14 @@ SOURCES = (
     'extra.c',
 )
 
+EXTRA = """\
+extern "Python" int _misaka_enter_block(MD_BLOCKTYPE /*type*/, void* /*detail*/, void* /*userdata*/);
+extern "Python" int _misaka_leave_block(MD_BLOCKTYPE /*type*/, void* /*detail*/, void* /*userdata*/);
+extern "Python" int _misaka_enter_span(MD_SPANTYPE /*type*/, void* /*detail*/, void* /*userdata*/);
+extern "Python" int _misaka_leave_span(MD_SPANTYPE /*type*/, void* /*detail*/, void* /*userdata*/);
+extern "Python" int _misaka_text(MD_TEXTTYPE /*type*/, const MD_CHAR* /*text*/, MD_SIZE /*size*/, void* /*userdata*/);
+extern "Python" void _misaka_debug_log(const char* /*msg*/, void* /*userdata*/);
+"""
 
 RE_FLAG = re.compile(r"""
 ^\#define
@@ -66,7 +74,7 @@ def merge_headers(headers):
     # Headers are merged so there's no need for local includes.
     # Header contents are also piped through different programs
     # so the preprocessor can't find the includes anyway.
-    s = re.sub('#include "[a-zA-Z0-9]+\.h"', '', s)
+    s = re.sub(r'#include "[a-zA-Z0-9]+\.h"', '', s)
 
     return s
 
@@ -115,4 +123,6 @@ flags = get_flags_from_header(header)
 
 ffi.cdef(flags)
 ffi.cdef(proto)
+ffi.cdef(EXTRA)
+
 ffi.compile()
