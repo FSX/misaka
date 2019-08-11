@@ -12,6 +12,10 @@ int misaka_render_html(
     unsigned renderer_flags
 );
 
+void misaka_escape_html(struct membuffer* out, const MD_CHAR* data, MD_SIZE size);
+void misaka_escape_url(struct membuffer* out, const MD_CHAR* data, MD_SIZE size);
+void misaka_codepoint_to_utf8(struct membuffer* out, unsigned codepoint);
+
 #ifdef __cplusplus
     }  /* extern "C" { */
 #endif

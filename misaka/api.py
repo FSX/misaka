@@ -1,6 +1,3 @@
-from dataclasses import dataclass, field as dataclass_field, fields as dataclass_fields
-from enum import IntEnum
-
 from . import const
 from . import callbacks  # Activate CFFI callbacks.
 from ._md4c import lib, ffi
@@ -53,18 +50,15 @@ class Base:
         if isinstance(text, str):
             text = text.encode('utf-8')
 
-        try:
-            obuffer = Buffer(self.approximate_buffer_size(text))
-            session = _Session(self, obuffer)
+        with Buffer(self.approximate_buffer_size(text)) as ob:
+            session = _Session(self, ob)
             handle = ffi.new_handle(session)
             status = lib.md_parse(text, len(text), self.parser, handle)
 
             _check_status(status, 'md_parse()')
 
-            result = obuffer.to_str()
+            result = ob.to_str()
             return result
-        finally:
-            obuffer.fini()
 
     __call__ = render
 

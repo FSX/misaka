@@ -37,3 +37,9 @@ class Buffer:
         if isinstance(text, str):
             text = text.encode('utf-8')
         lib.membuf_append(self._storage, text, len(text))
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.fini()

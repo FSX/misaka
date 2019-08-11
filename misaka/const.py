@@ -19,6 +19,7 @@ PARSER_FLAGS = {}
 BLOCK_TYPE = {}
 SPAN_TYPE = {}
 TEXT_TYPE = {}
+ALIGN = {}
 
 
 if not hasattr(sys.modules[__name__], 'MD_FLAG_TASKLISTS'):
@@ -26,3 +27,4 @@ if not hasattr(sys.modules[__name__], 'MD_FLAG_TASKLISTS'):
     _set_constants(BLOCK_TYPE, 'MD_BLOCK_', 'MD_')
     _set_constants(SPAN_TYPE, 'MD_SPAN_', 'MD_')
     _set_constants(TEXT_TYPE, 'MD_TEXT_', 'MD_')
+    _set_constants(ALIGN, 'MD_ALIGN_', 'MD_ALIGN_')

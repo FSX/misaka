@@ -2,7 +2,8 @@ from dataclasses import dataclass, field, fields
 
 from . import const
 from ._md4c import ffi
-from .types import char, Align
+from .types import char, Attribute
+from .utils import cstr_to_str
 
 
 def _ctype_field(value):
@@ -21,6 +22,8 @@ class BaseDetail:
         args = {}
 
         for field in fields(cls):
+            if field.name == 'ctype':
+                continue
             if field.type in (bool, int):
                 args[field.name] = getattr(c_obj, field.name)
             elif field.type == char:
@@ -28,13 +31,31 @@ class BaseDetail:
                 if value == '\x00':
                     value = ''
                 args[field.name] = value
-            # TODO: Align
-            # TODO: Attribute?
-            # TODO: str
-            # else:
-            #     raise TypeError(f'{field.type} not supported')
+            elif field.type == Attribute:
+                args[field.name] = _c_attr_py_attr(getattr(c_obj, field.name))
+            else:
+                raise TypeError(f'{field.name} of type {field.type} not supported')
 
         return cls(**args)
+
+
+def _c_attr_py_attr(c_obj):
+    attr = Attribute([])
+    ptr = c_obj.text
+
+    n = 0
+    while c_obj.substr_offsets[n] < c_obj.size:
+        ftype = c_obj.substr_types[n]
+        offset = c_obj.substr_offsets[n]
+        size = c_obj.substr_offsets[n+1] - offset
+        ptr = ptr + offset
+        attr.parts.append(Attribute.Part(
+            cstr_to_str(ptr, size),
+            ftype,
+        ))
+        n += 1
+
+    return attr
 
 
 class BlockDetail:
@@ -66,28 +87,28 @@ class BlockDetail:
     @dataclass
     class Code(BaseDetail):
         ctype: str = _ctype_field('MD_BLOCK_CODE_DETAIL *')
-        # TODO: info
-        # TODO: lang
+        info: Attribute
+        lang: Attribute
         fence_char: char
 
     @dataclass
     class Td(BaseDetail):
         ctype: str = _ctype_field('MD_BLOCK_TD_DETAIL *')
-        align: Align
+        align: int
 
 
 class SpanDetail:
     @dataclass
     class A(BaseDetail):
         ctype: str = _ctype_field('MD_SPAN_A_DETAIL *')
-        # TODO: href
-        # TODO: title
+        href: Attribute
+        title: Attribute
 
     @dataclass
     class Img(BaseDetail):
         ctype: str = _ctype_field('MD_SPAN_IMG_DETAIL *')
-        # TODO: src
-        # TODO: title
+        src: Attribute
+        title: Attribute
 
 
 _block_type_detail_mapping = {
