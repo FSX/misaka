@@ -43,3 +43,10 @@ class Buffer:
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.fini()
+
+
+def check_status(status, func_name):
+    if status == -1:
+        raise MemoryError(f'{func_name} ran out of memory')
+    if status > 0:
+        raise RuntimeError(f'{func_name} exited with status code {status}')

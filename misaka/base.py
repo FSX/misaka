@@ -1,34 +1,15 @@
 from . import const
 from . import callbacks  # Activate CFFI callbacks.
 from ._md4c import lib, ffi
-from .utils import flags_to_int, Buffer
+from .utils import check_status, flags_to_int, Buffer
 
 
 __all__ = [
-    'html',
     'Base',
 ]
 
 
 EMPTY = tuple()
-
-
-# TODO: Render flags.
-def html(text, parser_flags=None):
-    if isinstance(text, str):
-        text = text.encode('utf-8')
-
-    parser_flags = flags_to_int(const.PARSER_FLAGS, parser_flags or EMPTY)
-
-    b_out = _new_buffer(int(len(text) * 1.2))
-
-    status = lib.misaka_render_html(text, len(text), b_out, parser_flags, 0)
-    _check_status(status, 'misaka_render_html()')
-
-    result = _buffer_to_str(b_out)
-    _free_buffer(b_out)
-
-    return result
 
 
 class Base:
@@ -55,7 +36,7 @@ class Base:
             handle = ffi.new_handle(session)
             status = lib.md_parse(text, len(text), self.parser, handle)
 
-            _check_status(status, 'md_parse()')
+            check_status(status, 'md_parse()')
 
             result = ob.to_str()
             return result
@@ -90,10 +71,3 @@ class _Session:
     def __init__(self, renderer, buffer):
         self.renderer = renderer
         self.buffer = buffer
-
-
-def _check_status(status, func_name):
-    if status == -1:
-        raise MemoryError(f'{func_name} ran out of memory')
-    if status > 0:
-        raise RuntimeError(f'{func_name} exited with status code {status}')

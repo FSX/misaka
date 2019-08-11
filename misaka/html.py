@@ -1,8 +1,24 @@
 from . import const
 from ._md4c import lib
-from .api import Base
+from .base import Base
 from .detail import BlockDetail, SpanDetail
-from .utils import Buffer
+from .utils import check_status, flags_to_int, Buffer
+
+
+EMPTY = tuple()
+
+
+# TODO: Render flags.
+def html(text, parser_flags=None):
+    if isinstance(text, str):
+        text = text.encode('utf-8')
+
+    parser_flags = flags_to_int(const.PARSER_FLAGS, parser_flags or EMPTY)
+
+    with Buffer(int(len(text) * 1.2)) as ob:
+        status = lib.misaka_render_html(text, len(text), ob._storage, parser_flags, 0)
+        check_status(status, 'misaka_render_html()')
+        return ob.to_str()
 
 
 class Html(Base):
