@@ -9,7 +9,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
+        operating-system: [ubuntu-latest]
         python-version: [2.7, 3.5, 3.6, 3.7]
 
     steps:
