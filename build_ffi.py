@@ -289,6 +289,54 @@ void hoedown_html_smartypants(hoedown_buffer *ob, const uint8_t *data, size_t si
 // ---------------
 
 void *misaka_get_renderer(const hoedown_renderer_data *data);
+
+
+// ------------------------
+// --- Python callbacks ---
+// ------------------------
+
+/* block level callbacks - NULL skips the block */
+extern "Python" void _misaka_blockcode(hoedown_buffer *ob, const hoedown_buffer *text, const hoedown_buffer *lang, const hoedown_renderer_data *data);
+extern "Python" void _misaka_blockquote(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" void _misaka_header(hoedown_buffer *ob, const hoedown_buffer *content, int level, const hoedown_renderer_data *data);
+extern "Python" void _misaka_hrule(hoedown_buffer *ob, const hoedown_renderer_data *data);
+extern "Python" void _misaka_list(hoedown_buffer *ob, const hoedown_buffer *content, hoedown_list_flags flags, const hoedown_renderer_data *data);
+extern "Python" void _misaka_listitem(hoedown_buffer *ob, const hoedown_buffer *content, hoedown_list_flags flags, const hoedown_renderer_data *data);
+extern "Python" void _misaka_paragraph(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" void _misaka_table(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" void _misaka_table_header(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" void _misaka_table_body(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" void _misaka_table_row(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" void _misaka_table_cell(hoedown_buffer *ob, const hoedown_buffer *content, hoedown_table_flags flags, const hoedown_renderer_data *data);
+extern "Python" void _misaka_footnotes(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" void _misaka_footnote_def(hoedown_buffer *ob, const hoedown_buffer *content, unsigned int num, const hoedown_renderer_data *data);
+extern "Python" void _misaka_blockhtml(hoedown_buffer *ob, const hoedown_buffer *text, const hoedown_renderer_data *data);
+
+/* span level callbacks - NULL or return 0 prints the span verbatim */
+extern "Python" int _misaka_autolink(hoedown_buffer *ob, const hoedown_buffer *link, hoedown_autolink_type type, const hoedown_renderer_data *data);
+extern "Python" int _misaka_codespan(hoedown_buffer *ob, const hoedown_buffer *text, const hoedown_renderer_data *data);
+extern "Python" int _misaka_double_emphasis(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" int _misaka_emphasis(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" int _misaka_underline(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" int _misaka_highlight(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" int _misaka_quote(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" int _misaka_image(hoedown_buffer *ob, const hoedown_buffer *link, const hoedown_buffer *title, const hoedown_buffer *alt, const hoedown_renderer_data *data);
+extern "Python" int _misaka_linebreak(hoedown_buffer *ob, const hoedown_renderer_data *data);
+extern "Python" int _misaka_link(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_buffer *link, const hoedown_buffer *title, const hoedown_renderer_data *data);
+extern "Python" int _misaka_triple_emphasis(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" int _misaka_strikethrough(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" int _misaka_superscript(hoedown_buffer *ob, const hoedown_buffer *content, const hoedown_renderer_data *data);
+extern "Python" int _misaka_footnote_ref(hoedown_buffer *ob, unsigned int num, const hoedown_renderer_data *data);
+extern "Python" int _misaka_math(hoedown_buffer *ob, const hoedown_buffer *text, int displaymode, const hoedown_renderer_data *data);
+extern "Python" int _misaka_raw_html(hoedown_buffer *ob, const hoedown_buffer *text, const hoedown_renderer_data *data);
+
+/* low level callbacks - NULL copies input directly into the output */
+extern "Python" void _misaka_entity(hoedown_buffer *ob, const hoedown_buffer *text, const hoedown_renderer_data *data);
+extern "Python" void _misaka_normal_text(hoedown_buffer *ob, const hoedown_buffer *text, const hoedown_renderer_data *data);
+
+/* miscellaneous callbacks */
+extern "Python" void _misaka_doc_header(hoedown_buffer *ob, int inline_render, const hoedown_renderer_data *data);
+extern "Python" void _misaka_doc_footer(hoedown_buffer *ob, int inline_render, const hoedown_renderer_data *data);
 """)
 
 
