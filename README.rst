@@ -20,7 +20,7 @@ Documentation can be found at: http://misaka.61924.nl/
 Professional support
 ====================
 
-Professional support for psutil is available as part of the `Tidelift
+Professional support for Misaka is available as part of the `Tidelift
 Subscription`_. Tidelift gives software development teams a single
 source for purchasing and maintaining their software, with professional
 grade assurances from the experts who know it best, while seamlessly
