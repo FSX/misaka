@@ -5,6 +5,15 @@ Changelog
 
 Date format is year-month-day.
 
+2.1.2 (2019-10-17)
+^^^^^^^^^^^^^^^^^^
+
+- Misaka shoulds now work on hardened security-hardened systems (`#72`_).
+
+
+.. _#72: https://github.com/FSX/misaka/issues/72
+
+
 2.1.1 (2018-12-01)
 ^^^^^^^^^^^^^^^^^^
 

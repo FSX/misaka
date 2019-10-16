@@ -6,7 +6,7 @@ import sys
 from setuptools import setup, Command
 
 
-install_requires=['cffi>=1.0.0']
+install_requires=['cffi>=1.12.0']
 try:
     import importlib
 except ImportError:
@@ -41,7 +41,7 @@ class TestCommand(Command):
 
 setup(
     name='misaka',
-    version='2.1.1',
+    version='2.1.2',
     description='A CFFI binding for Hoedown, a markdown parsing library.',
     author='Frank Smit',
     author_email='frank@61924.nl',
@@ -59,17 +59,17 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: C',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Text Processing :: Markup',
         'Topic :: Text Processing :: Markup :: HTML',
         'Topic :: Utilities'
     ],
-    setup_requires=['cffi>=1.0.0'],
+    setup_requires=['cffi>=1.12.0'],
     install_requires=install_requires,
     cffi_modules=['build_ffi.py:ffi'],
 )
