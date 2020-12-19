@@ -77,7 +77,7 @@ typedef enum hoedown_table_flags {
 typedef enum hoedown_autolink_type {
 	HOEDOWN_AUTOLINK_NONE,		/* used internally when it is not an autolink*/
 	HOEDOWN_AUTOLINK_NORMAL,	/* normal http/http/ftp/mailto/etc link */
-	HOEDOWN_AUTOLINK_EMAIL		/* e-mail link without explit mailto: */
+	HOEDOWN_AUTOLINK_EMAIL		/* e-mail link without explicit mailto: */
 } hoedown_autolink_type;
 
 
